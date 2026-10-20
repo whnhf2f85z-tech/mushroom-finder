@@ -248,9 +248,9 @@ Period AUC on the 30 sample squares (2021–24): 0.710 current, 0.709–0.728 fo
 
 ![Sensitivity](validation/sensitivity.png)
 
-**Sensitivity** (one input changed from a good base day of 79–87):
+**Sensitivity** (one input changed from a good base day of 80–90; chart and numbers updated on 2026-10-21 with the new honey fungus rain window):
 
-- **Rain dominates:** no rain in the window costs 45–53 points, a third of the rain 20–26, a dry 60 days 24–32. Elevation 300 m above the range costs 54–61. That's the intended order.
+- **Rain dominates:** no rain in the window costs 49–56 points, a third of the rain 21–31, a dry 60 days 26–32. Elevation 300 m above the range costs 54–67. That's the intended order.
 - **Temperature barely matters inside the band:** ±3 °C changes nothing for 8 of 9 species (morel −5); ±6 °C costs 2–13 (morel −87, partly through frost). Together with T ≈ 0.98 in every past autumn: in practice the temperature part works only at the edges of the season.
 - **Absolute soil moisture doesn't count:** soil moisture is compared with the place's own range over the last 60 days, so 0.28 or 0.35 m³/m³ give the same score if both are the wettest of those 60 days. This is by design (soils differ), and the 120-day variant didn't improve anything.
 - **Honey fungus ignores habitat entirely:** pH, conifer share and tree cover change nothing; its habitat score is 1.00 on every square (see map). Its map is weather and elevation only.
