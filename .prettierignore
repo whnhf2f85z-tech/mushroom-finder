@@ -4,3 +4,4 @@ web/public/data
 package-lock.json
 *.kml
 SPEC.md
+pipeline/test/fixtures

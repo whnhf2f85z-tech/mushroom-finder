@@ -1,5 +1,6 @@
 export * from './schemas.js';
 export * from './types.js';
+export * from './output-schemas.js';
 export { DEFAULT_CONFIG, type ScoringConfig } from './config.js';
 export { seasonScore, shiftedSeason } from './season.js';
 export { moistureScore, effectiveRain, lagWeight, soilMoistureScore } from './moisture.js';

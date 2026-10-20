@@ -15,9 +15,11 @@
     "build": "npm run build -w web",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -p packages/scoring && tsc -p web",
+    "typecheck": "tsc -p packages/scoring && tsc -p pipeline && tsc -p web",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "daily": "tsx pipeline/src/run.ts",
+    "record:golden": "tsx pipeline/scripts/record-golden.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

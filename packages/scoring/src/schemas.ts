@@ -68,6 +68,10 @@ export const SpotSchema = z.object({
   notes: z.string(),
   /** Species the spot is known for (ids from species.json). */
   species_hint: z.array(z.string()).default([]),
+  /** Provisional habitat from the spot notes, until the terrain/habitat build (Milestone 3) replaces it. */
+  habitat_hint: z
+    .object({ conifer_pct: z.number().min(0).max(100).optional(), ph_class: PhClass.optional() })
+    .optional(),
 });
 
 export const SpotsFileSchema = z.object({

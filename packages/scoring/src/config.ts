@@ -5,9 +5,14 @@ import type { FrostToleranceT } from './schemas.js';
  * All values are initial expert estimates, to be calibrated with the find log (docs/CALIBRATION.md).
  */
 export const DEFAULT_CONFIG = {
-  /** dynamic = S^seasonExponent * (moistureWeight*M + (1-moistureWeight)*T) */
+  /**
+   * dynamic = S^seasonExponent × combine(M, T) with weight moistureWeight on M.
+   * 'geometric' = M^w × T^(1-w): dry soil pulls the score down even at a perfect temperature.
+   * 'additive' (SPEC §5.2) = w·M + (1-w)·T: gives 40 points for temperature alone, even with no rain at all.
+   */
   seasonExponent: 0.5,
   moistureWeight: 0.6,
+  combine: 'geometric' as 'geometric' | 'additive',
 
   moisture: {
     /** Share of the rain score in M; the rest is soil moisture (7–28 cm). */

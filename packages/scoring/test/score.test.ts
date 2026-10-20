@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { bandFor } from '../src/bands.js';
+import { DEFAULT_CONFIG } from '../src/config.js';
 import { scoreLocation, scoreSpecies } from '../src/score.js';
 import { IBERGEREGG, SPECIES, series, sp } from './helpers.js';
 
@@ -41,6 +42,15 @@ describe('scoreSpecies', () => {
   it('is low after a dry spell', () => {
     const dry = series(END, 60, () => ({ precip: 0, soilMoisture7_28: 0.15, tmean: 11 }));
     expect(scoreSpecies(sp('chanterelle'), dry, IBERGEREGG).score).toBeLessThan(20);
+  });
+
+  it('stays low in a bone-dry forest even at a perfect temperature', () => {
+    const dry = series(END, 60, () => ({ precip: 0, soilMoisture7_28: undefined, tmean: 12 }));
+    expect(scoreSpecies(sp('winter_chanterelle'), dry, IBERGEREGG).score).toBe(0);
+    const additive = { ...DEFAULT_CONFIG, combine: 'additive' as const };
+    expect(
+      scoreSpecies(sp('winter_chanterelle'), dry, IBERGEREGG, {}, additive).score,
+    ).toBeGreaterThanOrEqual(20);
   });
 
   it('is near 0 after two hard frosts for a sensitive species', () => {

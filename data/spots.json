@@ -7,9 +7,16 @@
       "canton": "SZ",
       "lat": 47.022,
       "lon": 8.708,
-      "elevation_band": { "min": 1100, "max": 1400 },
+      "elevation_band": {
+        "min": 1100,
+        "max": 1400
+      },
       "notes": "Flysch, mossy spruce-fir forests on acidic soil. Look on north-facing mossy slopes and near streams. Bus Schwyz–Ibergeregg or Einsiedeln–Oberiberg.",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "conifer_pct": 85,
+        "ph_class": "acidic"
+      }
     },
     {
       "id": "oberiberg-ybrig",
@@ -17,9 +24,16 @@
       "canton": "SZ",
       "lat": 47.035,
       "lon": 8.79,
-      "elevation_band": { "min": 1100, "max": 1300 },
+      "elevation_band": {
+        "min": 1100,
+        "max": 1300
+      },
       "notes": "Acidic flysch, spruce-fir. Also good for winter chanterelles in late October. Bus from Einsiedeln.",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "conifer_pct": 85,
+        "ph_class": "acidic"
+      }
     },
     {
       "id": "unteriberg-studen",
@@ -27,9 +41,15 @@
       "canton": "SZ",
       "lat": 47.058,
       "lon": 8.835,
-      "elevation_band": { "min": 900, "max": 1200 },
+      "elevation_band": {
+        "min": 900,
+        "max": 1200
+      },
       "notes": "Moist spruce forests. The Breitried reserve is nearby: check the reserve layer on map.geo.sz.ch before picking.",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "waegital-innerthal",
@@ -37,9 +57,15 @@
       "canton": "SZ",
       "lat": 47.095,
       "lon": 8.925,
-      "elevation_band": { "min": 900, "max": 1200 },
+      "elevation_band": {
+        "min": 900,
+        "max": 1200
+      },
       "notes": "Very wet, quiet flysch valley. Mossy forest slopes above the Wägitalersee. Train to Siebnen, then bus.",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "ph_class": "acidic"
+      }
     },
     {
       "id": "sattel-hochstuckli",
@@ -47,9 +73,15 @@
       "canton": "SZ",
       "lat": 47.075,
       "lon": 8.66,
-      "elevation_band": { "min": 1000, "max": 1300 },
+      "elevation_band": {
+        "min": 1000,
+        "max": 1300
+      },
       "notes": "Spruce forests on molasse. Easy access from Sattel station (gondola to Mostelberg).",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "raten-biberegg",
@@ -57,9 +89,15 @@
       "canton": "SZ",
       "lat": 47.115,
       "lon": 8.665,
-      "elevation_band": { "min": 1000, "max": 1100 },
+      "elevation_band": {
+        "min": 1000,
+        "max": 1100
+      },
       "notes": "Moist spruce forests and moor edges near the Zug border and the Rothenthurm moors: stay on the Schwyz side and out of the moor reserves. Pin moved ~400 m east of the original (47.115, 8.660), which is in canton Zug.",
-      "species_hint": ["chanterelle", "winter_chanterelle"]
+      "species_hint": ["chanterelle", "winter_chanterelle"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "ibergeregg-upper",
@@ -67,9 +105,15 @@
       "canton": "SZ",
       "lat": 47.015,
       "lon": 8.72,
-      "elevation_band": { "min": 1200, "max": 1400 },
+      "elevation_band": {
+        "min": 1200,
+        "max": 1400
+      },
       "notes": "Spruce stands. Go early in the season, before frost reaches this height.",
-      "species_hint": ["porcini"]
+      "species_hint": ["porcini"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "hoch-ybrig-weglosen",
@@ -77,9 +121,15 @@
       "canton": "SZ",
       "lat": 47.03,
       "lon": 8.81,
-      "elevation_band": { "min": 1050, "max": 1300 },
+      "elevation_band": {
+        "min": 1050,
+        "max": 1300
+      },
       "notes": "Spruce forests around the valley station. Bus Einsiedeln–Oberiberg–Weglosen.",
-      "species_hint": ["porcini"]
+      "species_hint": ["porcini"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "hochstuckli-upper",
@@ -87,9 +137,15 @@
       "canton": "SZ",
       "lat": 47.072,
       "lon": 8.67,
-      "elevation_band": { "min": 1200, "max": 1400 },
+      "elevation_band": {
+        "min": 1200,
+        "max": 1400
+      },
       "notes": "Spruce forests above Mostelberg.",
-      "species_hint": ["porcini"]
+      "species_hint": ["porcini"],
+      "habitat_hint": {
+        "conifer_pct": 85
+      }
     },
     {
       "id": "haggenegg-alpthal",
@@ -97,9 +153,15 @@
       "canton": "SZ",
       "lat": 47.04,
       "lon": 8.693,
-      "elevation_band": { "min": 1100, "max": 1400 },
+      "elevation_band": {
+        "min": 1100,
+        "max": 1400
+      },
       "notes": "Spruce and mixed forests below the pass. Bus to Alpthal, then hike up.",
-      "species_hint": ["porcini"]
+      "species_hint": ["porcini"],
+      "habitat_hint": {
+        "conifer_pct": 60
+      }
     },
     {
       "id": "rigi-kuessnacht",
@@ -107,9 +169,15 @@
       "canton": "SZ",
       "lat": 47.06,
       "lon": 8.455,
-      "elevation_band": { "min": 600, "max": 1000 },
+      "elevation_band": {
+        "min": 600,
+        "max": 1000
+      },
       "notes": "Beech and mixed forests toward Seebodenalp. Frost comes later here, so this works into November.",
-      "species_hint": ["horn_of_plenty", "hedgehog"]
+      "species_hint": ["horn_of_plenty", "hedgehog"],
+      "habitat_hint": {
+        "conifer_pct": 35
+      }
     },
     {
       "id": "rigi-arth-goldau",
@@ -117,9 +185,15 @@
       "canton": "SZ",
       "lat": 47.045,
       "lon": 8.525,
-      "elevation_band": { "min": 600, "max": 1000 },
+      "elevation_band": {
+        "min": 600,
+        "max": 1000
+      },
       "notes": "Beech forests. Direct train from Zürich to Arth-Goldau.",
-      "species_hint": ["horn_of_plenty", "honey_fungus"]
+      "species_hint": ["horn_of_plenty", "honey_fungus"],
+      "habitat_hint": {
+        "conifer_pct": 20
+      }
     },
     {
       "id": "morschach",
@@ -127,9 +201,15 @@
       "canton": "SZ",
       "lat": 46.975,
       "lon": 8.625,
-      "elevation_band": { "min": 650, "max": 1000 },
+      "elevation_band": {
+        "min": 650,
+        "max": 1000
+      },
       "notes": "Beech forests above the Urnersee. Bus from Brunnen.",
-      "species_hint": ["horn_of_plenty", "hedgehog"]
+      "species_hint": ["horn_of_plenty", "hedgehog"],
+      "habitat_hint": {
+        "conifer_pct": 20
+      }
     },
     {
       "id": "gersau",
@@ -137,9 +217,15 @@
       "canton": "SZ",
       "lat": 46.995,
       "lon": 8.515,
-      "elevation_band": { "min": 500, "max": 900 },
+      "elevation_band": {
+        "min": 500,
+        "max": 900
+      },
       "notes": "Beech slopes above the lake. Boat or bus from Brunnen.",
-      "species_hint": ["horn_of_plenty", "honey_fungus"]
+      "species_hint": ["horn_of_plenty", "honey_fungus"],
+      "habitat_hint": {
+        "conifer_pct": 20
+      }
     }
   ]
 }

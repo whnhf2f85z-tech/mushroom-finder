@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "daily": "tsx src/run.ts"
+  },
   "dependencies": {
-    "@mf/scoring": "*"
+    "@mf/scoring": "*",
+    "zod": "^3.23.8"
   }
 }

@@ -37,9 +37,12 @@ export function scoreSpecies(
   const drought = droughtFactor(weather, habitat.elevation, cfg);
   const hab = habitatScore(habitat, species, drought.D, cfg);
 
-  const dynamic =
-    Math.pow(S, cfg.seasonExponent) *
-    (cfg.moistureWeight * moisture.M + (1 - cfg.moistureWeight) * temp.T);
+  const w = cfg.moistureWeight;
+  const moistTemp =
+    cfg.combine === 'additive'
+      ? w * moisture.M + (1 - w) * temp.T
+      : Math.pow(moisture.M, w) * Math.pow(temp.T, 1 - w);
+  const dynamic = Math.pow(S, cfg.seasonExponent) * moistTemp;
   const score = Math.round(100 * clamp(hab.H * dynamic * frost.F * drought.D));
 
   const issues: string[] = [];
