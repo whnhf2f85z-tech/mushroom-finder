@@ -24,7 +24,10 @@
     </header>
     <p id="status" class="notice" role="status" hidden></p>
     <div class="controls">
-      <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
+      <div class="species-control">
+        <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
+        <button type="button" id="edit-favourites" class="link-button">Edit favourites</button>
+      </div>
       <div class="day-control">
         <label for="day" id="day-label">Today</label>
         <input id="day" type="range" min="0" max="16" step="1" value="13" />
@@ -68,6 +71,24 @@
         </div>
       </aside>
     </main>
+    <dialog id="fav-dialog" aria-labelledby="fav-h">
+      <form method="dialog">
+        <h2 id="fav-h">My favourites</h2>
+        <p class="small">
+          The map and each spot's main score use the best of these species. The spot details still
+          show every species.
+        </p>
+        <fieldset id="fav-list" class="fav-list">
+          <legend class="visually-hidden">Favourite species</legend>
+        </fieldset>
+        <p id="fav-error" class="fav-error" role="alert" hidden>Pick at least one species.</p>
+        <div class="dialog-actions">
+          <button type="button" id="fav-reset" class="link-button">Reset to default</button>
+          <button value="cancel" formnovalidate class="button-secondary">Cancel</button>
+          <button value="save" id="fav-save" class="button-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

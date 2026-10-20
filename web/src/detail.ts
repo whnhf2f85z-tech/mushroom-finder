@@ -1,5 +1,6 @@
 import {
   bandFor,
+  bestOf,
   isClosedDay,
   type LatestFile,
   type RulesFile,
@@ -15,6 +16,7 @@ export interface DetailContext {
   species: Species[];
   rules: RulesFile;
   today: string;
+  favourites: string[];
   onClose: () => void;
 }
 
@@ -41,6 +43,8 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
   const closed = isClosedDay(ctx.rules, spot.canton, ctx.today);
   const gmaps = `https://www.google.com/maps/search/?api=1&query=${spot.lat},${spot.lon}`;
   const name = (id: string) => ctx.species.find((s) => s.id === id)?.name ?? id;
+  const star = (id: string) =>
+    ctx.favourites.includes(id) ? '<span class="fav-star" aria-label="Favourite">★</span> ' : '';
 
   let body = '';
   if (!data || !ctx.latest) {
@@ -56,16 +60,21 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     const list = rows
       .map(({ s, d }) =>
         d!.outOfSeason
-          ? `<li class="sp-row off"><span class="sp-name">${esc(s.name)}</span><span class="sp-off">Out of season</span></li>`
-          : `<li class="sp-row"><span class="sp-name">${esc(s.name)}</span><span class="bar" aria-hidden="true"><span style="width:${d!.score}%;background:${bandFor(d!.score).color}"></span></span>${badge(d!.score)}</li>`,
+          ? `<li class="sp-row off"><span class="sp-name">${star(s.id)}${esc(s.name)}</span><span class="sp-off">Out of season</span></li>`
+          : `<li class="sp-row"><span class="sp-name">${star(s.id)}${esc(s.name)}</span><span class="bar" aria-hidden="true"><span style="width:${d!.score}%;background:${bandFor(d!.score).color}"></span></span>${badge(d!.score)}</li>`,
       )
       .join('');
-    const best = t.best ? t.species[t.best] : undefined;
+    const fav = bestOf(
+      Object.fromEntries(ctx.favourites.map((id) => [id, t.species[id]?.score])),
+      ctx.favourites,
+    );
+    const best = fav ? t.species[fav.id] : undefined;
+    const main = fav?.score ?? 0;
     body = `
       <div class="meta-score">
-        ${badge(t.metascore, true)}
+        ${badge(main, true)}
         <div>
-          <strong>${bandFor(t.metascore).label}</strong>${best ? ` · best: ${esc(name(t.best!))}` : ''}
+          <strong>${bandFor(main).label}</strong>${fav ? ` · best of your favourites: ${esc(name(fav.id))}` : ''}
           ${best ? `<div class="small">${confidenceText[best.confidence]} · scores for ${shortDate(data.updated)}</div>` : ''}
         </div>
       </div>
@@ -113,14 +122,10 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     values: data.series[s.id] ?? dates.map(() => null),
     style: speciesStyle(i),
   }));
-  // Default: the three best species today that are in season.
+  // Default chart lines: the favourites that are in season.
   visible ??= new Set(
     ctx.species
-      .filter((s) => !data.today.species[s.id]?.outOfSeason)
-      .sort(
-        (a, b) => (data.today.species[b.id]?.score ?? 0) - (data.today.species[a.id]?.score ?? 0),
-      )
-      .slice(0, 3)
+      .filter((s) => ctx.favourites.includes(s.id) && !data.today.species[s.id]?.outOfSeason)
       .map((s) => s.name),
   );
 
@@ -162,6 +167,11 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
           `<tr><th scope="row">${dayMonth(d)}${i >= forecastFrom ? '*' : ''}</th>${lines.map((l) => `<td>${cell(l.values[i])}</td>`).join('')}<td>${cell(data.weather.precip[i])}</td><td>${cell(data.weather.tmin[i])}</td><td>${cell(data.weather.tmax[i])}</td></tr>`,
       )
       .join('')}</tbody></table><p class="small">* forecast</p>`;
+}
+
+/** Forget the chart line choices, e.g. after the favourites change. */
+export function resetChartLines(): void {
+  visible = null;
 }
 
 export function closeDetail(el: HTMLElement): void {

@@ -8,7 +8,9 @@ import {
   SCORE_BANDS,
   SpeciesFileSchema,
   SpotsFileSchema,
+  DEFAULT_FAVOURITES,
   bandFor,
+  bestOf,
   isClosedDay,
   type CantonT,
   type LatestFile,
@@ -18,8 +20,9 @@ import reservesJson from '../../data/reserves.json';
 import rulesJson from '../../data/rules.json';
 import speciesJson from '../../data/species.json';
 import spotsJson from '../../data/spots.json';
-import { closeDetail, renderDetail } from './detail.js';
+import { closeDetail, renderDetail, resetChartLines } from './detail.js';
 import { dateTime, esc, shortDate } from './format.js';
+import { loadFavourites, saveFavourites } from './settings.js';
 
 const spots = SpotsFileSchema.parse(spotsJson).spots;
 const species = SpeciesFileSchema.parse(speciesJson).species;
@@ -33,8 +36,9 @@ const $ = (id: string): HTMLElement => {
   return el;
 };
 
-/** What the map shows: all species (best score) or one species, on one day of the 17-day window. */
-const state = { species: 'all', dayIndex: 13, selected: null as string | null };
+/** What the map shows: the best of the favourites, or one species, on one day of the 17-day window. */
+const state = { species: 'favourites', dayIndex: 13, selected: null as string | null };
+let favourites = loadFavourites(species.map((s) => s.id));
 let latest: LatestFile | null = null;
 
 // --- Map -------------------------------------------------------------------
@@ -115,8 +119,10 @@ interface Shown {
 function shownScore(spot: Spot): Shown {
   const d = latest?.spots[spot.id];
   if (!d) return { score: null, outOfSeason: false };
-  if (state.species === 'all')
-    return { score: d.metaSeries[state.dayIndex] ?? null, outOfSeason: false };
+  if (state.species === 'favourites') {
+    const scores = Object.fromEntries(favourites.map((id) => [id, d.series[id]?.[state.dayIndex]]));
+    return { score: bestOf(scores, favourites)?.score ?? null, outOfSeason: false };
+  }
   const outOfSeason = d.today.species[state.species]?.outOfSeason ?? false;
   return { score: d.series[state.species]?.[state.dayIndex] ?? null, outOfSeason };
 }
@@ -130,7 +136,9 @@ function markerHtml(spot: Spot, s: Shown, closed: boolean): string {
 
 function describe(spot: Spot, s: Shown, closed: boolean): string {
   const what =
-    state.species === 'all' ? 'best species' : species.find((x) => x.id === state.species)?.name;
+    state.species === 'favourites'
+      ? 'your favourites'
+      : species.find((x) => x.id === state.species)?.name;
   const score = s.outOfSeason
     ? 'out of season'
     : s.score === null
@@ -187,6 +195,7 @@ function select(id: string): void {
     species,
     rules,
     today,
+    favourites,
     onClose: () => {
       state.selected = null;
       closeDetail(detail);
@@ -203,7 +212,7 @@ function select(id: string): void {
 
 // --- Controls --------------------------------------------------------------
 
-$('species-chips').innerHTML = [{ id: 'all', name: 'All species' }, ...species]
+$('species-chips').innerHTML = [{ id: 'favourites', name: 'My favourites' }, ...species]
   .map(
     (s) =>
       `<button type="button" class="chip" role="radio" aria-checked="${s.id === state.species}" data-id="${s.id}">${esc(s.name)}</button>`,
@@ -216,6 +225,44 @@ $('species-chips').addEventListener('click', (e) => {
   for (const c of $('species-chips').querySelectorAll('button'))
     c.setAttribute('aria-checked', String(c === b));
   refresh();
+});
+
+// Favourites dialog
+const dialog = $('fav-dialog') as HTMLDialogElement;
+const favList = $('fav-list');
+const renderFavList = (ids: string[]) => {
+  favList.querySelectorAll('label').forEach((l) => l.remove());
+  favList.insertAdjacentHTML(
+    'beforeend',
+    species
+      .map(
+        (s) =>
+          `<label><input type="checkbox" name="fav" value="${s.id}"${ids.includes(s.id) ? ' checked' : ''} /> ${esc(s.name)} <span class="small">(${esc(s.german)})</span></label>`,
+      )
+      .join(''),
+  );
+};
+$('edit-favourites').addEventListener('click', () => {
+  renderFavList(favourites);
+  $('fav-error').hidden = true;
+  dialog.showModal();
+});
+$('fav-reset').addEventListener('click', () => renderFavList(DEFAULT_FAVOURITES));
+$('fav-save').addEventListener('click', (e) => {
+  const ids = [...favList.querySelectorAll<HTMLInputElement>('input:checked')].map((i) => i.value);
+  if (ids.length === 0) {
+    e.preventDefault();
+    $('fav-error').hidden = false;
+    return;
+  }
+  favourites = ids;
+  saveFavourites(ids);
+});
+dialog.addEventListener('close', () => {
+  if (dialog.returnValue !== 'save') return;
+  resetChartLines();
+  refresh();
+  if (state.selected) select(state.selected);
 });
 
 const slider = $('day') as HTMLInputElement;
