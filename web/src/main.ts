@@ -23,7 +23,8 @@ import reservesJson from '../../data/reserves.json';
 import rulesJson from '../../data/rules.json';
 import speciesJson from '../../data/species.json';
 import spotsJson from '../../data/spots.json';
-import { closeCellDetail, renderCellDetail } from './celldetail.js';
+import { closeCellDetail, renderCellDetail, scoreCellLive } from './celldetail.js';
+import { setupMine, type ScoreCapture } from './mine.js';
 import { closeDetail, renderDetail, resetChartLines } from './detail.js';
 import {
   GridLayer,
@@ -63,6 +64,9 @@ let habitat: HabitatFile | null = null;
 let grid: GridFile | null = null;
 let gridLayer: GridLayer | null = null;
 let shownDay: GridDay | null = null;
+/** My pins and find log (set up further down; null until then). */
+let mine: ReturnType<typeof setupMine> | null = null;
+let reserveFeatures: Parameters<typeof import('./pinplace.js').reserveAt>[0] = [];
 
 // --- Map -------------------------------------------------------------------
 
@@ -91,6 +95,7 @@ async function loadReserves(): Promise<void> {
     const res = await fetch(`${import.meta.env.BASE_URL}data/static/reserves.geojson`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = (await res.json()) as GeoJSON.FeatureCollection;
+    reserveFeatures = data.features as typeof reserveFeatures;
     L.geoJSON(data, {
       pane: 'reserves',
       interactive: false,
@@ -222,6 +227,7 @@ function refresh(): void {
       : `${isForecast ? 'Forecast: ' : ''}${shortDate(date)}`;
   $('day-label').classList.toggle('forecast', isForecast);
   void refreshGrid();
+  mine?.refresh();
 }
 
 // --- Grid ------------------------------------------------------------------
@@ -274,10 +280,11 @@ function describeCell(i: number): string {
 }
 
 async function openCell(i: number, pan = true): Promise<void> {
-  if (!grid || !latest) return;
+  if (!grid || !latest || mine?.isAdding()) return;
   const detail = $('detail');
   if (state.selected) closeDetail(detail);
   state.selected = null;
+  mine?.closePin();
   const first = state.selectedCell !== i;
   state.selectedCell = i;
   $('overview').hidden = true;
@@ -295,6 +302,8 @@ async function openCell(i: number, pan = true): Promise<void> {
     dates: allDates(),
     forecastFrom: latest.days.length,
     dayIndex: state.dayIndex,
+    onLogVisit: () => mine!.openVisit(cellPlace(i), captureCell(i)),
+    visits: mine!.visitsFor('square', cellPlace(i).id),
     onClose: () => {
       state.selectedCell = null;
       closeCellDetail(detail);
@@ -325,6 +334,7 @@ function select(id: string): void {
   const detail = $('detail');
   if (state.selectedCell !== null) closeCellDetail(detail);
   state.selectedCell = null;
+  mine?.closePin();
   state.selected = id;
   renderDetail(detail, spot, {
     latest,
@@ -333,6 +343,12 @@ function select(id: string): void {
     today,
     favourites,
     habitat: habitat?.spots[id] ?? null,
+    onLogVisit: () =>
+      mine!.openVisit(
+        { kind: 'spot', id, name: spot.name, lat: spot.lat, lon: spot.lon },
+        captureSpot(id),
+      ),
+    visits: mine!.visitsFor('spot', id),
     onClose: () => {
       state.selected = null;
       closeDetail(detail);
@@ -423,7 +439,7 @@ $('spot-list').addEventListener('click', (e) => {
   if (id) select(id);
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && (state.selected || state.selectedCell !== null))
+  if (e.key === 'Escape' && (state.selected || state.selectedCell !== null || mine?.isPinOpen()))
     $('detail').querySelector<HTMLButtonElement>('.close')?.click();
 });
 
@@ -447,6 +463,97 @@ $('rules-today').innerHTML = (Object.keys(rules.cantons) as CantonT[])
       : `<span class="badge">${c}: open today · max ${rules.cantons[c]!.maxKgPerPersonPerDay} kg</span>`,
   )
   .join('');
+
+// --- My pins and find log ---------------------------------------------------
+
+function showStatus(msg: string): void {
+  const el = $('status');
+  el.textContent = msg;
+  el.hidden = false;
+  window.setTimeout(() => {
+    if (el.textContent === msg) el.hidden = true;
+  }, 8000);
+}
+
+mine = setupMine({
+  map,
+  species,
+  rules,
+  today,
+  latest: () => latest,
+  grid: () => grid,
+  reserves: () => reserveFeatures,
+  favourites: () => favourites,
+  view: () => ({ species: state.species, dayIndex: state.dayIndex }),
+  closeOthers: () => {
+    const detail = $('detail');
+    if (state.selected) closeDetail(detail);
+    if (state.selectedCell !== null) closeCellDetail(detail);
+    state.selected = null;
+    state.selectedCell = null;
+  },
+  closed: () => {
+    $('overview').hidden = false;
+    refresh();
+  },
+  status: showStatus,
+});
+
+const cellPlace = (i: number) => {
+  const c = cellCenter(grid!, i);
+  return {
+    kind: 'square' as const,
+    id: `${grid!.cells.e[i]}-${grid!.cells.n[i]}`,
+    name: `Forest square ${grid!.cells.e[i]}/${grid!.cells.n[i]}`,
+    lat: c.lat,
+    lon: c.lon,
+  };
+};
+
+const r3 = (x: number) => Math.round(x * 1000) / 1000;
+
+/** Score of a spot on the visit day, from the published scores (components only for today). */
+const captureSpot =
+  (id: string): ScoreCapture =>
+  async (date, sp) => {
+    const s = latest?.spots[id];
+    const i = latest ? [...latest.days, ...latest.forecastDays].indexOf(date) : -1;
+    const value = s && i >= 0 ? (s.series[sp]?.[i] ?? null) : null;
+    const components =
+      s && date === latest!.today ? (s.today.species[sp]?.components ?? null) : null;
+    return { value, components, source: value === null ? 'none' : 'daily' };
+  };
+
+/** Score of a square on the visit day (published), with components from a live recalculation when available. */
+const captureCell =
+  (i: number): ScoreCapture =>
+  async (date, sp) => {
+    if (!grid || !latest) return { value: null, components: null, source: 'none' };
+    const day = await loadGridDay(date, grid.count);
+    const value = cellScore(day, [sp], i);
+    let components = null;
+    try {
+      const live = await scoreCellLive(
+        grid,
+        i,
+        species,
+        [...latest.days, ...latest.forecastDays],
+        today,
+      );
+      const c = live.results.get(date)?.species.find((x) => x.speciesId === sp)?.components;
+      if (c)
+        components = { S: r3(c.S), M: r3(c.M), T: r3(c.T), F: r3(c.F), D: r3(c.D), H: r3(c.H) };
+    } catch {
+      // Without a connection the published score is enough.
+    }
+    return { value, components, source: value === null ? 'none' : 'daily' };
+  };
+
+// After a visit is saved, re-open the current detail so its chart shows the new marker.
+document.addEventListener('mf:visit-saved', () => {
+  if (state.selected) select(state.selected);
+  else if (state.selectedCell !== null) void openCell(state.selectedCell, false);
+});
 
 // --- Data ------------------------------------------------------------------
 
@@ -505,4 +612,9 @@ refresh();
 void loadHabitat();
 void loadLatest()
   .then(loadGridLayer)
-  .finally(() => whenIdle(() => void loadReserves()));
+  .finally(() =>
+    whenIdle(() => {
+      // Pins are scored once the reserves are known (for their protection flag).
+      void loadReserves().finally(() => void mine?.scoreAll());
+    }),
+  );

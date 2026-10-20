@@ -9,7 +9,7 @@ import {
   type RulesFile,
   type Species,
 } from '@mf/scoring';
-import { scoreChart, type LineSeries } from './charts.js';
+import { scoreChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
 import { badge } from './detail.js';
 import { dayMonth, esc, shortDate } from './format.js';
@@ -29,6 +29,8 @@ export interface CellContext {
   /** Index of the date picked with the slider. */
   dayIndex: number;
   onClose: () => void;
+  onLogVisit: () => void;
+  visits: VisitMarker[];
 }
 
 let cleanup: (() => void) | null = null;
@@ -95,11 +97,13 @@ export async function renderCellDetail(
     ${dz > 200 ? '<p class="small warn-note"><strong>Rain may be underestimated here:</strong> this square is more than 200 m higher than its weather point, and higher ground usually gets more rain.</p>' : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day.</p>` : ''}
     <div class="actions">
+      <button type="button" class="action-button" data-act="log">Log a visit</button>
       <a href="https://www.google.com/maps/search/?api=1&query=${center.lat.toFixed(5)},${center.lon.toFixed(5)}" target="_blank" rel="noopener">Open in Google Maps</a>
       <a href="${r?.cantonalMapUrl ?? 'https://map.geo.admin.ch'}" target="_blank" rel="noopener">Open cantonal map</a>
     </div>`;
   el.hidden = false;
   el.querySelector<HTMLButtonElement>('.close')!.addEventListener('click', ctx.onClose);
+  el.querySelector('[data-act="log"]')?.addEventListener('click', ctx.onLogVisit);
   el.scrollTop = 0;
 
   const days = await Promise.all(ctx.dates.map((d) => loadGridDay(d, g.count)));
@@ -165,6 +169,7 @@ export async function renderCellDetail(
     ctx.forecastFrom,
     lines,
     visible,
+    ctx.visits,
   );
   cleanup = chart.destroy;
   const shown = lines.filter((l) => visible.has(l.label));
@@ -178,6 +183,29 @@ export async function renderCellDetail(
     .join('')}</tbody></table><p class="small">* forecast</p>`;
 }
 
+/** Live recalculation of one square: same engine, weather point and elevation shift as the daily job. */
+export function scoreCellLive(
+  g: GridFile,
+  i: number,
+  species: Species[],
+  dates: string[],
+  today: string,
+) {
+  const k = g.cells.weather[i]!;
+  return scorePlaceLive(
+    species,
+    {
+      lat: g.weatherPoints.lat[k]!,
+      lon: g.weatherPoints.lon[k]!,
+      elevation: g.weatherPoints.elevation[k]!,
+    },
+    cellHabitat(g, i),
+    dates,
+    today,
+    { dz: elevationAboveWeatherPoint(g, i), ctx: { weatherDistanceKm: weatherDistanceKm(g, i) } },
+  );
+}
+
 /** Live recalculation of the square (same engine, weather point and elevation shift as the daily job) → reasons. */
 async function renderCellWhy(
   body: HTMLElement,
@@ -188,7 +216,6 @@ async function renderCellWhy(
 ): Promise<void> {
   const g = ctx.grid;
   const c = g.cells;
-  const k = c.weather[i]!;
   const note = body.querySelector<HTMLElement>('#cell-why-note')!;
   const list = body.querySelector<HTMLElement>('#cell-why')!;
   const pick = body.querySelector<HTMLSelectElement>('#cell-why-species')!;
@@ -205,18 +232,7 @@ async function renderCellWhy(
   };
   let live;
   try {
-    live = await scorePlaceLive(
-      ctx.species,
-      {
-        lat: g.weatherPoints.lat[k]!,
-        lon: g.weatherPoints.lon[k]!,
-        elevation: g.weatherPoints.elevation[k]!,
-      },
-      cellHabitat(g, i),
-      ctx.dates,
-      ctx.today,
-      { dz: elevationAboveWeatherPoint(g, i), ctx: { weatherDistanceKm: weatherDistanceKm(g, i) } },
-    );
+    live = await scoreCellLive(g, i, ctx.species, ctx.dates, ctx.today);
   } catch {
     if (body.isConnected)
       note.textContent =

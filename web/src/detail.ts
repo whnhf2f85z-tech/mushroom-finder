@@ -8,7 +8,7 @@ import {
   type Species,
   type Spot,
 } from '@mf/scoring';
-import { rainChart, scoreChart, tempChart, type LineSeries } from './charts.js';
+import { rainChart, scoreChart, tempChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
 import { dayMonth, esc, shortDate } from './format.js';
 import { whyHtml } from './why.js';
@@ -21,6 +21,12 @@ export interface DetailContext {
   favourites: string[];
   habitat: HabitatEntry | null;
   onClose: () => void;
+  /** Opens the "Log a visit" dialog for this place. */
+  onLogVisit?: () => void;
+  /** Find-log visits at this place, shown on the chart. */
+  visits?: VisitMarker[];
+  /** Set for the viewer's own pins. */
+  pin?: { cellKm: number | null; onRename: () => void; onDelete: () => void };
 }
 
 let cleanups: (() => void)[] = [];
@@ -108,7 +114,7 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     <div class="detail-head">
       <div>
         <h2>${esc(spot.name)}</h2>
-        <p class="small">${spot.canton} · ${spot.elevation_band.min}–${spot.elevation_band.max} m</p>
+        <p class="small">${ctx.pin ? `My pin · ${spot.canton} · ${spot.elevation_band.min} m` : `${spot.canton} · ${spot.elevation_band.min}–${spot.elevation_band.max} m`}</p>
       </div>
       <button type="button" class="close" aria-label="Close">×</button>
     </div>
@@ -117,16 +123,22 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     ${body}
     ${ctx.habitat?.protected.noPicking ? `<p class="badge closed">No picking: ${esc(ctx.habitat.protected.name ?? 'protected area')}</p>` : ''}
     ${ctx.habitat?.protected.is && !ctx.habitat.protected.noPicking ? `<p class="small"><strong>Protected area nearby:</strong> ${esc(ctx.habitat.protected.name ?? '')}. Check the reserve rules before picking.</p>` : ''}
-    <h3>About this spot</h3>
-    <p>${esc(spot.notes)}</p>
-    ${ctx.habitat ? `<p class="small">Pin at ${ctx.habitat.elevation} m${ctx.habitat.site_type_name ? ` · forest type: ${esc(ctx.habitat.site_type_name)}` : ''}${ctx.habitat.conifer_pct !== null ? ` · ${ctx.habitat.conifer_pct} % conifers` : ''} · tree cover ${ctx.habitat.forest_pct} %.</p>` : ''}
+    <h3>${ctx.pin ? 'About this pin' : 'About this spot'}</h3>
+    ${spot.notes ? `<p>${esc(spot.notes)}</p>` : ''}
+    ${ctx.pin ? `<p class="small">${ctx.pin.cellKm === null ? 'No forest square within 1.5 km: tree mix and soil are unknown, so confidence is lower.' : `Tree mix, soil and slope come from the nearest forest square (${ctx.pin.cellKm.toFixed(1)} km away); elevation is the pin's own.`}</p>` : ''}
+    ${ctx.habitat && !ctx.pin ? `<p class="small">Pin at ${ctx.habitat.elevation} m${ctx.habitat.site_type_name ? ` · forest type: ${esc(ctx.habitat.site_type_name)}` : ''}${ctx.habitat.conifer_pct !== null ? ` · ${ctx.habitat.conifer_pct} % conifers` : ''} · tree cover ${ctx.habitat.forest_pct} %.</p>` : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day${r.speciesLimits.map((l) => `, ${esc(name(l.species).toLowerCase())}s max ${l.maxKg} kg`).join('')}.</p>` : ''}
     <div class="actions">
+      ${ctx.onLogVisit ? '<button type="button" class="action-button" data-act="log">Log a visit</button>' : ''}
       <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps</a>
       <a href="${r?.cantonalMapUrl ?? 'https://map.geo.admin.ch'}" target="_blank" rel="noopener">Open cantonal map</a>
-    </div>`;
+    </div>
+    ${ctx.pin ? '<div class="actions"><button type="button" class="action-button secondary" data-act="rename">Rename</button><button type="button" class="action-button secondary" data-act="delete">Delete pin</button></div>' : ''}`;
   el.hidden = false;
   el.querySelector<HTMLButtonElement>('.close')!.addEventListener('click', ctx.onClose);
+  el.querySelector('[data-act="log"]')?.addEventListener('click', () => ctx.onLogVisit?.());
+  el.querySelector('[data-act="rename"]')?.addEventListener('click', () => ctx.pin?.onRename());
+  el.querySelector('[data-act="delete"]')?.addEventListener('click', () => ctx.pin?.onDelete());
   el.scrollTop = 0;
   if (!data || !ctx.latest) return;
 
@@ -152,7 +164,14 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
         `<button type="button" class="chip" aria-pressed="${visible!.has(l.label)}" data-label="${esc(l.label)}"><span class="line-key" style="border-color:${l.style.color};border-top-style:${l.style.dash ? 'dashed' : 'solid'}"></span>${esc(l.label)}</button>`,
     )
     .join('');
-  const sc = scoreChart(el.querySelector('#score-chart')!, dates, forecastFrom, lines, visible);
+  const sc = scoreChart(
+    el.querySelector('#score-chart')!,
+    dates,
+    forecastFrom,
+    lines,
+    visible,
+    ctx.visits ?? [],
+  );
   toggles.addEventListener('click', (e) => {
     const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-label]');
     if (!b) return;

@@ -755,3 +755,111 @@ dialog::backdrop {
   padding: 0.4rem 0.6rem;
   border-radius: 6px;
 }
+
+/* Buttons next to the action links */
+.action-button {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 1px solid var(--accent);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.action-button.secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Pins, find log, forms */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+}
+.add-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.map.adding {
+  cursor: crosshair;
+}
+.pin.pin-user {
+  border-radius: 8px;
+  border-style: dashed;
+}
+.log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.log-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.85rem;
+}
+.log-list .meta {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.log-list .found {
+  font-weight: 700;
+}
+.form {
+  display: grid;
+  gap: 0.6rem;
+}
+.form label {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.form input,
+.form select,
+.form textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.radio-row {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+.radio-row legend {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+.radio-row label {
+  display: flex !important;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 400 !important;
+}

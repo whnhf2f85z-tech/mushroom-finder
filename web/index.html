@@ -23,6 +23,10 @@
       <div id="rules-today" class="rules-today" aria-live="polite"></div>
     </header>
     <p id="status" class="notice" role="status" hidden></p>
+    <p id="add-hint" class="notice add-hint" role="status" hidden>
+      Tap the map where you want your pin.
+      <button type="button" id="add-cancel" class="link-button">Cancel</button>
+    </p>
     <div class="controls">
       <div class="species-control">
         <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
@@ -52,6 +56,37 @@
           <section aria-labelledby="spots-h">
             <h2 id="spots-h">Spots</h2>
             <ul id="spot-list" class="spot-list"></ul>
+          </section>
+          <section aria-labelledby="pins-h">
+            <h2 id="pins-h">My pins</h2>
+            <p class="small">
+              Your own places, stored on this device. Long-press (or right-click) the map, or use
+              the buttons.
+            </p>
+            <div class="button-row">
+              <button type="button" class="action-button" id="pin-add">Add pin on the map</button>
+              <button type="button" class="action-button secondary" id="pin-coords">
+                Enter coordinates
+              </button>
+            </div>
+            <ul id="pin-list" class="spot-list"></ul>
+            <div class="button-row">
+              <button type="button" class="link-button" id="pin-export">Export pins</button>
+              <button type="button" class="link-button" id="pin-import">Import pins</button>
+            </div>
+          </section>
+          <section aria-labelledby="log-h">
+            <h2 id="log-h">Find log</h2>
+            <p class="small">
+              Your visits, stored on this device, with the score at the time. Use "Log a visit" in a
+              spot, square or pin.
+            </p>
+            <ul id="log-list" class="log-list"></ul>
+            <div class="button-row">
+              <button type="button" class="link-button" id="log-csv">Export CSV</button>
+              <button type="button" class="link-button" id="log-json">Export JSON</button>
+              <button type="button" class="link-button" id="log-import">Import JSON</button>
+            </div>
           </section>
           <section aria-labelledby="cells-h" id="cells-section" hidden>
             <h2 id="cells-h">Best forest squares</h2>
@@ -100,6 +135,54 @@
         </div>
       </aside>
     </main>
+    <input type="file" id="file-input" accept="application/json,.json" hidden />
+    <dialog id="pin-dialog" aria-labelledby="pin-h">
+      <form method="dialog" class="form">
+        <h2 id="pin-h">New pin</h2>
+        <label>Name <input id="pin-name" maxlength="80" required /></label>
+        <div class="form-row">
+          <label>Latitude <input id="pin-lat" inputmode="decimal" placeholder="47.0200" /></label>
+          <label>Longitude <input id="pin-lon" inputmode="decimal" placeholder="8.7100" /></label>
+        </div>
+        <label>Note (optional) <textarea id="pin-note" maxlength="500" rows="2"></textarea></label>
+        <p id="pin-error" class="fav-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button value="cancel" formnovalidate class="button-secondary">Cancel</button>
+          <button value="save" id="pin-save" class="button-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="visit-dialog" aria-labelledby="visit-h">
+      <form method="dialog" class="form">
+        <h2 id="visit-h">Log a visit</h2>
+        <p class="small" id="visit-place"></p>
+        <label>Date <input type="date" id="visit-date" required /></label>
+        <label
+          >Species
+          <select id="visit-species"></select
+        ></label>
+        <fieldset class="radio-row">
+          <legend>Result</legend>
+          <label><input type="radio" name="visit-found" value="yes" checked /> Found</label>
+          <label><input type="radio" name="visit-found" value="no" /> Not found</label>
+        </fieldset>
+        <label
+          >Quantity in grams (optional)
+          <input id="visit-qty" type="number" min="0" max="100000" step="10" inputmode="numeric"
+        /></label>
+        <label
+          >Note (optional) <textarea id="visit-note" maxlength="1000" rows="2"></textarea>
+        </label>
+        <p class="small">
+          The score for that day is saved with the visit, to help calibrate the model later.
+        </p>
+        <p id="visit-error" class="fav-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button value="cancel" formnovalidate class="button-secondary">Cancel</button>
+          <button value="save" id="visit-save" class="button-primary">Save visit</button>
+        </div>
+      </form>
+    </dialog>
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <defs>
         <pattern

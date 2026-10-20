@@ -132,14 +132,45 @@ function autoWidth(chart: uPlot, el: HTMLElement): () => void {
 }
 
 /** Line chart of scores (0–100) per species. `forecastFrom` = index of the first forecast day. */
+export interface VisitMarker {
+  /** Index into `dates`. */
+  index: number;
+  found: boolean;
+}
+
+/** Find-log visits along the bottom of the chart: ▲ found, ✕ not found (shape, not only colour). */
+function visitsPlugin(markers: VisitMarker[]): uPlot.Plugin {
+  return {
+    hooks: {
+      draw: (u) => {
+        if (!markers.length) return;
+        const { ctx, bbox } = u;
+        const px = devicePixelRatio;
+        ctx.save();
+        ctx.font = `${13 * px}px system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        for (const m of markers) {
+          const x = u.valToPos(u.data[0][m.index]!, 'x', true);
+          ctx.fillStyle = m.found ? '#1a7837' : cssVar('--muted');
+          ctx.fillText(m.found ? '▲' : '✕', x, bbox.top + bbox.height - 2 * px);
+        }
+        ctx.restore();
+      },
+    },
+  };
+}
+
 export function scoreChart(
   el: HTMLElement,
   dates: string[],
   forecastFrom: number,
   series: LineSeries[],
   visible: Set<string>,
+  visits: VisitMarker[] = [],
 ) {
   const opts = baseOpts(el.clientWidth, 200, dates, forecastFrom, '', [0, 100]);
+  opts.plugins!.push(visitsPlugin(visits));
   opts.series.push(
     ...series.map((s) => ({
       label: s.label,

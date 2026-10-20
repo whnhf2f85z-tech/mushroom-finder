@@ -207,3 +207,60 @@ export function decodeScores(s: string): Uint8Array {
   for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
 }
+
+/** A pin the viewer added, stored on their device and exportable (SPEC §3.2). */
+export const PinSchema = z.object({
+  id: z.string().regex(/^pin-[a-z0-9-]+$/),
+  name: z.string().trim().min(1).max(80),
+  lat: z.number().min(45.8).max(47.9),
+  lon: z.number().min(5.9).max(10.5),
+  note: z.string().max(500).default(''),
+  /** Filled in when the pin is added: terrain-model elevation (m) and canton. */
+  elevation: z.number().nullable().default(null),
+  canton: z.enum(['ZH', 'SZ']),
+  created: z.string(),
+});
+
+export const PinsFileSchema = z.object({
+  schemaVersion: z.literal(SCHEMA_VERSION),
+  kind: z.literal('mushroom-finder-pins'),
+  exported: z.string().optional(),
+  pins: z.array(PinSchema),
+});
+
+export const FindEntrySchema = z.object({
+  id: z.string().min(1),
+  date: isoDate,
+  place: z.object({
+    kind: z.enum(['spot', 'square', 'pin']),
+    id: z.string(),
+    name: z.string(),
+    lat: z.number(),
+    lon: z.number(),
+  }),
+  species: z.string(),
+  found: z.boolean(),
+  /** Grams, optional. */
+  quantityG: z.number().min(0).max(100_000).nullable().default(null),
+  note: z.string().max(1000).default(''),
+  /** Score at the time of the visit, captured automatically for calibration (SPEC §6.4). */
+  score: z.object({
+    value: score.nullable(),
+    components: ComponentsSchema.nullable(),
+    /** "daily" = from the published scores, "live" = calculated in the browser, "none" = not available. */
+    source: z.enum(['daily', 'live', 'none']),
+  }),
+  created: z.string(),
+});
+
+export const FindLogFileSchema = z.object({
+  schemaVersion: z.literal(SCHEMA_VERSION),
+  kind: z.literal('mushroom-finder-findlog'),
+  exported: z.string().optional(),
+  entries: z.array(FindEntrySchema),
+});
+
+export type Pin = z.infer<typeof PinSchema>;
+export type PinsFile = z.infer<typeof PinsFileSchema>;
+export type FindEntry = z.infer<typeof FindEntrySchema>;
+export type FindLogFile = z.infer<typeof FindLogFileSchema>;
