@@ -557,6 +557,7 @@ export function setupMine(h: MineHooks) {
     const el = $('log-backup');
     if (!log.length) {
       el.textContent = '';
+      el.className = 'small';
       return;
     }
     const last = readStore<string | null>(
@@ -566,10 +567,11 @@ export function setupMine(h: MineHooks) {
     );
     const days = last ? (Date.now() - Date.parse(last)) / 86_400_000 : Infinity;
     const when = last ? `Last exported: ${shortDate(last.slice(0, 10))}.` : 'Not exported yet.';
-    el.innerHTML =
-      days > REMIND_DAYS
-        ? `<span class="warning-box small">${when} Your find log is only on this device: export a copy now and then so you don't lose it.</span>`
-        : when;
+    const remind = days > REMIND_DAYS;
+    el.className = remind ? 'warning-box small' : 'small';
+    el.textContent = remind
+      ? `${when} Your find log is only on this device: export a copy now and then so you don't lose it.`
+      : when;
   }
 
   /**
