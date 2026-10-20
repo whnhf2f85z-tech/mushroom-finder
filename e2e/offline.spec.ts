@@ -39,9 +39,8 @@ test('works offline on a phone: scores, squares, past days, pages and visit logg
         intervals: [1000],
       },
     )
-    .toEqual([1, 4, 17]);
-  const tilesBefore = await cacheSize(page, 'mf-tiles');
-  expect(tilesBefore).toBeGreaterThan(5);
+    .toEqual([1, 3, 17]); // latest.json · grid.json, reserves.geojson, habitat.json · 14 days + 3 forecast
+  await expect.poll(() => cacheSize(page, 'mf-tiles'), { timeout: 30_000 }).toBeGreaterThan(5);
 
   // 2. Offline, new session (no in-memory or session data): reload.
   await page.evaluate(() => sessionStorage.clear());

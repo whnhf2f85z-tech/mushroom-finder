@@ -610,6 +610,9 @@ function warmOfflineCache(): void {
   if (latest)
     for (const d of [...latest.days, ...latest.forecastDays]) urls.push(`data/grid/${d}.json`);
   for (const u of urls) void fetch(`${base}${u}`).catch(() => undefined);
+  // Map tiles on screen were loaded before the worker took over: request them once more so they're stored too.
+  for (const img of document.querySelectorAll<HTMLImageElement>('img.leaflet-tile'))
+    void fetch(img.src, { mode: 'no-cors' }).catch(() => undefined);
 }
 function prefetchGridDays(): void {
   if (grid && latest && navigator.onLine)
