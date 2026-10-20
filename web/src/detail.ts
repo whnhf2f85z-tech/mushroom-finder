@@ -34,7 +34,7 @@ const confidenceText = {
   low: 'Low confidence',
 };
 
-function badge(score: number, big = false): string {
+export function badge(score: number, big = false): string {
   const b = bandFor(score);
   return `<span class="score${big ? ' score-big' : ''}" style="background:${b.color};color:${b.text}">${score}</span>`;
 }

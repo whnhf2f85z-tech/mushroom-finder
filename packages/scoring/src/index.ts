@@ -20,3 +20,4 @@ export {
   type HabitatFacts,
   type Verdict,
 } from './explain.js';
+export { wgs84ToLv95, lv95ToWgs84 } from './lv95.js';

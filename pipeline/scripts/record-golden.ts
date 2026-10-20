@@ -24,7 +24,8 @@ const END = '2026-10-26';
 
 // Ibergeregg – Alpthal side: the checked pin at its terrain-model elevation (from the habitat build).
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const hab = JSON.parse(await readFile(join(ROOT, 'web/public/data/static/habitat.json'), 'utf8')).spots['ibergeregg-alpthal'];
+const hab = JSON.parse(await readFile(join(ROOT, 'web/public/data/static/habitat.json'), 'utf8'))
+  .spots['ibergeregg-alpthal'];
 
 export const GOLDEN_LOCATIONS: WeatherLocation[] = [
   { id: 'ibergeregg', lat: hab.lat, lon: hab.lon, elevation: hab.elevation },

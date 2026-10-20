@@ -1,5 +1,5 @@
 import { fromUrl, type GeoTIFF } from 'geotiff';
-import { lv95ToWgs84 } from './lv95.js';
+import { lv95ToWgs84 } from '@mf/scoring';
 import type { Grid } from './grid.js';
 
 /** Verified sources: see docs/DATA_SOURCES.md (Milestone 3). */
@@ -14,11 +14,15 @@ const ZH_WALDVK = 'https://wms.zh.ch/WaldVKWMS';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** GET with retries and backoff; geo services occasionally time out. */
-export async function getWithRetry(url: string, attempts = 4): Promise<Response> {
+export async function getWithRetry(
+  url: string,
+  attempts = 4,
+  timeoutMs = 60_000,
+): Promise<Response> {
   let last = '';
   for (let i = 0; i < attempts; i++) {
     try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
+      const res = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) });
       if (res.ok) return res;
       last = `HTTP ${res.status}`;
       if (res.status >= 400 && res.status < 500 && res.status !== 429) break;
@@ -240,12 +244,13 @@ export interface Area {
   rings: [number, number][][];
 }
 
-/** All features of a SZ WFS layer within a box, with their rings and one name field. */
-async function szAreas(
+/** All features of a MapServer WFS layer within a box: the requested text fields and the polygon rings. */
+export async function wfsAreas(
+  baseUrl: string,
   layer: string,
-  nameField: string,
+  fields: string[],
   box: [number, number, number, number],
-): Promise<Area[]> {
+): Promise<{ props: Record<string, string>; rings: [number, number][][] }[]> {
   const q = new URLSearchParams({
     SERVICE: 'WFS',
     VERSION: '1.1.0',
@@ -253,14 +258,16 @@ async function szAreas(
     TYPENAME: `ms:${layer}`,
     SRSNAME: 'EPSG:2056',
     BBOX: `${box.join(',')},EPSG:2056`,
-    MAXFEATURES: '500',
+    MAXFEATURES: '20000',
   });
-  const xml = await (await getWithRetry(`${SZ_WFS}?${q}`)).text();
+  const xml = await (await getWithRetry(`${baseUrl}?${q}`)).text();
   return xml
     .split('<gml:featureMember>')
     .slice(1)
     .map((f) => ({
-      name: new RegExp(`<ms:${nameField}>([^<]*)</ms:${nameField}>`).exec(f)?.[1]?.trim() ?? '',
+      props: Object.fromEntries(
+        fields.map((k) => [k, new RegExp(`<ms:${k}>([^<]*)</ms:${k}>`).exec(f)?.[1]?.trim() ?? '']),
+      ),
       rings: [...f.matchAll(/<gml:posList[^>]*>([^<]*)<\/gml:posList>/g)].map((m) => {
         const v = m[1]!.trim().split(/\s+/).map(Number);
         const ring: [number, number][] = [];
@@ -270,10 +277,81 @@ async function szAreas(
     }));
 }
 
+/** All features of a SZ WFS layer within a box, with their rings and one name field. */
+async function szAreas(
+  layer: string,
+  nameField: string,
+  box: [number, number, number, number],
+): Promise<Area[]> {
+  return (await wfsAreas(SZ_WFS, layer, [nameField], box)).map((f) => ({
+    name: f.props[nameField] ?? '',
+    rings: f.rings,
+  }));
+}
+
+export const ZH_OGD_WFS = 'https://maps.zh.ch/wfs/OGDZHWFS';
+
 /**
- * Areas where the Schwyz rules ban picking, within a box: every plant protection reserve, and the nature reserves
- * whose name matches the list in data/rules.json.
+ * Zürich supra-communal protection zones (OGD ZH, layer ogd-0525). Nature protection zones ban picking plants and
+ * mushrooms (zh.ch, "Bewilligungen im Naturschutz"); forest protection zones can allow common mushrooms (e.g.
+ * Üetliberg), so they are flagged "check the rules" only.
  */
+export async function zhProtectedAreas(
+  box: [number, number, number, number],
+): Promise<(Area & { noPicking: boolean })[]> {
+  const f = await wfsAreas(
+    ZH_OGD_WFS,
+    'ogd-0525_giszhpub_fns_schutzzone_f',
+    ['zone_lang', 'kat_lang', 'typ_ns', 'objektname'],
+    box,
+  );
+  return f
+    .filter((x) => x.props.typ_ns === 'Naturschutz')
+    .map((x) => {
+      const forestZone = /wald/i.test(x.props.kat_lang ?? '');
+      return {
+        name: `${x.props.objektname || 'Protection zone'} (${x.props.zone_lang})`,
+        rings: x.rings,
+        noPicking: !forestZone,
+      };
+    });
+}
+
+/** Federal raised bogs and fens with outlines, via identify over a box (5 km boxes: big boxes time out, results are capped). */
+export async function federalMoorAreas(
+  box: [number, number, number, number],
+): Promise<(Area & { id: string })[]> {
+  const q = new URLSearchParams({
+    geometryType: 'esriGeometryEnvelope',
+    geometry: box.join(','),
+    sr: '2056',
+    tolerance: '0',
+    returnGeometry: 'true',
+    geometryFormat: 'geojson',
+    lang: 'de',
+    layers: 'all:ch.bafu.bundesinventare-hochmoore,ch.bafu.bundesinventare-flachmoore',
+  });
+  const json = (await (await getWithRetry(`${IDENTIFY}?${q}`, 4, 180_000)).json()) as {
+    results?: {
+      layerBodId: string;
+      featureId: number;
+      properties?: Record<string, unknown>;
+      geometry: { type: string; coordinates: unknown };
+    }[];
+  };
+  return (json.results ?? []).map((r) => {
+    const polys = (
+      r.geometry.type === 'MultiPolygon' ? r.geometry.coordinates : [r.geometry.coordinates]
+    ) as [number, number][][][];
+    const kind = r.layerBodId.includes('hochmoore') ? 'Raised bog' : 'Fen';
+    return {
+      id: `${r.layerBodId}:${r.featureId}`,
+      name: `${kind} of national importance: ${String(r.properties?.name ?? '')}`,
+      rings: polys.flat(),
+    };
+  });
+}
+
 /** Every Schwyz plant protection reserve and nature reserve within a box; `noPicking` marks the banned ones. */
 export async function szProtectedAreas(
   box: [number, number, number, number],

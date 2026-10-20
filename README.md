@@ -26,7 +26,20 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 - Habitat build (`npm run terrain`, or the manual GitHub workflow "Build habitat"): tree cover and conifer share (NFI), elevation/slope/aspect (swissALTI3D), Schwyz forest site types → soil pH, geology fallback, reserves. 11 pins moved into forest inside their band, away from no-picking areas (table in [docs/SCORING.md](docs/SCORING.md)).
 - "Why this score" panel: plain-English reasons for each part of the score, for any species.
 
-**Next: Milestone 4 (grid).** 1 km forest grid for ZH + SZ, coarser weather grid, heatmap with the date slider, reserve overlay.
+**Before Milestone 4**
+
+- Ibergeregg – upper spruce moved out of the Ibergeregg nature reserve; spot notes rewritten from the official site maps.
+- `npm run export:spots` writes `pilze-schwyz.kml` (same folders and styles as the original) and `spots.txt` from `data/spots.json`.
+- Golden test uses Ibergeregg's real limestone habitat (see [docs/SCORING.md](docs/SCORING.md)).
+
+**Milestone 4 (grid): done**
+
+- 1 km forest grid over Zürich and Schwyz: 1,567 squares with ≥ 20 % tree cover (ZH 1,025, SZ 542), each with its own habitat (`npm run grid`, ~10 min, or the manual workflow "Build habitat and grid").
+- Weather from 314 points (one per 3 × 3 km block), adjusted to each square's elevation; paced to respect Open-Meteo's limits.
+- Heatmap with the day slider and species chips; Squares / Spots / Both toggle; numbers on the squares when zoomed in; "Best forest squares" list; square detail with a 14-day chart.
+- Real reserve outlines: hatched red = no picking (SZ plant reserves and listed reserves, ZH nature protection zones), dashed orange = protected, check the rules (other reserves, ZH forest protection zones, federal moors).
+
+**Next: Milestone 5 (user pins + find log).** In-browser scoring for your own pins, export/import, find log with CSV export.
 
 ## Develop
 
@@ -42,6 +55,8 @@ npm run build      # production build in web/dist
 npm run daily      # fetch weather + score now (writes web/public/data); add -- --backfill 14 to recompute
 npm run record:golden   # re-record the golden-test weather
 npm run terrain    # rebuild static/habitat.json (add -- --move-pins to also check and move pins)
+npm run grid       # rebuild the forest grid and the reserve overlay (~10 min)
+npm run export:spots   # write pilze-schwyz.kml and spots.txt from data/spots.json
 ```
 
 The daily job commits to `main` every morning, so run `git pull` before you start working.

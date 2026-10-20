@@ -71,7 +71,17 @@ export const LatestFileSchema = z.object({
   forecastDays: z.array(isoDate),
   spots: z
     .record(z.string(), LatestSpotSchema)
-    .refine((o) => Object.keys(o).length > 0, 'no spots'),
+    .refine(
+      (o) => Object.keys(o).length > 0,
+      'no spots',
+    ) /** Grid summary; the scores are in grid/YYYY-MM-DD.json (one file per day of `days` and `forecastDays`). */,
+  grid: z
+    .object({
+      count: z.number().int(),
+      staleCells: z.number().int(),
+      weatherPoints: z.number().int(),
+    })
+    .optional(),
 });
 
 export type SpeciesDay = z.infer<typeof SpeciesDaySchema>;
@@ -112,3 +122,88 @@ export const HabitatFileSchema = z.object({
 
 export type HabitatEntry = z.infer<typeof HabitatEntrySchema>;
 export type HabitatFile = z.infer<typeof HabitatFileSchema>;
+
+const sameLength = (o: Record<string, unknown[]>, n: number) =>
+  Object.values(o).every((a) => a.length === n);
+
+/**
+ * static/grid.json: the 1 km forest grid over ZH + SZ (built once with `npm run grid`).
+ * Column-wise arrays in cell order; daily grid scores use the same order.
+ */
+export const GridFileSchema = z
+  .object({
+    schemaVersion: z.literal(SCHEMA_VERSION),
+    generatedAt: z.string(),
+    cellSize: z.literal(1000),
+    count: z.number().int().positive(),
+    cells: z.object({
+      /** Lower-left corner in LV95 kilometres (e.g. 2697, 1208). */
+      e: z.array(z.number().int()),
+      n: z.array(z.number().int()),
+      canton: z.array(z.enum(['ZH', 'SZ'])),
+      forest: z.array(z.number().int().min(0).max(100)),
+      conifer: z.array(z.number().int().min(0).max(100).nullable()),
+      elevation: z.array(z.number().int()),
+      slope: z.array(z.number()),
+      aspect: z.array(z.number().int().nullable()),
+      ph: z.array(z.enum(['acidic', 'neutral', 'calcareous', 'unknown'])),
+      phSource: z.array(z.enum(['site_type', 'geology', 'none'])),
+      /** Index into siteTypes. */
+      site: z.array(z.number().int().nullable()),
+      /** 0 = none, 1 = protected (check rules), 2 = no picking. */
+      protected: z.array(z.number().int().min(0).max(2)),
+      /** Index into protectedNames. */
+      protectedName: z.array(z.number().int().nullable()),
+      /** Index into weatherPoints. */
+      weather: z.array(z.number().int().min(0)),
+    }),
+    siteTypes: z.array(z.object({ code: z.string(), name: z.string() })),
+    protectedNames: z.array(z.string()),
+    weatherPoints: z.object({
+      lat: z.array(z.number()),
+      lon: z.array(z.number()),
+      elevation: z.array(z.number()),
+    }),
+  })
+  .refine((g) => sameLength(g.cells, g.count), 'all cell columns must have `count` entries')
+  .refine(
+    (g) => sameLength(g.weatherPoints, g.weatherPoints.lat.length),
+    'weather point columns differ in length',
+  );
+
+export type GridFile = z.infer<typeof GridFileSchema>;
+
+/** Base64 of one byte per cell (score 0–100; 255 = no data), in grid order. */
+const b64 = z.string().regex(/^[A-Za-z0-9+/]*={0,2}$/);
+
+/** grid/YYYY-MM-DD.json: scores of every grid cell for one day. */
+export const GridDayFileSchema = z.object({
+  schemaVersion: z.literal(SCHEMA_VERSION),
+  date: isoDate,
+  generatedAt: z.string(),
+  /** "forecast" days are replaced by the real day's run. */
+  source: z.enum(['daily', 'backfill', 'forecast']),
+  count: z.number().int().positive(),
+  species: z.record(z.string(), b64),
+  /** Cells whose weather failed; their values are copied from the day before (or 255). */
+  staleCells: z.number().int().min(0),
+});
+
+export type GridDayFile = z.infer<typeof GridDayFileSchema>;
+
+export const NO_SCORE = 255;
+
+/** Encode scores (null → 255) as base64 bytes; works in Node and browsers. */
+export function encodeScores(scores: (number | null)[]): string {
+  const bytes = Uint8Array.from(scores, (v) => (v === null ? NO_SCORE : v));
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
+
+export function decodeScores(s: string): Uint8Array {
+  const bin = atob(s);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}

@@ -14,6 +14,7 @@ import {
   bestOf,
   isClosedDay,
   type CantonT,
+  type GridFile,
   type HabitatFile,
   type LatestFile,
   type Spot,
@@ -22,7 +23,17 @@ import reservesJson from '../../data/reserves.json';
 import rulesJson from '../../data/rules.json';
 import speciesJson from '../../data/species.json';
 import spotsJson from '../../data/spots.json';
+import { closeCellDetail, renderCellDetail } from './celldetail.js';
 import { closeDetail, renderDetail, resetChartLines } from './detail.js';
+import {
+  GridLayer,
+  cellCenter,
+  cellScore,
+  loadGrid,
+  loadGridDay,
+  type CellStyle,
+  type GridDay,
+} from './gridlayer.js';
 import { dateTime, esc, shortDate } from './format.js';
 import { loadFavourites, saveFavourites } from './settings.js';
 
@@ -39,10 +50,19 @@ const $ = (id: string): HTMLElement => {
 };
 
 /** What the map shows: the best of the favourites, or one species, on one day of the 17-day window. */
-const state = { species: 'favourites', dayIndex: 13, selected: null as string | null };
+const state = {
+  species: 'favourites',
+  dayIndex: 13,
+  selected: null as string | null,
+  selectedCell: null as number | null,
+  view: 'both' as 'grid' | 'spots' | 'both',
+};
 let favourites = loadFavourites(species.map((s) => s.id));
 let latest: LatestFile | null = null;
 let habitat: HabitatFile | null = null;
+let grid: GridFile | null = null;
+let gridLayer: GridLayer | null = null;
+let shownDay: GridDay | null = null;
 
 // --- Map -------------------------------------------------------------------
 
@@ -62,20 +82,39 @@ const borders = L.tileLayer(
   { maxZoom: 18, opacity: 0.35 },
 ).addTo(map);
 
-const reserveLayer = L.layerGroup(
-  reserves.map((r) =>
-    L.circle([r.lat, r.lon], {
-      radius: 900,
-      color: '#b2182b',
-      weight: 2,
-      dashArray: '6 4',
-      fillColor: '#b2182b',
-      fillOpacity: 0.15,
-    }).bindPopup(
-      `<div class="popup"><h3>${esc(r.name)}</h3><p class="reserve-label">No picking</p><p>${esc(r.notes)}</p></div>`,
-    ),
-  ),
-).addTo(map);
+// Reserves: real outlines from the habitat build (static/reserves.geojson), drawn above the heatmap.
+// Hatched red = no picking; dashed orange = protected, check the rules. Not clickable, so squares below stay usable.
+map.createPane('reserves').style.zIndex = '450';
+const reserveLayer = L.layerGroup().addTo(map);
+async function loadReserves(): Promise<void> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/static/reserves.geojson`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = (await res.json()) as GeoJSON.FeatureCollection;
+    L.geoJSON(data, {
+      pane: 'reserves',
+      interactive: false,
+      style: (f) =>
+        f?.properties?.noPicking
+          ? { color: '#b2182b', weight: 1.5, fillColor: 'url(#hatch)', fillOpacity: 1 }
+          : { color: '#e08214', weight: 2, dashArray: '5 4', fill: false },
+    }).addTo(reserveLayer);
+  } catch {
+    // Fallback: the approximate markers from data/reserves.json.
+    for (const r of reserves)
+      L.circle([r.lat, r.lon], {
+        radius: 900,
+        color: '#b2182b',
+        weight: 2,
+        dashArray: '6 4',
+        fillOpacity: 0.15,
+      })
+        .bindPopup(
+          `<div class="popup"><h3>${esc(r.name)}</h3><p class="reserve-label">No picking</p><p>${esc(r.notes)}</p></div>`,
+        )
+        .addTo(reserveLayer);
+  }
+}
 
 const markers = new Map<string, L.Marker>();
 const spotLayer = L.layerGroup().addTo(map);
@@ -93,11 +132,7 @@ for (const spot of spots) {
 }
 
 L.control
-  .layers(
-    undefined,
-    { Spots: spotLayer, 'Reserves (approx.)': reserveLayer, 'Canton borders': borders },
-    { collapsed: true },
-  )
+  .layers(undefined, { Reserves: reserveLayer, 'Canton borders': borders }, { collapsed: true })
   .addTo(map);
 
 // Frame ZH + SZ. Refit once layout and styles have settled, otherwise Leaflet can measure a wrong size.
@@ -186,13 +221,111 @@ function refresh(): void {
       ? `Today, ${shortDate(date)}`
       : `${isForecast ? 'Forecast: ' : ''}${shortDate(date)}`;
   $('day-label').classList.toggle('forecast', isForecast);
+  void refreshGrid();
+}
+
+// --- Grid ------------------------------------------------------------------
+
+const shownIds = (): string[] => (state.species === 'favourites' ? favourites : [state.species]);
+let gridRequest = 0;
+
+async function refreshGrid(): Promise<void> {
+  if (!grid || !gridLayer || !latest) return;
+  const g = grid;
+  const date = selectedDate();
+  const request = ++gridRequest;
+  const day = await loadGridDay(date, g.count);
+  if (request !== gridRequest) return; // a newer request is on its way
+  shownDay = day;
+  const ids = shownIds();
+  const styles: CellStyle[] = g.cells.e.map((_, i) => ({
+    score: cellScore(day, ids, i),
+    closed: isClosedDay(rules, g.cells.canton[i]!, date),
+    selected: state.selectedCell === i,
+  }));
+  gridLayer.update(styles);
+
+  // Best squares, for reading the heatmap without colour.
+  const best = styles
+    .map((s, i) => ({ i, score: s.closed ? null : s.score }))
+    .filter((x): x is { i: number; score: number } => x.score !== null)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+  $('cell-list').innerHTML = best
+    .map(({ i, score }) => {
+      const b = bandFor(score);
+      return `<li><button type="button" data-cell="${i}"><span class="score" style="background:${b.color};color:${b.text}">${score}</span><span>Forest square ${g.cells.e[i]}/${g.cells.n[i]}<span class="meta">${g.cells.canton[i]} · ~${g.cells.elevation[i]} m · ${g.cells.forest[i]} % trees</span></span></button></li>`;
+    })
+    .join('');
+  $('cells-section').hidden = state.view === 'spots' || best.length === 0;
+  if (state.selectedCell !== null) void openCell(state.selectedCell, false);
+}
+
+function describeCell(i: number): string {
+  if (!grid) return '';
+  const date = selectedDate();
+  const v = cellScore(shownDay, shownIds(), i);
+  const closed = isClosedDay(rules, grid.cells.canton[i]!, date);
+  const what =
+    state.species === 'favourites'
+      ? 'your favourites'
+      : (species.find((x) => x.id === state.species)?.name ?? '');
+  return `${v === null ? 'No score' : `${v} (${bandFor(v).label})`} for ${esc(what)} · forest square ${grid.cells.e[i]}/${grid.cells.n[i]}, ${grid.cells.canton[i]}${closed ? ' · closed that day' : ''}`;
+}
+
+async function openCell(i: number, pan = true): Promise<void> {
+  if (!grid || !latest) return;
+  const detail = $('detail');
+  if (state.selected) closeDetail(detail);
+  state.selected = null;
+  const first = state.selectedCell !== i;
+  state.selectedCell = i;
+  $('overview').hidden = true;
+  if (pan) {
+    const c = cellCenter(grid, i);
+    map.panTo([c.lat, c.lon]);
+  }
+  if (first) refresh();
+  await renderCellDetail(detail, i, {
+    grid,
+    species,
+    favourites,
+    rules,
+    today,
+    dates: allDates(),
+    forecastFrom: latest.days.length,
+    dayIndex: state.dayIndex,
+    onClose: () => {
+      state.selectedCell = null;
+      closeCellDetail(detail);
+      $('overview').hidden = false;
+      refresh();
+    },
+  });
+  if (first) detail.querySelector<HTMLElement>('.close')?.focus({ preventScroll: true });
+}
+
+function applyView(): void {
+  const showGrid = state.view !== 'spots';
+  const showSpots = state.view !== 'grid';
+  if (gridLayer) {
+    if (showGrid && !map.hasLayer(gridLayer.group)) gridLayer.group.addTo(map);
+    if (!showGrid && map.hasLayer(gridLayer.group)) gridLayer.group.remove();
+  }
+  if (showSpots && !map.hasLayer(spotLayer)) spotLayer.addTo(map);
+  if (!showSpots && map.hasLayer(spotLayer)) spotLayer.remove();
+  for (const b of document.querySelectorAll<HTMLButtonElement>('[data-view]'))
+    b.setAttribute('aria-checked', String(b.dataset.view === state.view));
+  refresh();
 }
 
 function select(id: string): void {
   const spot = spots.find((s) => s.id === id);
   if (!spot) return;
-  state.selected = id;
   const detail = $('detail');
+  if (state.selectedCell !== null) closeCellDetail(detail);
+  state.selectedCell = null;
+  state.selected = id;
   renderDetail(detail, spot, {
     latest,
     species,
@@ -274,12 +407,23 @@ slider.addEventListener('input', () => {
   refresh();
 });
 
+document.querySelector('.view-control')!.addEventListener('click', (e) => {
+  const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-view]');
+  if (!b) return;
+  state.view = b.dataset.view as typeof state.view;
+  applyView();
+});
+$('cell-list').addEventListener('click', (e) => {
+  const i = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-cell]')?.dataset.cell;
+  if (i !== undefined) void openCell(Number(i));
+});
+
 $('spot-list').addEventListener('click', (e) => {
   const id = (e.target as HTMLElement).closest('button')?.dataset.id;
   if (id) select(id);
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && state.selected)
+  if (e.key === 'Escape' && (state.selected || state.selectedCell !== null))
     $('detail').querySelector<HTMLButtonElement>('.close')?.click();
 });
 
@@ -344,6 +488,14 @@ async function loadHabitat(): Promise<void> {
   }
 }
 
+async function loadGridLayer(): Promise<void> {
+  grid = await loadGrid();
+  if (!grid) return;
+  gridLayer = new GridLayer(map, grid, (i) => void openCell(i), describeCell);
+  applyView();
+}
+
 refresh();
 void loadHabitat();
-void loadLatest();
+void loadReserves();
+void loadLatest().then(loadGridLayer);

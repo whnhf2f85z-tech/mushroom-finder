@@ -28,7 +28,7 @@ import {
   slopeAspect,
   type Grid,
 } from './grid.js';
-import { lv95ToWgs84, wgs84ToLv95 } from './lv95.js';
+import { lv95ToWgs84, wgs84ToLv95 } from '@mf/scoring';
 import { majority, phFromLithology, phFromSiteType } from './ph.js';
 import {
   federalMoor,

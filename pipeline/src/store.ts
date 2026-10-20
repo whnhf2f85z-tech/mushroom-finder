@@ -1,8 +1,12 @@
 import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import {
+  GridDayFileSchema,
+  GridFileSchema,
   HistoryFileSchema,
   LatestFileSchema,
+  type GridDayFile,
+  type GridFile,
   type HistoryFile,
   type LatestFile,
 } from '@mf/scoring';
@@ -59,3 +63,29 @@ export async function pruneHistory(outDir: string, keepFrom: string): Promise<st
   await Promise.all(old.map((d) => rm(historyPath(outDir, d))));
   return old;
 }
+
+export const gridDayPath = (outDir: string, date: string): string =>
+  join(outDir, 'grid', `${date}.json`);
+
+export const readGridDay = (outDir: string, date: string): Promise<GridDayFile | null> =>
+  readValidated(gridDayPath(outDir, date), GridDayFileSchema);
+
+export async function listGridDates(outDir: string): Promise<string[]> {
+  try {
+    return (await readdir(join(outDir, 'grid')))
+      .map((f) => /^(\d{4}-\d{2}-\d{2})\.json$/.exec(f)?.[1])
+      .filter((d): d is string => !!d)
+      .sort();
+  } catch {
+    return [];
+  }
+}
+
+export async function pruneGrid(outDir: string, keepFrom: string): Promise<string[]> {
+  const old = (await listGridDates(outDir)).filter((d) => d < keepFrom);
+  await Promise.all(old.map((d) => rm(gridDayPath(outDir, d))));
+  return old;
+}
+
+export const readGrid = (outDir: string): Promise<GridFile | null> =>
+  readValidated(join(outDir, 'static', 'grid.json'), GridFileSchema);

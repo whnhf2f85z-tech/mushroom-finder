@@ -42,6 +42,34 @@ export interface FetchDeps {
   fetch: typeof fetch;
   sleep: (ms: number) => Promise<void>;
   log: (msg: string) => void;
+  /** Optional shared budget of weighted calls per minute (Open-Meteo allows 600/min). */
+  limiter?: RateLimiter;
+}
+
+/**
+ * Keeps the weighted Open-Meteo calls in any 60 s window under `perMinute`. Requests heavier than the budget are
+ * sent alone in an otherwise empty window.
+ */
+export class RateLimiter {
+  private sent: { at: number; weight: number }[] = [];
+  constructor(
+    private readonly perMinute: number,
+    private readonly sleep: (ms: number) => Promise<void>,
+    private readonly now: () => number = Date.now,
+  ) {}
+
+  async take(weight: number): Promise<void> {
+    for (;;) {
+      const t = this.now();
+      this.sent = this.sent.filter((s) => t - s.at < 60_000);
+      const used = this.sent.reduce((a, s) => a + s.weight, 0);
+      if (used === 0 || used + weight <= this.perMinute) {
+        this.sent.push({ at: t, weight });
+        return;
+      }
+      await this.sleep(60_000 - (t - this.sent[0]!.at) + 50);
+    }
+  }
 }
 
 export const defaultDeps: FetchDeps = {
@@ -186,7 +214,9 @@ export async function fetchWeather(
   const vars = DAILY_VARS.length + HOURLY_VARS.length;
 
   const run = async (batch: WeatherLocation[]): Promise<void> => {
-    calls += estimateCalls(batch.length, vars, rangeDays(range));
+    const weight = estimateCalls(batch.length, vars, rangeDays(range));
+    await deps.limiter?.take(weight);
+    calls += weight;
     const json = await postWithRetry(url, body(batch, range), deps);
     const list = (Array.isArray(json) ? json : [json]) as RawLocation[];
     if (list.length !== batch.length)

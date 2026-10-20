@@ -1,7 +1,13 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { HistoryFileSchema, LatestFileSchema } from '@mf/scoring';
+import {
+  GridDayFileSchema,
+  GridFileSchema,
+  HistoryFileSchema,
+  LatestFileSchema,
+  decodeScores,
+} from '@mf/scoring';
 
 /** Checks the generated files in web/public/data (run in CI and after the daily job, before committing). */
 const DIR = join(import.meta.dirname, '../../web/public/data');
@@ -31,6 +37,24 @@ describe.skipIf(!exists(join(DIR, 'latest.json')))('published data', () => {
       expect(statSync(path).size).toBeLessThan(MAX_BYTES);
       const h = HistoryFileSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
       expect(`${h.date}.json`).toBe(f);
+    }
+  });
+
+  it('grid files match the grid and stay small', () => {
+    const gridPath = join(DIR, 'static', 'grid.json');
+    if (!exists(gridPath)) return;
+    const grid = GridFileSchema.parse(JSON.parse(readFileSync(gridPath, 'utf8')));
+    const latest = LatestFileSchema.parse(
+      JSON.parse(readFileSync(join(DIR, 'latest.json'), 'utf8')),
+    );
+    expect(latest.grid?.count).toBe(grid.count);
+    for (const d of [...latest.days, ...latest.forecastDays]) {
+      const path = join(DIR, 'grid', `${d}.json`);
+      expect(exists(path), d).toBe(true);
+      expect(statSync(path).size).toBeLessThan(MAX_BYTES);
+      const day = GridDayFileSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
+      expect(day.count).toBe(grid.count);
+      for (const v of Object.values(day.species)) expect(decodeScores(v)).toHaveLength(grid.count);
     }
   });
 });

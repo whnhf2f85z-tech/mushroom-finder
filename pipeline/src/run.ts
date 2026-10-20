@@ -3,7 +3,11 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
+  GridDayFileSchema,
   HabitatFileSchema,
+  encodeScores,
+  decodeScores,
+  NO_SCORE,
   HistoryFileSchema,
   LatestFileSchema,
   SpeciesFileSchema,
@@ -14,6 +18,7 @@ import {
   type LocationResult,
 } from '@mf/scoring';
 import { buildLatest, isComplete, scoreSpotOn, spotLocation, toSpotDay } from './build.js';
+import { gridLocations, pointId, scoreGrid } from './grid.js';
 import { addDays, dateRange, zurichToday } from './dates.js';
 import {
   FORECAST_URL,
@@ -22,13 +27,19 @@ import {
   defaultDeps,
   fetchWeather,
   mergeDays,
+  RateLimiter,
   type FetchDeps,
 } from './openmeteo.js';
 import {
   historyPath,
   latestPath,
   listHistoryDates,
+  gridDayPath,
+  listGridDates,
+  pruneGrid,
   pruneHistory,
+  readGrid,
+  readGridDay,
   readHistory,
   readLatest,
   writeJsonValidated,
@@ -80,6 +91,9 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
   } catch {
     log('No valid static/habitat.json; using the provisional habitat hints');
   }
+  // Forest grid (npm run grid). Optional: without it only the spots are scored.
+  const grid = await readGrid(outDir);
+  if (!grid) log('No valid static/grid.json; scoring spots only');
 
   // Which past days to score: today, missing days in the chart window, and the forced backfill window.
   const days = dateRange(addDays(today, -(SHOW_DAYS - 1)), today);
@@ -91,25 +105,37 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
     ...new Set([...forced, ...days.filter((d) => !existing.has(d) || d === today)]),
   ].sort();
   const forecastDays = dateRange(addDays(today, 1), addDays(today, FORECAST_DAYS));
+  // Grid days: the same rule, judged by the grid files (they can be missing on their own, e.g. a new grid).
+  const gridExisting = new Set(await listGridDates(outDir));
+  const gridToScore = grid
+    ? [...new Set([...forced, ...days.filter((d) => !gridExisting.has(d) || d === today)])].sort()
+    : [];
 
   // Weather: historical forecast API for the past, forecast API for the last 2 days + forecast (it wins on overlap).
-  const start = addDays(toScore[0]!, -WEATHER_LOOKBACK);
-  const locations = spots.map((s) => spotLocation(s, habitat[s.id]));
+  const start = addDays([...toScore, ...gridToScore].sort()[0]!, -WEATHER_LOOKBACK);
+  const locations = [
+    ...spots.map((s) => spotLocation(s, habitat[s.id])),
+    ...(grid ? gridLocations(grid) : []),
+  ];
+  // Stay under Open-Meteo's 600 weighted calls per minute.
+  const fdeps: FetchDeps = deps.limiter
+    ? deps
+    : { ...deps, limiter: new RateLimiter(500, deps.sleep) };
   log(
-    `Run for ${today}: ${spots.length} spots, scoring ${toScore.length} past day(s) + ${forecastDays.length} forecast day(s)`,
+    `Run for ${today}: ${spots.length} spots${grid ? ` + ${grid.count} grid cells (${grid.weatherPoints.lat.length} weather points)` : ''}, scoring ${toScore.length} past day(s) + ${forecastDays.length} forecast day(s)`,
   );
   log(`Weather ${start} → ${forecastDays.at(-1)} (${MODEL})`);
   const hist = await fetchWeather(
     HISTORICAL_FORECAST_URL,
     locations,
     { start_date: start, end_date: addDays(today, -2) },
-    deps,
+    fdeps,
   );
   const fc = await fetchWeather(
     FORECAST_URL,
     locations,
     { past_days: 2, forecast_days: FORECAST_DAYS + 1 },
-    deps,
+    fdeps,
   );
   const apiCalls = hist.calls + fc.calls;
 
@@ -130,6 +156,16 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
   }
   if (weather.size === 0)
     throw new Error('No spot has complete weather; keeping the previous data.');
+  const gridWeather = new Map<string, DailyWeather[]>();
+  let failedPoints = 0;
+  for (const loc of grid ? gridLocations(grid) : []) {
+    const merged = mergeDays(hist.weather.get(loc.id) ?? [], fc.weather.get(loc.id) ?? []);
+    if (hist.failed.includes(loc.id) || fc.failed.includes(loc.id) || !isComplete(merged, needed))
+      failedPoints++;
+    else gridWeather.set(loc.id, merged);
+  }
+  if (failedPoints)
+    log(`WARNING: ${failedPoints} grid weather point(s) failed; their cells keep the day before`);
   if (failed.length)
     log(
       `WARNING: no complete weather for ${failed.join(', ')}; their previous scores are kept and marked stale`,
@@ -184,6 +220,57 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
     forecast.set(date, m);
   }
 
+  // Grid: score, fill failed cells from the day before, write one file per day.
+  const gridWritten: string[] = [];
+  let staleToday = 0;
+  if (grid) {
+    const gridDates = [...gridToScore, ...forecastDays];
+    const scores = scoreGrid(grid, species, gridWeather, gridDates);
+    const failedCell = grid.cells.weather.map((k) => !gridWeather.has(pointId(k)));
+    const byDate = new Map<string, Record<string, Uint8Array>>();
+    for (const date of gridDates) {
+      const day = scores.get(date)!;
+      let stale = 0;
+      if (failedCell.some((f) => f)) {
+        const prevDate = addDays(date, -1);
+        const prev =
+          byDate.get(prevDate) ??
+          (await readGridDay(outDir, prevDate).then((f) =>
+            f && f.count === grid.count
+              ? Object.fromEntries(Object.entries(f.species).map(([k, v]) => [k, decodeScores(v)]))
+              : undefined,
+          ));
+        for (const s of species)
+          day[s.id] = day[s.id]!.map((v, i) => {
+            if (!failedCell[i]) return v;
+            const p = prev?.[s.id]?.[i];
+            return p === undefined || p === NO_SCORE ? null : p;
+          });
+        stale = failedCell.filter((f) => f).length;
+      }
+      if (date === today) staleToday = stale;
+      byDate.set(
+        date,
+        Object.fromEntries(
+          Object.entries(day).map(([k, v]) => [
+            k,
+            Uint8Array.from(v, (x) => (x === null ? NO_SCORE : x)),
+          ]),
+        ),
+      );
+      await writeJsonValidated(gridDayPath(outDir, date), GridDayFileSchema, {
+        schemaVersion: 1,
+        date,
+        generatedAt,
+        source: date > today ? 'forecast' : date === today ? 'daily' : 'backfill',
+        count: grid.count,
+        species: Object.fromEntries(Object.entries(day).map(([k, v]) => [k, encodeScores(v)])),
+        staleCells: stale,
+      });
+      gridWritten.push(date);
+    }
+  }
+
   const latest = buildLatest({
     generatedAt,
     today,
@@ -199,10 +286,19 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
     weather,
     previous: await readLatest(outDir),
   });
+  if (grid)
+    latest.grid = {
+      count: grid.count,
+      staleCells: staleToday,
+      weatherPoints: grid.weatherPoints.lat.length,
+    };
   await writeJsonValidated(latestPath(outDir), LatestFileSchema, latest);
   const pruned = await pruneHistory(outDir, addDays(today, -(KEEP_DAYS - 1)));
+  await pruneGrid(outDir, addDays(today, -(KEEP_DAYS - 1)));
 
-  log(`Wrote ${written.length} history file(s) and latest.json; pruned ${pruned.length}`);
+  log(
+    `Wrote ${written.length} history file(s), ${gridWritten.length} grid file(s) and latest.json; pruned ${pruned.length}`,
+  );
   log(
     `Open-Meteo calls (weighted estimate): ${apiCalls.toFixed(1)} · run time ${((Date.now() - started) / 1000).toFixed(1)} s`,
   );

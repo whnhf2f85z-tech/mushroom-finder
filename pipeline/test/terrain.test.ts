@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { lv95ToWgs84, wgs84ToLv95 } from '../terrain/lv95.js';
+import { lv95ToWgs84, wgs84ToLv95 } from '@mf/scoring';
 import { majority, phFromLithology, phFromSiteType } from '../terrain/ph.js';
 
 describe('LV95', () => {

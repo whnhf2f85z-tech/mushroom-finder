@@ -28,6 +28,17 @@
         <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
         <button type="button" id="edit-favourites" class="link-button">Edit favourites</button>
       </div>
+      <div class="view-control" role="radiogroup" aria-label="Show on the map">
+        <button type="button" class="chip" role="radio" aria-checked="false" data-view="grid">
+          Squares
+        </button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-view="spots">
+          Spots
+        </button>
+        <button type="button" class="chip" role="radio" aria-checked="true" data-view="both">
+          Both
+        </button>
+      </div>
       <div class="day-control">
         <label for="day" id="day-label">Today</label>
         <input id="day" type="range" min="0" max="16" step="1" value="13" />
@@ -42,12 +53,30 @@
             <h2 id="spots-h">Spots</h2>
             <ul id="spot-list" class="spot-list"></ul>
           </section>
+          <section aria-labelledby="cells-h" id="cells-section" hidden>
+            <h2 id="cells-h">Best forest squares</h2>
+            <p class="small">1 km squares with at least 20 % tree cover in Zürich and Schwyz.</p>
+            <ul id="cell-list" class="spot-list"></ul>
+          </section>
           <section aria-labelledby="legend-h">
             <h2 id="legend-h">Score legend</h2>
             <ul id="legend" class="legend"></ul>
+            <ul class="legend legend-extra">
+              <li>
+                <span class="swatch swatch-hatch" aria-hidden="true"></span>No picking (reserve)
+              </li>
+              <li>
+                <span class="swatch swatch-dashed" aria-hidden="true"></span>Protected area: check
+                the rules
+              </li>
+              <li>
+                <span class="swatch swatch-closed" aria-hidden="true"></span>Closed that day (ZH
+                rule)
+              </li>
+            </ul>
             <p class="small">
               0–100: how likely you are to find the species right now, from weather, season and
-              habitat. Estimates, not a promise.
+              habitat. Estimates, not a promise. Zoom in to see the numbers on the squares.
             </p>
           </section>
           <section aria-labelledby="rules-h">
@@ -71,6 +100,20 @@
         </div>
       </aside>
     </main>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern
+          id="hatch"
+          width="8"
+          height="8"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="8" height="8" fill="rgba(178, 24, 43, 0.12)" />
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#b2182b" stroke-width="3" />
+        </pattern>
+      </defs>
+    </svg>
     <dialog id="fav-dialog" aria-labelledby="fav-h">
       <form method="dialog">
         <h2 id="fav-h">My favourites</h2>

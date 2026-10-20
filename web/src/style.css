@@ -708,3 +708,43 @@ dialog::backdrop {
 :root[data-theme='dark'] .why-item.good .why-mark {
   color: #7fd18c;
 }
+
+/* Grid heatmap */
+.view-control {
+  display: flex;
+  gap: 0.3rem;
+}
+.cell-label {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #111;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 2px #fff,
+    0 0 3px #fff;
+  pointer-events: none;
+}
+.legend-extra {
+  margin-top: 0.5rem !important;
+}
+.swatch-hatch,
+.swatch-dashed,
+.swatch-closed {
+  display: inline-block;
+  min-width: 3.6rem;
+  height: 1.1rem;
+}
+.swatch-hatch {
+  background: repeating-linear-gradient(45deg, #b2182b 0 3px, rgba(178, 24, 43, 0.12) 3px 8px);
+  border: 2px solid #b2182b;
+}
+.swatch-dashed {
+  border: 2px dashed #e08214;
+}
+.swatch-closed {
+  background: #8a8f8b;
+  opacity: 0.6;
+}

@@ -197,3 +197,73 @@ describe('daily run with the habitat build', () => {
     expect(calcareous).toBeLessThan(acidic);
   });
 });
+
+import { decodeScores, GridDayFileSchema, NO_SCORE } from '@mf/scoring';
+import { tinyGrid } from './grid-scoring.test.js';
+
+describe('daily run with the forest grid', () => {
+  const writeGrid = async () => {
+    await mkdir(join(out, 'static'), { recursive: true });
+    await writeFile(join(out, 'static', 'grid.json'), JSON.stringify(tinyGrid()));
+  };
+  const gridDay = async (d: string) =>
+    GridDayFileSchema.parse(JSON.parse(await readFile(join(out, 'grid', `${d}.json`), 'utf8')));
+
+  it('writes one grid file per day (14 past + 3 forecast) and a grid summary', async () => {
+    await writeGrid();
+    await run({
+      today: TODAY,
+      backfill: 0,
+      outDir: out,
+      dataDir: DATA,
+      deps: fakeDeps({ today: TODAY }),
+    });
+    const files = (await readdir(join(out, 'grid'))).sort();
+    expect(files).toHaveLength(17);
+    const day = await gridDay(TODAY);
+    expect(day.source).toBe('daily');
+    expect(decodeScores(day.species.chanterelle!)).toHaveLength(3);
+    expect((await gridDay('2026-10-23')).source).toBe('forecast');
+    expect((await latest()).grid).toEqual({ count: 3, staleCells: 0, weatherPoints: 2 });
+  });
+
+  it('keeps the day before for cells whose weather point failed', async () => {
+    await writeGrid();
+    await run({
+      today: TODAY,
+      backfill: 0,
+      outDir: out,
+      dataDir: DATA,
+      deps: fakeDeps({ today: TODAY }),
+    });
+    const before = decodeScores((await gridDay(TODAY)).species.hedgehog!);
+    const next = addDays(TODAY, 1);
+    await run({
+      today: next,
+      backfill: 0,
+      outDir: out,
+      dataDir: DATA,
+      deps: fakeDeps({ today: next, failLats: [47.37] }),
+    });
+    const day = await gridDay(next);
+    expect(day.staleCells).toBe(1);
+    const after = decodeScores(day.species.hedgehog!);
+    expect(after[2]).toBe(before[2]); // copied from yesterday
+    expect(after[0]).not.toBe(NO_SCORE);
+    expect((await latest()).grid!.staleCells).toBe(1);
+  });
+
+  it('prunes grid files older than 30 days', async () => {
+    await writeGrid();
+    await mkdir(join(out, 'grid'), { recursive: true });
+    await writeFile(join(out, 'grid', '2026-09-01.json'), '{}');
+    await run({
+      today: TODAY,
+      backfill: 0,
+      outDir: out,
+      dataDir: DATA,
+      deps: fakeDeps({ today: TODAY }),
+    });
+    expect(await readdir(join(out, 'grid'))).not.toContain('2026-09-01.json');
+  });
+});

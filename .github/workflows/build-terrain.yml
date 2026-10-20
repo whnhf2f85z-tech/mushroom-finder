@@ -1,7 +1,8 @@
-name: Build habitat (manual)
+name: Build habitat and grid (manual)
 
-# Rebuilds web/public/data/static/habitat.json from the federal and cantonal geodata (SPEC §4.2).
-# Run it after changing data/spots.json. It never moves pins: that is done locally with
+# Rebuilds web/public/data/static/habitat.json (spots), grid.json (1 km forest grid) and reserves.geojson
+# from the federal and cantonal geodata (SPEC §3.3, §4.2). Run it after changing data/spots.json, or a few
+# times a year when the source data is updated. Takes about 10–20 minutes. It never moves pins: that is done locally with
 #   npm run terrain -- --move-pins
 on:
   workflow_dispatch:
@@ -18,7 +19,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -26,15 +27,17 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Build habitat
+      - name: Build habitat (spots)
         run: npm run terrain
+      - name: Build forest grid and reserve overlay
+        run: npm run grid
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add web/public/data/static
           if git diff --cached --quiet; then echo "No habitat changes"; exit 0; fi
-          git commit -m "Habitat build $(TZ=Europe/Zurich date +%F)"
+          git commit -m "Habitat and grid build $(TZ=Europe/Zurich date +%F)"
           git pull --rebase
           git push
 

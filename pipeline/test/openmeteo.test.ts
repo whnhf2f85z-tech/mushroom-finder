@@ -100,3 +100,36 @@ describe('fetching', () => {
     expect(n).toBe(1);
   });
 });
+
+import { RateLimiter } from '../src/openmeteo.js';
+
+describe('rate limiter', () => {
+  it('waits when a minute’s budget is used up', async () => {
+    let t = 0;
+    const waits: number[] = [];
+    const lim = new RateLimiter(
+      500,
+      async (ms) => (waits.push(ms), (t += ms), undefined),
+      () => t,
+    );
+    await lim.take(300);
+    await lim.take(150);
+    expect(waits).toEqual([]);
+    t += 10_000;
+    await lim.take(300); // 750 > 500: wait until the first request is a minute old
+    expect(waits).toHaveLength(1);
+    expect(t).toBeGreaterThanOrEqual(60_000);
+  });
+
+  it('lets a single request heavier than the budget through on its own', async () => {
+    let t = 0;
+    const lim = new RateLimiter(
+      100,
+      async (ms) => void (t += ms),
+      () => t,
+    );
+    await lim.take(250);
+    await lim.take(250);
+    expect(t).toBeGreaterThanOrEqual(60_000);
+  });
+});

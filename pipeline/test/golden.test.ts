@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { cellHabitat } from '../src/grid.js';
 import {
+  GridFileSchema,
   HabitatFileSchema,
+  wgs84ToLv95,
   SpeciesFileSchema,
   scoreSpecies,
   type DailyWeather,
@@ -39,9 +42,21 @@ const HABITAT: Record<string, Habitat> = {
     ...(ib.aspect !== null ? { aspect: ib.aspect } : {}),
     ...(ib.slope !== null ? { slope: ib.slope } : {}),
   },
-  // Low, dry mixed forest; pH not known yet.
-  weinland: { elevation: 420, ph_class: 'unknown', conifer_pct: 40 },
+  weinland: weinlandHabitat(),
 };
+
+/** Weinland near Andelfingen: the habitat of the nearest 1 km forest cell of the grid build (Milestone 4). */
+function weinlandHabitat(): Habitat {
+  const g = GridFileSchema.parse(
+    JSON.parse(readFileSync(join(ROOT, 'web/public/data/static/grid.json'), 'utf8')),
+  );
+  const { E, N } = wgs84ToLv95(47.6, 8.67);
+  const d = (k: number) =>
+    Math.hypot(g.cells.e[k]! * 1000 + 500 - E, g.cells.n[k]! * 1000 + 500 - N);
+  const i = g.cells.e.reduce((best, _, k) => (d(k) < d(best) ? k : best), 0);
+  if (d(i) > 2000) throw new Error('No forest grid cell within 2 km of the Weinland golden point');
+  return cellHabitat(g, i);
+}
 
 const score = (loc: string, id: string, date: string): number =>
   scoreSpecies(
@@ -100,8 +115,8 @@ describe('golden: real autumn 2026', () => {
     );
   });
 
-  // During the flush. Not for chanterelle: Weinland's soil is "unknown" (scored as average) while Ibergeregg's is
-  // mapped limestone, so that comparison is not like for like.
+  // During the flush. Weinland's nearest forest cell is a neutral ash forest at 356 m (grid build). Not for
+  // chanterelle: Ibergeregg's limestone holds chanterelle back about as much as the dry lowland does (peaks 47 vs 48).
   it.each(['winter_chanterelle', 'hedgehog'])(
     'keeps the dry low Weinland lower for %s during the flush',
     (id) => {
