@@ -460,10 +460,10 @@
       },
       "coolingBonus": 0,
       "rainLag": {
-        "min": 5,
-        "max": 10
+        "min": 10,
+        "max": 20
       },
-      "fullRainMm": 30,
+      "fullRainMm": 55,
       "frostTolerance": "high",
       "habitatWeights": {
         "ph": 0.05

@@ -83,7 +83,19 @@ Approved by the owner after [VALIDATION.md, Part A](VALIDATION.md#part-a--occurr
 | 5   | Winter chanterelle | Season start 08-20 → **08-01**, full season (peakStart) 09-20 → **09-01**; elevation shift unchanged, so at 600 m about 17 Aug / 17 Sep | SwissFungi records from August; 12 % of CH records before the old start                                                                               | Low–medium |
 | 6   | Bay bolete         | Conifer preference 50–100 % → **20–100 %**                                                                                              | Habitat test: record squares median 33 % conifers, host part AUC 0.35, n = 8                                                                          | Low        |
 
-Not changed: honey fungus (no signal in the weather test; looked at in Part B). The golden test still passes; the numbers below use these parameters.
+Not changed then: honey fungus (no signal in the weather test; changed after Part C, see below). The golden test still passes; the numbers below use these parameters.
+
+## Parameter change after validation Part C (2026-10-20)
+
+Approved by the owner after [VALIDATION.md, Part C](VALIDATION.md#part-c--variants-and-sanity-checks-2026-10-20).
+
+| Species      | Change (before → after)                                            | Evidence                                                                                                                                                                                | Confidence |
+| ------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Honey fungus | Rain window 5–10 → **10–20 days** before; full rain 30 → **55 mm** | Weather on record dates minus placebo 0.55 → 0.70 (2021–24, n = 159); on the held-out years 2025–26 the record dates alone go from 0.37 to 0.56 (n = 80), after the placebo 0.31 → 0.44 | Medium     |
+
+**About the 55 mm:** the protocol, written before the comparison, only had the window change (variant H1, 30 mm). The 55 mm form (H1b) was added afterwards, once the results were known: the longer window collects more rain, so H1 pushed honey fungus, already the highest-scoring species, even higher (mean mid-August to October at the spots in the poor year 2021: 63 → 72). 55 mm = 30 mm × 11/6 keeps the rain needed per day the same. H1b improves the weather match as much as H1 (0.695 vs 0.703) and keeps scores near the old level (2021: 68). Because it was chosen after seeing the results, its evidence is a little weaker than the protocol's.
+
+Not changed after Part C: the moisture and temperature model (120-day soil range, wet-after-dry and the two temperature variants gave no clear improvement), and no cooling-trigger requirement for honey fungus. Honey fungus is not in the golden test; the golden numbers below are unchanged.
 
 ## Golden test (real data)
 

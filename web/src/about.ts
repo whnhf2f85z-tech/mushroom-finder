@@ -27,6 +27,7 @@ export function renderAbout(
       <li><strong>My favourites</strong> (default): each place shows the best score among your favourite species. Pick one species with the chips above the map, or change your favourites in Settings below.</li>
       <li><strong>Day slider:</strong> the last 13 days, today and 3 forecast days (marked "Forecast").</li>
       <li><strong>Squares vs spots:</strong> squares use weather from a point up to ~2 km away; spots and pins use their own.</li>
+      <li>Squares mainly reflect weather and season. For most species the habitat data barely distinguishes between forests, so use local knowledge for where to look.</li>
       <li><strong>Why this score:</strong> open a spot, square or pin to see the reasons (season, rain, temperature, frost, dry spell, habitat) and the 14-day chart.</li>
       <li><strong>Hatched red</strong> areas: no picking. <strong>Dashed orange</strong>: protected, check the rules. <strong>Grey</strong>: closed that day (Zürich: no picking on the 1st–10th).</li>
     </ul>
