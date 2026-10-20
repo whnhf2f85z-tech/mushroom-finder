@@ -56,6 +56,8 @@ export function liveWeather(
       } catch {
         // No session storage: fetch again.
       }
+      // Offline: fail at once instead of retrying for half a minute.
+      if (!navigator.onLine) throw new Error('offline');
       const one = [{ id: 'x', ...loc }];
       const hist = await fetchWeather(
         HISTORICAL_FORECAST_URL,
