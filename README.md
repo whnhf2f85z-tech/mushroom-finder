@@ -6,6 +6,39 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 
 **Live:** https://whnhf2f85z-tech.github.io/mushroom-finder/ · Full spec: [SPEC.md](SPEC.md)
 
+## User guide
+
+> **This app does not identify mushrooms.** Check every find at an official mushroom control (Pilzkontrolle).
+
+### Install it on your phone
+
+- **iPhone / iPad:** open the link in **Safari**, tap the **Share** button (square with an arrow), then **Add to Home Screen**. Please do this: Safari can delete a website's data (your pins and find log) after 7 days without use, but it keeps the data of an app on the home screen.
+- **Android:** open the link in **Chrome**, tap **⋮** (top right), then **Install app** (or **Add to Home screen**). You can also use the **Install the app** button on the About page when it appears.
+- Once installed, it also works **offline** with the last scores it downloaded: the 14 days of scores, the forest squares, the reserves and the map areas you have already looked at.
+
+### Read the scores
+
+- Every place gets a score from **0 to 100**: 0–19 very low, 20–39 low, 40–59 medium, 60–79 good, 80–100 very good. The number is always shown; colour is only a help.
+- **My favourites** (the default chip) shows the best score among your favourite species. Tap a species chip to see just that one, or **Edit favourites** to change the list.
+- The **day slider** goes from 13 days ago to 3 days ahead ("Forecast").
+- **Squares** are 1 × 1 km of forest; **spots** are the named places; **pins** are yours. Tap any of them for the details: all species, the 14-day chart, the weather and **Why this score**.
+- **Hatched red:** no picking. **Dashed orange:** protected area, check the rules. **Grey:** closed that day (Zürich: 1st–10th of every month).
+- Scores are estimates from weather, season and habitat. A high score is never a promise, and never a sign that a mushroom is safe to eat.
+
+### Log your visits, export and import
+
+- In a spot, square or pin, tap **Log a visit**: date, species (your favourites come first), found or not, grams, note. The score for that day is saved with it. It also works offline; the score is added when you're back online.
+- **Find log** page → **Export CSV** (for a spreadsheet) or **Export JSON** (a full backup). **Import JSON** restores a backup or merges one from another device; visits you already have are skipped.
+- Your favourites, pins and find log live **only on that device**. The Find log page shows when you last exported; export now and then.
+
+### Share pins with a friend
+
+1. On the map page, under **My pins**, tap **Export pins**. You get a file like `mushroom-finder-pins-2026-10-20.json`.
+2. Send the file (message, e-mail, AirDrop).
+3. Your friend opens the app, taps **Import pins** and picks the file. Pins they already have are skipped; the new ones are scored straight away.
+
+To add a pin to the official spot list for everyone, send the exported file to the project owner (or open a pull request that adds it to `data/spots.json`).
+
 ## Status
 
 **Milestone 1 (scaffold): done.** Monorepo, scoring engine with tests, data files, map on GitHub Pages.
@@ -46,7 +79,13 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 - **Find log:** "Log a visit" in spot, square and pin details; favourites listed first. Date, species, found / not found, grams, note. The score for that day (and its six parts when available) is saved automatically for calibration. Visits appear as ▲ / ✕ on the 14-day charts. Export CSV or JSON, import JSON. Stored on this device only.
 - Reserve outlines load in the background after the map.
 
-**Next: Milestone 6 (PWA polish):** offline use (cache the app, `latest.json`, the grid files and `static/reserves.geojson`), install, stale-data banner, About/attribution, species screen, accessibility pass.
+**Milestone 6 (PWA): done**
+
+- Installable app (manifest, icons, service worker). Offline: the app, the latest scores, the 14-day grid scores (+ forecast), `grid.json`, `reserves.geojson` and the map tiles already viewed. Offline banner; stale-data banner after 36 h.
+- Pages: Map, Species (season, habitat, dangerous look-alikes by name only, safety notes), Find log, About (how to read scores, install, your data, settings, method, rules, credits).
+- Find log: "Last exported" with a reminder after 14 days; persistent storage is requested on the first save; visits logged offline get their score later.
+
+**Possible next steps:** calibration with the collected find logs (docs/CALIBRATION.md); a second check of the weather model after more rain events.
 
 ## Develop
 
