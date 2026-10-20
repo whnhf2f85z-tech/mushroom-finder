@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>Pilze Schwyz – Herbst 2026</name>
+  <description>Candidate mushroom areas in canton Schwyz, grouped by mushroom type. Pins mark areas, not exact spots. Rules: max 2 kg per person per day, no picking in nature reserves. Best window this year: about 20–26 October.</description>
+
+  <Style id="eierschwamm"><IconStyle><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png</href></Icon></IconStyle></Style>
+  <Style id="steinpilz"><IconStyle><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/orange-circle.png</href></Icon></IconStyle></Style>
+  <Style id="buche"><IconStyle><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/purple-circle.png</href></Icon></IconStyle></Style>
+  <Style id="achtung"><IconStyle><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/red-stars.png</href></Icon></IconStyle></Style>
+
+  <Folder>
+    <name>Eierschwämme &amp; Trompetenpfifferlinge</name>
+    <Placemark>
+      <name>Ibergeregg – Alpthal side</name>
+      <description>Top pick. Mossy spruce-fir forests on acidic flysch soil, about 1,100–1,400 m. Look on north-facing, mossy slopes and near streams. Bus: Schwyz–Ibergeregg or Einsiedeln–Oberiberg.</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>1100–1400 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.708,47.022,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Oberiberg – Ybrig forests</name>
+      <description>Acidic flysch, spruce-fir, about 1,100–1,300 m. Also good for Trompetenpfifferlinge in late October. Bus from Einsiedeln.</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>1100–1300 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.790,47.035,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Unteriberg – Studen slopes</name>
+      <description>Moist spruce forests about 900–1,200 m. The Breitried reserve is nearby: check the reserve layer on map.geo.sz.ch before picking.</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>900–1200 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.835,47.058,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Wägital – Innerthal lake slopes</name>
+      <description>Very wet, quiet flysch valley. Mossy forest slopes above the Wägitalersee, about 900–1,200 m. Train to Siebnen, then bus.</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>900–1200 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.925,47.095,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Sattel – Hochstuckli</name>
+      <description>Spruce forests on molasse, about 1,000–1,300 m. Easy access from Sattel station (gondola to Mostelberg).</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>1000–1300 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.660,47.075,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Raten – Biberegg side</name>
+      <description>Moist spruce forests and moor edges, about 1,000–1,100 m. The Raten pass is on the Zug border: stay on the Schwyz side for Schwyz rules, and keep out of the Rothenthurm moor reserves.</description>
+      <ExtendedData><Data name="Pilz"><value>Eierschwämme</value></Data><Data name="Höhe"><value>1000–1100 m</value></Data></ExtendedData>
+      <styleUrl>#eierschwamm</styleUrl>
+      <Point><coordinates>8.660,47.115,0</coordinates></Point>
+    </Placemark>
+  </Folder>
+
+  <Folder>
+    <name>Steinpilze (end of season)</name>
+    <Placemark>
+      <name>Ibergeregg – upper spruce forests</name>
+      <description>Spruce stands about 1,200–1,400 m. Go early in the window, before frost reaches this height.</description>
+      <ExtendedData><Data name="Pilz"><value>Steinpilze</value></Data><Data name="Höhe"><value>1200–1400 m</value></Data></ExtendedData>
+      <styleUrl>#steinpilz</styleUrl>
+      <Point><coordinates>8.720,47.015,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Hoch-Ybrig – Weglosen</name>
+      <description>Spruce forests around the valley station, about 1,050–1,300 m. Bus Einsiedeln–Oberiberg–Weglosen.</description>
+      <ExtendedData><Data name="Pilz"><value>Steinpilze</value></Data><Data name="Höhe"><value>1050–1300 m</value></Data></ExtendedData>
+      <styleUrl>#steinpilz</styleUrl>
+      <Point><coordinates>8.810,47.030,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Hochstuckli – upper slopes</name>
+      <description>Spruce forests about 1,200–1,400 m above Mostelberg.</description>
+      <ExtendedData><Data name="Pilz"><value>Steinpilze</value></Data><Data name="Höhe"><value>1200–1400 m</value></Data></ExtendedData>
+      <styleUrl>#steinpilz</styleUrl>
+      <Point><coordinates>8.670,47.072,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Haggenegg – Alpthal side</name>
+      <description>Spruce and mixed forests below the pass, about 1,100–1,400 m. Bus to Alpthal, then hike up.</description>
+      <ExtendedData><Data name="Pilz"><value>Steinpilze</value></Data><Data name="Höhe"><value>1100–1400 m</value></Data></ExtendedData>
+      <styleUrl>#steinpilz</styleUrl>
+      <Point><coordinates>8.693,47.040,0</coordinates></Point>
+    </Placemark>
+  </Folder>
+
+  <Folder>
+    <name>Totentrompeten, Semmelstoppelpilze, Hallimasch (beech, lower)</name>
+    <Placemark>
+      <name>Rigi north – above Küssnacht</name>
+      <description>Beech and mixed forests about 600–1,000 m toward Seebodenalp. Frost comes later here, so this works into November.</description>
+      <ExtendedData><Data name="Pilz"><value>Totentrompeten / Semmelstoppelpilze</value></Data><Data name="Höhe"><value>600–1000 m</value></Data></ExtendedData>
+      <styleUrl>#buche</styleUrl>
+      <Point><coordinates>8.455,47.060,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Rigi – above Arth-Goldau</name>
+      <description>Beech forests about 600–1,000 m. Direct train from Zürich to Arth-Goldau.</description>
+      <ExtendedData><Data name="Pilz"><value>Totentrompeten / Hallimasch</value></Data><Data name="Höhe"><value>600–1000 m</value></Data></ExtendedData>
+      <styleUrl>#buche</styleUrl>
+      <Point><coordinates>8.525,47.045,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Morschach forest slopes</name>
+      <description>Beech forests about 650–1,000 m above the Urnersee. Bus from Brunnen.</description>
+      <ExtendedData><Data name="Pilz"><value>Totentrompeten / Semmelstoppelpilze</value></Data><Data name="Höhe"><value>650–1000 m</value></Data></ExtendedData>
+      <styleUrl>#buche</styleUrl>
+      <Point><coordinates>8.625,46.975,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Gersau beech forests</name>
+      <description>Beech slopes above the lake, about 500–900 m. Boat or bus from Brunnen.</description>
+      <ExtendedData><Data name="Pilz"><value>Totentrompeten / Hallimasch</value></Data><Data name="Höhe"><value>500–900 m</value></Data></ExtendedData>
+      <styleUrl>#buche</styleUrl>
+      <Point><coordinates>8.515,46.995,0</coordinates></Point>
+    </Placemark>
+  </Folder>
+
+  <Folder>
+    <name>No picking – reserves (approximate)</name>
+    <Placemark>
+      <name>Rothenthurm moorland reserves</name>
+      <description>Approximate centre only. No mushroom picking in the listed reserves (e.g. Breitried, Schützenried). Check exact boundaries on map.geo.sz.ch.</description>
+      <ExtendedData><Data name="Pilz"><value>Verbot</value></Data></ExtendedData>
+      <styleUrl>#achtung</styleUrl>
+      <Point><coordinates>8.675,47.100,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Schwantenau</name>
+      <description>Approximate centre only. Nature reserve, no picking. Roblosen is also nearby. Check exact boundaries on map.geo.sz.ch.</description>
+      <ExtendedData><Data name="Pilz"><value>Verbot</value></Data></ExtendedData>
+      <styleUrl>#achtung</styleUrl>
+      <Point><coordinates>8.735,47.145,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Oberer Sihlsee</name>
+      <description>Approximate centre only. Nature reserve at the upper end of the lake, no picking. Check exact boundaries on map.geo.sz.ch.</description>
+      <ExtendedData><Data name="Pilz"><value>Verbot</value></Data></ExtendedData>
+      <styleUrl>#achtung</styleUrl>
+      <Point><coordinates>8.775,47.100,0</coordinates></Point>
+    </Placemark>
+  </Folder>
+</Document>
+</kml>
