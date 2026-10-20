@@ -32,7 +32,7 @@ export interface Habitat {
   aspect?: number;
   /** Degrees. */
   slope?: number;
-  protected?: { is: boolean; name?: string };
+  protected?: { is: boolean; name?: string; noPicking?: boolean };
 }
 
 export interface ScoreContext {

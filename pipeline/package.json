@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@mf/scoring": "*",
+    "geotiff": "^3.0.5",
     "zod": "^3.23.8"
   }
 }

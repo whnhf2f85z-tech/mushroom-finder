@@ -19,7 +19,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "daily": "tsx pipeline/src/run.ts",
-    "record:golden": "tsx pipeline/scripts/record-golden.ts"
+    "record:golden": "tsx pipeline/scripts/record-golden.ts",
+    "terrain": "tsx pipeline/terrain/build-habitat.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

@@ -79,3 +79,36 @@ export type SpotDay = z.infer<typeof SpotDaySchema>;
 export type HistoryFile = z.infer<typeof HistoryFileSchema>;
 export type LatestSpot = z.infer<typeof LatestSpotSchema>;
 export type LatestFile = z.infer<typeof LatestFileSchema>;
+
+export const HabitatEntrySchema = z.object({
+  /** Where the habitat was measured (the spot pin). */
+  lat: z.number(),
+  lon: z.number(),
+  elevation: z.number(),
+  slope: z.number().nullable(),
+  aspect: z.number().nullable(),
+  /** Share of tree cover within 250 m, %. */
+  forest_pct: z.number().min(0).max(100),
+  conifer_pct: z.number().min(0).max(100).nullable(),
+  site_type_code: z.string().nullable(),
+  site_type_name: z.string().nullable(),
+  lithology: z.string().nullable(),
+  ph_class: z.enum(['acidic', 'neutral', 'calcareous', 'unknown']),
+  ph_source: z.enum(['site_type', 'geology', 'none']),
+  protected: z.object({
+    is: z.boolean(),
+    name: z.string().nullable(),
+    /** Picking is banned here under the canton rules. */
+    noPicking: z.boolean(),
+  }),
+});
+
+/** static/habitat.json: the habitat build (rarely re-run). */
+export const HabitatFileSchema = z.object({
+  schemaVersion: z.literal(SCHEMA_VERSION),
+  generatedAt: z.string(),
+  spots: z.record(z.string(), HabitatEntrySchema),
+});
+
+export type HabitatEntry = z.infer<typeof HabitatEntrySchema>;
+export type HabitatFile = z.infer<typeof HabitatFileSchema>;

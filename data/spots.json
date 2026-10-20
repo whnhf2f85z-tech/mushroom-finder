@@ -5,8 +5,8 @@
       "id": "ibergeregg-alpthal",
       "name": "Ibergeregg – Alpthal side",
       "canton": "SZ",
-      "lat": 47.022,
-      "lon": 8.708,
+      "lat": 47.01929,
+      "lon": 8.70945,
       "elevation_band": {
         "min": 1100,
         "max": 1400
@@ -23,7 +23,7 @@
       "name": "Oberiberg – Ybrig forests",
       "canton": "SZ",
       "lat": 47.035,
-      "lon": 8.79,
+      "lon": 8.79127,
       "elevation_band": {
         "min": 1100,
         "max": 1300
@@ -39,8 +39,8 @@
       "id": "unteriberg-studen",
       "name": "Unteriberg – Studen slopes",
       "canton": "SZ",
-      "lat": 47.058,
-      "lon": 8.835,
+      "lat": 47.06201,
+      "lon": 8.83474,
       "elevation_band": {
         "min": 900,
         "max": 1200
@@ -55,8 +55,8 @@
       "id": "waegital-innerthal",
       "name": "Wägital – Innerthal lake slopes",
       "canton": "SZ",
-      "lat": 47.095,
-      "lon": 8.925,
+      "lat": 47.09712,
+      "lon": 8.93262,
       "elevation_band": {
         "min": 900,
         "max": 1200
@@ -87,8 +87,8 @@
       "id": "raten-biberegg",
       "name": "Raten – Biberegg side",
       "canton": "SZ",
-      "lat": 47.115,
-      "lon": 8.665,
+      "lat": 47.11407,
+      "lon": 8.6636,
       "elevation_band": {
         "min": 1000,
         "max": 1100
@@ -103,8 +103,8 @@
       "id": "ibergeregg-upper",
       "name": "Ibergeregg – upper spruce",
       "canton": "SZ",
-      "lat": 47.015,
-      "lon": 8.72,
+      "lat": 47.0154,
+      "lon": 8.71962,
       "elevation_band": {
         "min": 1200,
         "max": 1400
@@ -119,8 +119,8 @@
       "id": "hoch-ybrig-weglosen",
       "name": "Hoch-Ybrig – Weglosen",
       "canton": "SZ",
-      "lat": 47.03,
-      "lon": 8.81,
+      "lat": 47.03749,
+      "lon": 8.8087,
       "elevation_band": {
         "min": 1050,
         "max": 1300
@@ -135,8 +135,8 @@
       "id": "hochstuckli-upper",
       "name": "Hochstuckli – upper slopes",
       "canton": "SZ",
-      "lat": 47.072,
-      "lon": 8.67,
+      "lat": 47.07197,
+      "lon": 8.67133,
       "elevation_band": {
         "min": 1200,
         "max": 1400
@@ -151,8 +151,8 @@
       "id": "haggenegg-alpthal",
       "name": "Haggenegg – Alpthal side",
       "canton": "SZ",
-      "lat": 47.04,
-      "lon": 8.693,
+      "lat": 47.04061,
+      "lon": 8.69324,
       "elevation_band": {
         "min": 1100,
         "max": 1400
@@ -167,8 +167,8 @@
       "id": "rigi-kuessnacht",
       "name": "Rigi north – above Küssnacht",
       "canton": "SZ",
-      "lat": 47.06,
-      "lon": 8.455,
+      "lat": 47.06015,
+      "lon": 8.45424,
       "elevation_band": {
         "min": 600,
         "max": 1000
@@ -183,8 +183,8 @@
       "id": "rigi-arth-goldau",
       "name": "Rigi – above Arth-Goldau",
       "canton": "SZ",
-      "lat": 47.045,
-      "lon": 8.525,
+      "lat": 47.04763,
+      "lon": 8.52534,
       "elevation_band": {
         "min": 600,
         "max": 1000
