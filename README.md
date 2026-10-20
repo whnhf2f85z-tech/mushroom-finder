@@ -17,7 +17,7 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 - Retries with backoff. A spot whose weather fails keeps its previous scores and is marked stale. If everything fails, nothing is written. Files are checked against a schema before they're written.
 - Map: spots coloured by score with the number on each pin, species chips, and a day slider (13 days back to 3 days ahead, forecast labelled).
 - Spot detail (bottom sheet on mobile): metascore, per-species bars, 14-day chart with toggles and forecast shading, rain and temperature charts, and a table view.
-- Golden test on real autumn-2026 weather. See [docs/SCORING.md](docs/SCORING.md) for the results and the one formula change.
+- Golden test on real autumn-2026 weather. **To do after 28 Oct 2026:** run `npm run record:golden`, then `npm test`. This replaces the 21–26 Oct forecast in the fixture with the observed weather; if a check then fails, the model needs a look, not the test. See [docs/SCORING.md](docs/SCORING.md) for the results and the one formula change.
 
 **Next: Milestone 3 (habitat).** Terrain/habitat build for the spots (geology, forest mix, site type, DEM), moving pins into forest inside their band, and the "why this score" panel.
 
