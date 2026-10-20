@@ -103,9 +103,13 @@ npm run record:golden   # re-record the golden-test weather
 npm run terrain    # rebuild static/habitat.json (add -- --move-pins to also check and move pins)
 npm run grid       # rebuild the forest grid and the reserve overlay (~10 min)
 npm run export:spots   # write pilze-schwyz.kml and spots.txt from data/spots.json
+npm run e2e        # offline test on the live site in a phone-sized browser (needs: npx playwright install chromium)
+npx tsx pipeline/scripts/make-icons.ts   # redraw the app icons
 ```
 
 The daily job commits to `main` every morning, so run `git pull` before you start working.
+
+After a deploy, an installed app (or an open browser tab) shows the new version from the second start: the first start loads it in the background.
 
 Pushing to `main` runs the tests and deploys to GitHub Pages (`.github/workflows/deploy-pages.yml`).
 
