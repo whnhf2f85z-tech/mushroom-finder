@@ -508,13 +508,12 @@ export function setupMine(h: MineHooks) {
     const qty = qtyRaw === '' ? null : Math.max(0, Math.round(Number(qtyRaw)));
     ($('visit-save') as HTMLButtonElement).disabled = true;
     const none = { value: null, components: null, source: 'none' as const };
-    let failed = !navigator.onLine;
-    const score = failed
-      ? none
-      : await withTimeout(visitCapture(date, species), 8000).catch(() => {
-          failed = true;
-          return none;
-        });
+    // Try even offline: spots and squares often have the score in the saved data.
+    let failed = false;
+    const score = await withTimeout(visitCapture(date, species), 8000).catch(() => {
+      failed = true;
+      return none;
+    });
     const entry: FindEntry = {
       id: newId('visit'),
       date,
@@ -527,7 +526,7 @@ export function setupMine(h: MineHooks) {
       note: ($('visit-note') as HTMLTextAreaElement).value.trim(),
       score,
       // No score because we're offline (or the request failed): fill it in later.
-      pending: score.value === null && failed,
+      pending: score.value === null && (failed || !navigator.onLine),
       created: new Date().toISOString(),
     };
     log = [...log, entry];
