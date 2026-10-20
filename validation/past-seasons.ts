@@ -35,7 +35,8 @@ mkdirSync(join(DIR, 'results'), { recursive: true });
 const YEARS = [2021, 2022, 2023, 2024, 2025, 2026];
 const FIRST = '06-01';
 const LAST = '11-15';
-const LOOKBACK = 61;
+/** Days of weather before 1 June: 61 for the app's model; Part C uses 150 for its 120-day soil-range variant. */
+const LOOKBACK = Number(process.env.LOOKBACK ?? 61);
 /** Historical-forecast data is complete until ~2 days ago. */
 const LAST_AVAILABLE =
   process.env.LAST_AVAILABLE ?? new Date(Date.now() - 2 * 86_400_000).toISOString().slice(0, 10);
