@@ -12,6 +12,7 @@ on:
         type: choice
         options:
           - past-seasons.ts
+          - fetch-history.ts
       lookback:
         description: 'Days of weather before 1 June (past-seasons.ts)'
         required: false
@@ -44,7 +45,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: validation-cache
-          path: validation/cache/seasons
+          path: |
+            validation/cache/seasons
+            validation/cache/weather
+          if-no-files-found: ignore
           retention-days: 14
       - name: Commit results
         run: |

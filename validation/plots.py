@@ -163,14 +163,10 @@ def weather(w):
     plt.close(fig)
 
 
-# Part B: documented good (+) and poor (−) periods, from news and mushroom-control reports (sources in VALIDATION.md).
+# Part B: documented good (+) and poor (−) periods (sources in VALIDATION.md); shared with validation/variants.ts.
 DOCUMENTED = {
-    2021: [("+", "06-21", "07-10"), ("-", "07-20", "09-25")],
-    2022: [("-", "07-01", "08-25"), ("+", "09-01", "10-20")],
-    2023: [("+", "07-01", "07-31"), ("-", "08-01", "08-31")],
-    2024: [("-", "08-10", "09-20"), ("+", "10-01", "10-31")],
-    2025: [("+", "07-15", "08-20"), ("-", "08-25", "09-10")],  # dates uncertain
-    2026: [("-", "07-25", "08-31"), ("+", "09-01", "09-20"), ("+", "10-08", "10-18")],
+    int(y): [tuple(p) for p in ps]
+    for y, ps in json.load(open(os.path.join(HERE, "data", "documented-periods.json")))["periods"].items()
 }
 GREEN = "#3c8a4e"
 
