@@ -20,6 +20,15 @@ npx tsx validation/past-seasons.ts        # ~4,200 Open-Meteo calls → validati
                                           # (better: GitHub Actions → "Validation (manual)" → Run workflow)
 npx tsx validation/fetch-ticker.ts        # Pilz-Ticker report dates → validation/results/ticker.json
 validation/.venv/bin/python validation/plots.py
+
+# Part C – variants and sanity checks
+# 1. weather caches (on GitHub: "Validation (manual)", then download the artifact "validation-cache"):
+#      past-seasons.ts with lookback 150   → unpack into validation/cache/seasons/
+#      fetch-history.ts (~3,400 calls)      → unpack the *prefix* files into validation/cache/weather/
+npx tsx validation/variants.ts            # no API calls → validation/results/variants.json
+npx tsx validation/sanity.ts              # no API calls → validation/results/sanity.json
+npm test                                  # includes the monotonicity tests (packages/scoring/test/monotonicity.test.ts)
+validation/.venv/bin/python validation/plots.py
 ```
 
 Downloads (GBIF pages, weather, elevations) are cached in `validation/cache/` (git-ignored). The weather test stays below Open-Meteo's per-minute limit; if the daily limit is reached it stops and can be re-run later, continuing from the cache.

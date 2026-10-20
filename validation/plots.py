@@ -232,6 +232,120 @@ def past_seasons(ps, ticker):
     plt.close(fig)
 
 
+# Part C: sanity checks.
+def sanity(sn):
+    import numpy as np
+    from matplotlib.colors import LinearSegmentedColormap
+
+    # Sensitivity: score change when one input changes, per species.
+    ids = list(NAMES)
+    changes = list(sn["sensitivity"][ids[0]]["changes"])
+    m = np.array([[sn["sensitivity"][i]["changes"][c] for i in ids] for c in changes])
+    fig, ax = plt.subplots(figsize=(10, 6.2))
+    cmap = LinearSegmentedColormap.from_list("loss", ["#b2401f", "#f3c9b5", "#ffffff"])
+    ax.imshow(m, cmap=cmap, vmin=-60, vmax=0, aspect="auto")
+    for r in range(m.shape[0]):
+        for c in range(m.shape[1]):
+            v = int(m[r, c])
+            ax.text(c, r, "0" if v == 0 else f"{v:+d}", ha="center", va="center", fontsize=8, color="white" if v <= -35 else INK)
+    ax.set_xticks(range(len(ids)))
+    ax.set_xticklabels([f"{NAMES[i].replace(' ', chr(10), 1)}\n(base {sn['sensitivity'][i]['base']})" for i in ids], fontsize=8)
+    ax.xaxis.tick_top()
+    ax.set_yticks(range(len(changes)))
+    ax.set_yticklabels(changes, fontsize=8)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.tick_params(length=0)
+    ax.set_title("Score change when one input changes (good base day, everything else the same)", loc="left", color=INK, pad=34)
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, "sensitivity.png"))
+    plt.close(fig)
+
+    # Grid score spread per species and day (10th–90th percentile band, median, share ≥ 60).
+    g = sn["grid"]
+    fig, axes = plt.subplots(3, 3, figsize=(10, 7), sharex=True, sharey=True)
+    for ax, sid in zip(axes.flat, ids):
+        rows = g["spread"][sid]
+        x = list(range(len(rows)))
+        ax.fill_between(x, [r["p10"] for r in rows], [r["p90"] for r in rows], color=BLUE, alpha=0.18, lw=0, label="10–90 % of squares")
+        ax.plot(x, [r["p50"] for r in rows], color=BLUE, lw=2, label="Median square")
+        ax.plot(x, [r["max"] for r in rows], color=INK, lw=1, ls=":", label="Best square")
+        fc = [k for k, r in enumerate(rows) if r["source"] == "forecast"]
+        if fc:
+            ax.axvspan(fc[0] - 0.5, x[-1] + 0.5, color=GREY, alpha=0.12, lw=0)
+        ax.set_title(NAMES[sid], loc="left", fontsize=9, color=INK)
+        ax.set_ylim(0, 100)
+        ax.grid(axis="y", color="#e6e3db", lw=0.6)
+        ax.set_xticks([0, len(rows) - 1])
+        ax.set_xticklabels([rows[0]["date"][5:], rows[-1]["date"][5:]])
+    axes.flat[0].legend(frameon=False, fontsize=7, loc="upper left")
+    fig.suptitle(f"Scores of the {sum(sn['grid']['histogram'][ids[0]])} forest squares per day (grey: forecast days)", x=0.01, ha="left", fontsize=10, fontweight="bold", color=INK)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.savefig(os.path.join(OUT, "grid-spread.png"))
+    plt.close(fig)
+
+    # One habitat map per species: H of every forest square (1 km, LV95).
+    h = sn["habitat"]
+    e = np.array(h["e"]) + 0.5  # cell corner in km (LV95) → centre
+    n = np.array(h["n"]) + 0.5
+    cmap = LinearSegmentedColormap.from_list("hab", ["#f2efe6", "#a9cfa0", "#3c8a4e", "#18452a"])
+    for sid in ids:
+        H = np.array(h["H"][sid])
+        st = h["stats"][sid]
+        fig, ax = plt.subplots(figsize=(6.4, 6.8))
+        sc = ax.scatter(e, n, c=H, cmap=cmap, vmin=0, vmax=1, marker="s", s=14, lw=0)
+        ax.set_aspect("equal")
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+        cb = fig.colorbar(sc, ax=ax, fraction=0.035, pad=0.02)
+        cb.set_label("Habitat score H (0–1)", color=MUTED)
+        cb.outline.set_visible(False)
+        ax.set_title(f"{NAMES[sid]}: habitat score per 1 km forest square", loc="left", color=INK)
+        ax.text(0, -0.03, f"Median {st['p50']:.2f}, 10–90 %: {st['p10']:.2f}–{st['p90']:.2f}; {100 * st['above07']:.0f} % of squares ≥ 0.7. Zürich (north) and Schwyz (south).", transform=ax.transAxes, fontsize=7.5, color=MUTED, va="top")
+        ax.plot([e.min(), e.min() + 10], [n.min() - 2, n.min() - 2], color=INK, lw=2)
+        ax.text(e.min() + 5, n.min() - 3.2, "10 km", ha="center", va="top", fontsize=7, color=INK)
+        fig.tight_layout()
+        fig.savefig(os.path.join(OUT, f"habitat-map-{sid.replace('_', '-')}.png"))
+        plt.close(fig)
+
+
+# Part C: variant comparison.
+def variants(vr):
+    r = vr["results"]
+    main = ["V1", "V2", "V12", "T1", "T2"]
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.6), gridspec_kw={"width_ratios": [1.3, 1]})
+    for k, vid in enumerate(main):
+        for off, split, color, lab in ((-0.12, "train", BLUE, "2021–2024 (choice)"), (0.12, "test", GREY, "2025–2026 (check)")):
+            lo, hi = r[vid][split]["periodDiffCI"]
+            d = r[vid][split]["periodAUC"] - r["V0"][split]["periodAUC"]
+            ax1.errorbar(k + off, d, yerr=[[d - lo], [hi - d]], fmt="o", color=color, capsize=3, label=lab if k == 0 else None)
+    ax1.axhline(0, color=MUTED, lw=1)
+    ax1.axhline(0.05, color=ORANGE, lw=1, ls="--")
+    ax1.text(len(main) - 0.5, 0.055, "bar for 'clearly better'", ha="right", va="bottom", fontsize=7.5, color=ORANGE)
+    ax1.set_xticks(range(len(main)))
+    ax1.set_xticklabels([r[v]["label"].replace(": ", ":\n") for v in main], fontsize=7.5)
+    ax1.set_ylabel("Period AUC minus current model")
+    ax1.legend(frameon=False, fontsize=7.5, loc="lower left")
+    ax1.set_title("All species: documented good vs poor weeks", loc="left", color=INK)
+
+    hv = ["V0", "H1", "H1b", "H2", "H3"]
+    for k, vid in enumerate(hv):
+        for off, split, color in ((-0.12, "train", BLUE), (0.12, "test", GREY)):
+            ax2.plot(k + off, r[vid]["caseControl"]["honey_fungus"][split]["corrected"], "o", color=color, ms=7, label=("2021–2024 (choice)" if split == "train" else "2025–2026 (check)") if k == 0 else None)
+    ax2.legend(frameon=False, fontsize=7.5, loc="upper right")
+    ax2.axhline(0.5, color=MUTED, lw=1, ls="--")
+    ax2.set_xticks(range(len(hv)))
+    ax2.set_xticklabels(["Current", "3a: rain\n10–20 d", "3a, same\nrain/day", "3b: needs\ncooling", "3a + 3b"], fontsize=7.5)
+    ax2.set_ylim(0.25, 0.8)
+    ax2.set_ylabel("Record-date percentile\nminus placebo (+0.5)")
+    ax2.set_title("Honey fungus: weather on record dates", loc="left", color=INK)
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, "variants.png"))
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     s = load("season")
     if s:
@@ -246,4 +360,10 @@ if __name__ == "__main__":
     ps = load("past-seasons")
     if ps:
         past_seasons(ps, load("ticker"))
+    sn = load("sanity")
+    if sn:
+        sanity(sn)
+    vr = load("variants")
+    if vr:
+        variants(vr)
     print("Charts written to", os.path.abspath(OUT))

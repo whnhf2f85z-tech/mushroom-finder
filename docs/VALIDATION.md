@@ -180,3 +180,109 @@ No official per-season control statistics for Schwyz, or for Zürich after 2023,
 | 4   | –            | No change to the drought response (D factor, rain cap): dry spells are reproduced well                                                                                                                                                   | 2022, 2023, 2026                                                                | Medium     |
 
 Scripts: `validation/past-seasons.ts` (via the manual workflow, ~4,200 Open-Meteo calls), `validation/fetch-ticker.ts`, charts in `validation/plots.py`.
+
+## Part C – Variants and sanity checks (2026-10-20)
+
+### Protocol (written before the variants were run)
+
+**Variants** (parameters fixed in advance, not tuned; implemented in `validation/variants.ts` on top of the engine, without changing `species.json` or `config.ts`):
+
+| ID  | Variant                                                                                                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| V0  | Current model                                                                                                                                                                 |
+| V1  | Proposal 1: soil moisture judged against its range over 120 days instead of 60                                                                                                |
+| V2  | Proposal 2, wet after dry: rain in the 21 days before the species' rain window vs. the regional normal; ≤ 0.5 × normal leaves M unchanged, ≥ 1.5 × normal multiplies M by 0.7 |
+| V12 | V1 + V2                                                                                                                                                                       |
+| T1  | Cool period: T is capped by the temperature score of the 30-day mean (a cool month limits a warm week)                                                                        |
+| T2  | Stricter temperature band: the tails outside each species' band halved                                                                                                        |
+| H1  | Proposal 3a, honey fungus only: rain window 10–20 days before (now 5–10)                                                                                                      |
+| H2  | Proposal 3b, honey fungus only: T halved unless a cooling trigger happened in the last 21 days                                                                                |
+| H3  | H1 + H2                                                                                                                                                                       |
+
+**Metrics**, each computed on the training years 2021–2024 and, separately, on 2025–2026:
+
+- **Period AUC:** weekly mean score at the 14 spots (best of the default favourites) in documented good weeks vs documented poor weeks (`validation/data/documented-periods.json`); the probability that a random good week scores higher than a random poor week. 0.5 = no separation. Also on the 30 sample squares.
+- **Pilz-Ticker AUC:** weeks with a positive ticker report vs all other weeks (June – mid-November).
+- **Year order:** the 4 clearly documented pairs of training years (2022 and 2024 better than 2021 and 2023), counted when the model's season strength (mean 15 Aug – 31 Oct) is in the same order.
+- **Weather (Part A):** percentile of the weather part on record dates among control dates, minus the placebo, averaged over the 9 species; records from 2021–2024 for training, 2025–2026 for the check. Honey fungus variants are judged on this metric for honey fungus only (the other metrics don't include it).
+- Part A habitat and season tests don't depend on the weather, so the variants don't change them.
+
+**Decision rule:** a variant clearly improves things if, on 2021–2024, the period AUC rises by at least 0.05 and neither the Pilz-Ticker AUC nor the weather metric drops by more than 0.02. Among those, the simplest wins (V1 or T2 before V2 or T1, before combinations). A honey fungus variant clearly improves things if its training weather percentile rises by at least 0.04. If nothing clearly improves, the current model stays. Only then is the chosen variant looked at on 2025–2026.
+
+_Added after the main run, as a check and not chosen by the rule:_ **H1b**, the same as H1 but with honey fungus' full rain scaled with the longer window (30 → 55 mm), so the rain needed per day stays the same. Added because H1 raised the honey fungus score level (see below).
+
+**Data:** past seasons as in Part B, now with weather from 2 January (150 days before 1 June; GitHub Actions, 5,400 calls). Open-Meteo's historical forecast starts on 23 March 2021, so early summer 2021 has less than 120 days of history: the 120-day variants use what exists there, as the app would. The case-control windows got 60 extra days in front (3,400 calls). With the longer history the current model gives exactly the Part B values.
+
+### Results: variants
+
+![Variant comparison](validation/variants.png)
+
+| Variant                     | Period AUC 2021–24 (difference to current, 95 % range) | Period AUC 2025–26 | Pilz-Ticker AUC 21–24 / 25–26 | Weather (Part A) 21–24 / 25–26 | Season strength 2021 / 2022 |
+| --------------------------- | ------------------------------------------------------ | ------------------ | ----------------------------- | ------------------------------ | --------------------------- |
+| V0 current                  | 0.657                                                  | 0.700              | 0.591 / 0.592                 | 0.604 / 0.535                  | 77 / 78                     |
+| V1 soil range 120 days      | 0.659 (+0.002, −0.035 to +0.045)                       | 0.671              | 0.575 / 0.611                 | 0.602 / 0.537                  | 78 / 80                     |
+| V2 wet after dry            | 0.684 (+0.027, −0.071 to +0.127)                       | 0.729              | 0.586 / 0.585                 | 0.595 / 0.543                  | 67 / 69                     |
+| V12 1 + 2                   | 0.676 (+0.019, −0.059 to +0.086)                       | 0.700              | 0.568 / 0.595                 | 0.594 / 0.552                  | 68 / 71                     |
+| T1 30-day cool cap          | 0.657 (0.000, −0.026 to +0.039)                        | 0.743              | 0.592 / 0.593                 | 0.603 / 0.576                  | 76 / 78                     |
+| T2 temperature tails halved | 0.659 (+0.002, −0.016 to +0.042)                       | 0.714              | 0.577 / 0.605                 | 0.600 / 0.578                  | 76 / 78                     |
+
+Period AUC on the 30 sample squares (2021–24): 0.710 current, 0.709–0.728 for the variants. All variants keep the documented order of the training years (4 of 4 pairs, as the current model does). The 2025–26 columns are shown for completeness; the choice was made on 2021–2024 only.
+
+| Honey fungus variant       | Weather on record dates, minus placebo, 2021–24 (n = 159) | 2025–26 (n = 80) | Record dates alone, 21–24 / 25–26 | Mean score 15 Aug – 31 Oct at the spots, 2021 / 2022 / 2026 |
+| -------------------------- | --------------------------------------------------------- | ---------------- | --------------------------------- | ----------------------------------------------------------- |
+| Current (rain 5–10 days)   | 0.549                                                     | 0.309            | 0.565 / 0.370                     | 63 / 72 / 50                                                |
+| H1 rain 10–20 days         | **0.703**                                                 | 0.467            | 0.678 / 0.584                     | 72 / 74 / 51                                                |
+| H1b rain 10–20 days, 55 mm | **0.695**                                                 | 0.440            | 0.669 / 0.560                     | 68 / 71 / 43                                                |
+| H2 needs a cooling trigger | 0.540                                                     | 0.331            | 0.557 / 0.390                     | 63 / 69 / 50                                                |
+| H3 H1 + H2                 | 0.668                                                     | 0.479            | 0.648 / 0.594                     | 71 / 71 / 51                                                |
+
+- **Proposals 1 and 2 don't clearly help.** The soil range over 120 days changes nothing (+0.002). Wet after dry is the best of them (+0.027), but below the bar and well within the noise: with only 8 documented periods in 2021–2024 the period AUC itself is uncertain (95 % range 0.28–0.87 for the current model). An earlier run seemed to show +0.055 for V1; that came only from early-summer 2021 weeks being dropped (too little history), not from the variant. Wet after dry also lowers all scores by about 10 points, including the record year 2022, so it doesn't separate 2021 from 2022 either.
+- **Temperature is not why 2021 is overrated.** From mid-August to October the temperature part was 0.98 in 2021 and 0.99 in 2022 at the spots, and the moisture part 0.72 in both: in the model's inputs, autumn 2021 looks like autumn 2022. Neither temperature variant changes that (T1, T2: 0.000 and +0.002).
+- So the overrating of wet summers stays unexplained by weather. Possible reasons outside the model: the documented "poor 2021" rests on one regional report (Aargau); the July 2021 floods; or effects of the previous years on the mycelium. More documented periods (or our own find log) are needed before changing the moisture model.
+- **Honey fungus, proposal 3a works:** with rain 10–20 days before, record dates have clearly better weather than their controls (0.70 vs 0.55 on 2021–24). It also holds on the held-out years: on the record dates alone 0.37 → 0.58. After the placebo is subtracted, 2025–26 is still below 0.5 (0.47 vs 0.31 now), because in those two years the placebo itself scores higher. **3b (the cooling trigger) doesn't help**, alone or combined.
+- H1 raises honey fungus scores further (2021: 63 → 72), and honey fungus is already the highest-scoring species. H1b gets the same improvement (0.695 vs 0.703) with the score level close to today's.
+
+### Results: sanity checks
+
+**Monotonicity** (`packages/scoring/test/monotonicity.test.ts`, now part of `npm test`, 99 tests): for every species, from a good base day, more rain in the window, wetter soil and a wetter 60 days never lower the score; more frost nights never raise it; temperature and season each have a single optimum; moving elevation, conifer share or tree cover away from the preferred range never helps; a better pH class never hurts; out of season the score is 0. **All pass.**
+
+![Sensitivity](validation/sensitivity.png)
+
+**Sensitivity** (one input changed from a good base day of 79–87):
+
+- **Rain dominates:** no rain in the window costs 45–53 points, a third of the rain 20–26, a dry 60 days 24–32. Elevation 300 m above the range costs 54–61. That's the intended order.
+- **Temperature barely matters inside the band:** ±3 °C changes nothing for 8 of 9 species (morel −5); ±6 °C costs 2–13 (morel −87, partly through frost). Together with T ≈ 0.98 in every past autumn: in practice the temperature part works only at the edges of the season.
+- **Absolute soil moisture doesn't count:** soil moisture is compared with the place's own range over the last 60 days, so 0.28 or 0.35 m³/m³ give the same score if both are the wettest of those 60 days. This is by design (soils differ), and the 120-day variant didn't improve anything.
+- **Honey fungus ignores habitat entirely:** pH, conifer share and tree cover change nothing; its habitat score is 1.00 on every square (see map). Its map is weather and elevation only.
+
+![Grid score spread](validation/grid-spread.png)
+
+**Score spread across the 1,567 squares** (7–23 Oct 2026, the last 3 days forecast): all species rise together after the rain of 8–10 October (median from 13–25 to 41–75), and the 10–90 % band stays 25–35 points wide, so the map keeps its contrast. Morel is 0 everywhere (out of season, correct). On 20 October honey fungus has the most squares ≥ 60 (42 %), porcini the fewest (1 %), which fits the end of the porcini season.
+
+**Habitat maps**, one per species (H, the habitat part only, no weather):
+
+| Species            | H, 10–90 % of squares | Squares with H ≥ 0.7 | Map                                                  |
+| ------------------ | --------------------- | -------------------- | ---------------------------------------------------- |
+| Chanterelle        | 0.74–1.00             | 97 %                 | [map](validation/habitat-map-chanterelle.png)        |
+| Porcini            | 0.84–0.98             | 100 %                | [map](validation/habitat-map-porcini.png)            |
+| Winter chanterelle | 0.45–0.84             | 37 %                 | [map](validation/habitat-map-winter-chanterelle.png) |
+| Horn of plenty     | 0.48–0.97             | 73 %                 | [map](validation/habitat-map-horn-of-plenty.png)     |
+| Bay bolete         | 0.74–1.00             | 97 %                 | [map](validation/habitat-map-bay-bolete.png)         |
+| Hedgehog           | 0.91–1.00             | 100 %                | [map](validation/habitat-map-hedgehog.png)           |
+| Honey fungus       | 1.00–1.00             | 100 %                | [map](validation/habitat-map-honey-fungus.png)       |
+| Parasol            | 0.83–1.00             | 97 %                 | [map](validation/habitat-map-parasol.png)            |
+| Morel              | 0.31–0.88             | 56 %                 | [map](validation/habitat-map-morel.png)              |
+
+For 6 of 9 species almost every forest square counts as good habitat, so the map differences come mostly from weather and elevation. Only winter chanterelle, horn of plenty and morel show real habitat contrast. This fits Part A (habitat AUC around 0.5): the habitat layers at 1 km don't separate find places from other forest, and making them more selective wouldn't be supported by the data.
+
+### Recommendation (not applied)
+
+| #   | Change                                                                                                           | Evidence                                                                                                     | Confidence |
+| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------- |
+| 1   | **Keep the moisture and temperature model as it is.** Proposals 1 and 2 and both temperature variants: no change | No variant passes the bar; differences within noise; the 2021 overrating isn't in the model's weather inputs | Medium     |
+| 2   | **Honey fungus: rain window 5–10 → 10–20 days, full rain 30 → 55 mm** (H1b)                                      | Weather on record dates 0.55 → 0.70 (2021–24, n = 159); record dates alone 0.37 → 0.56 on 2025–26            | Medium     |
+| 3   | Honey fungus: no cooling trigger requirement                                                                     | 3b: no improvement                                                                                           | Medium     |
+
+For 2, the strict rule would pick H1 (only the window changes). I recommend H1b because it improves things as much without pushing honey fungus, already the highest-scoring species, even higher (in the poor year 2021: 68 instead of 72). Even with the change, honey fungus remains the species with the weakest weather signal.
+
+Scripts: `validation/variants.ts` (no API calls; needs the weather caches from `past-seasons.ts` with lookback 150 and `fetch-history.ts`, both runnable via the "Validation (manual)" workflow), `validation/sanity.ts`, charts in `validation/plots.py`.
