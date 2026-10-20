@@ -11,12 +11,8 @@
         "min": 1100,
         "max": 1400
       },
-      "notes": "Flysch, mossy spruce-fir forests on acidic soil. Look on north-facing mossy slopes and near streams. Bus Schwyz–Ibergeregg or Einsiedeln–Oberiberg.",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "conifer_pct": 85,
-        "ph_class": "acidic"
-      }
+      "notes": "Steep fir-beech forest on limestone (site map: 18M Karbonat-Tannen-Buchenwald), about 40 % conifers. Look on north-facing, mossy slopes and near streams. Bus Schwyz–Ibergeregg or Einsiedeln–Oberiberg.",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "oberiberg-ybrig",
@@ -28,12 +24,8 @@
         "min": 1100,
         "max": 1300
       },
-      "notes": "Acidic flysch, spruce-fir. Also good for winter chanterelles in late October. Bus from Einsiedeln.",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "conifer_pct": 85,
-        "ph_class": "acidic"
-      }
+      "notes": "Acidic spruce-fir forest with bilberry (46 Heidelbeer-Tannen-Fichtenwald), about 80 % conifers. Also good for winter chanterelles in late October. Bus from Einsiedeln.",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "unteriberg-studen",
@@ -45,11 +37,8 @@
         "min": 900,
         "max": 1200
       },
-      "notes": "Moist spruce forests. The Breitried reserve is nearby: check the reserve layer on map.geo.sz.ch before picking.",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Spruce forest on limestone (60* Buntreitgras-Fichtenwald), almost only conifers. The Breitried reserve (no picking) is nearby: check the reserve layer on map.geo.sz.ch before picking.",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "waegital-innerthal",
@@ -61,11 +50,8 @@
         "min": 900,
         "max": 1200
       },
-      "notes": "Very wet, quiet flysch valley. Mossy forest slopes above the Wägitalersee. Train to Siebnen, then bus.",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "ph_class": "acidic"
-      }
+      "notes": "Fir-beech forest on calcareous soil (18v Buntreitgras-Tannen-Buchenwald mit Rostsegge), mostly broadleaf, on the slopes above the Wägitalersee. Quiet valley. Train to Siebnen, then bus.",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "sattel-hochstuckli",
@@ -77,11 +63,8 @@
         "min": 1000,
         "max": 1300
       },
-      "notes": "Spruce forests on molasse. Easy access from Sattel station (gondola to Mostelberg).",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Acidic spruce-fir forest with bilberry (46 Heidelbeer-Tannen-Fichtenwald) on moraine, about 80 % conifers. Easy access from Sattel station (gondola to Mostelberg).",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "raten-biberegg",
@@ -93,27 +76,21 @@
         "min": 1000,
         "max": 1100
       },
-      "notes": "Moist spruce forests and moor edges near the Zug border and the Rothenthurm moors: stay on the Schwyz side and out of the moor reserves. Pin moved ~400 m east of the original (47.115, 8.660), which is in canton Zug.",
-      "species_hint": ["chanterelle", "winter_chanterelle"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Acidic fir-beech forest with wood-rush (19 Waldsimsen-Tannen-Buchenwald), about 80 % conifers, near the Zug border and the Rothenthurm moors: stay on the Schwyz side and out of the moor reserves.",
+      "species_hint": ["chanterelle", "winter_chanterelle"]
     },
     {
       "id": "ibergeregg-upper",
       "name": "Ibergeregg – upper spruce",
       "canton": "SZ",
-      "lat": 47.0154,
-      "lon": 8.71962,
+      "lat": 47.01597,
+      "lon": 8.71647,
       "elevation_band": {
         "min": 1200,
         "max": 1400
       },
-      "notes": "Spruce stands. Go early in the season, before frost reaches this height.",
-      "species_hint": ["porcini"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Conifer-rich forest (about 75 % conifers) on calcareous soil; the site map shows maple-ash forest (26w Ahorn-Eschenwald mit Buntreitgras). Just outside the Ibergeregg nature reserve. Go early in the season, before frost reaches this height.",
+      "species_hint": ["porcini"]
     },
     {
       "id": "hoch-ybrig-weglosen",
@@ -125,11 +102,8 @@
         "min": 1050,
         "max": 1300
       },
-      "notes": "Spruce forests around the valley station. Bus Einsiedeln–Oberiberg–Weglosen.",
-      "species_hint": ["porcini"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Steep fir-beech forest on limestone (18M Karbonat-Tannen-Buchenwald), about a third conifers. The Hoch-Ybrig plant protection reserve (no picking) is close by. Bus Einsiedeln–Oberiberg–Weglosen.",
+      "species_hint": ["porcini"]
     },
     {
       "id": "hochstuckli-upper",
@@ -141,11 +115,8 @@
         "min": 1200,
         "max": 1400
       },
-      "notes": "Spruce forests above Mostelberg.",
-      "species_hint": ["porcini"],
-      "habitat_hint": {
-        "conifer_pct": 85
-      }
+      "notes": "Fir-spruce forest with tall herbs (50 Hochstauden-Tannen-Fichtenwald), neutral soil, almost only conifers, above Mostelberg.",
+      "species_hint": ["porcini"]
     },
     {
       "id": "haggenegg-alpthal",
@@ -157,11 +128,8 @@
         "min": 1100,
         "max": 1400
       },
-      "notes": "Spruce and mixed forests below the pass. Bus to Alpthal, then hike up.",
-      "species_hint": ["porcini"],
-      "habitat_hint": {
-        "conifer_pct": 60
-      }
+      "notes": "Fir-beech forest with tall herbs (20 Hochstauden-Tannen-Buchenwald) on moraine, mixed conifers and broadleaf, below the pass. The Mythen plant protection reserve (no picking) borders it. Bus to Alpthal, then hike up.",
+      "species_hint": ["porcini"]
     },
     {
       "id": "rigi-kuessnacht",
@@ -173,11 +141,8 @@
         "min": 600,
         "max": 1000
       },
-      "notes": "Beech and mixed forests toward Seebodenalp. Frost comes later here, so this works into November.",
-      "species_hint": ["horn_of_plenty", "hedgehog"],
-      "habitat_hint": {
-        "conifer_pct": 35
-      }
+      "notes": "Beech forest (8 Waldhirsen-Buchenwald) on moraine, neutral soil, toward Seebodenalp. Frost comes later here, so this works into November.",
+      "species_hint": ["horn_of_plenty", "hedgehog"]
     },
     {
       "id": "rigi-arth-goldau",
@@ -189,11 +154,8 @@
         "min": 600,
         "max": 1000
       },
-      "notes": "Beech forests. Direct train from Zürich to Arth-Goldau.",
-      "species_hint": ["horn_of_plenty", "honey_fungus"],
-      "habitat_hint": {
-        "conifer_pct": 20
-      }
+      "notes": "Steep beech forest on calcareous soil (17 Steilhang-Buchenwald mit Buntreitgras). Direct train from Zürich to Arth-Goldau.",
+      "species_hint": ["horn_of_plenty", "honey_fungus"]
     },
     {
       "id": "morschach",
@@ -205,11 +167,8 @@
         "min": 650,
         "max": 1000
       },
-      "notes": "Beech forests above the Urnersee. Bus from Brunnen.",
-      "species_hint": ["horn_of_plenty", "hedgehog"],
-      "habitat_hint": {
-        "conifer_pct": 20
-      }
+      "notes": "Beech forest (8 Waldhirsen-Buchenwald), neutral soil, above the Urnersee. Bus from Brunnen.",
+      "species_hint": ["horn_of_plenty", "hedgehog"]
     },
     {
       "id": "gersau",
@@ -221,11 +180,8 @@
         "min": 500,
         "max": 900
       },
-      "notes": "Beech slopes above the lake. Boat or bus from Brunnen.",
-      "species_hint": ["horn_of_plenty", "honey_fungus"],
-      "habitat_hint": {
-        "conifer_pct": 20
-      }
+      "notes": "Beech-lime forest on limestone (13T Bingelkraut-Buchenwald mit Linde), almost only broadleaf, on the slopes above the lake. Boat or bus from Brunnen.",
+      "species_hint": ["horn_of_plenty", "honey_fungus"]
     }
   ]
 }

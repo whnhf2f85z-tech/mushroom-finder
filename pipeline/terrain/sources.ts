@@ -274,6 +274,23 @@ async function szAreas(
  * Areas where the Schwyz rules ban picking, within a box: every plant protection reserve, and the nature reserves
  * whose name matches the list in data/rules.json.
  */
+/** Every Schwyz plant protection reserve and nature reserve within a box; `noPicking` marks the banned ones. */
+export async function szProtectedAreas(
+  box: [number, number, number, number],
+  listedNames: string[],
+): Promise<(Area & { noPicking: boolean })[]> {
+  const plant = await szAreas('ch.sz.anjf.anjf_kant_pflanzenschutzreservate', 'pfl_name', box);
+  const nsg = await szAreas('ch.sz.anjf.anjf_kant_naturschutzgebiete', 'nsg_name', box);
+  return [
+    ...plant.map((a) => ({ ...a, noPicking: true })),
+    ...nsg.map((a) => ({
+      ...a,
+      name: `Nature reserve ${a.name}`,
+      noPicking: listedNames.some((n) => a.name.toLowerCase().includes(n.toLowerCase())),
+    })),
+  ];
+}
+
 export async function szNoPickingAreas(
   box: [number, number, number, number],
   listedNames: string[],

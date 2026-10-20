@@ -35,7 +35,7 @@ import {
   geology,
   inArea,
   loadGrid,
-  szNoPickingAreas,
+  szProtectedAreas,
   szReserves,
   szSiteType,
   zhSiteType,
@@ -142,11 +142,12 @@ async function main(): Promise<void> {
       g.E0 + g.size * g.res,
       g.N0,
     ];
-    const banned: Area[] =
-      spot.canton === 'SZ' ? await szNoPickingAreas(box, noPicking.SZ ?? []) : [];
-    const isBanned = (ii: number, jj: number) => {
+    // Pins stay out of every reserve (no-picking or not), so a spot is never inside one.
+    const reserves: Area[] =
+      spot.canton === 'SZ' ? await szProtectedAreas(box, noPicking.SZ ?? []) : [];
+    const isBlocked = (ii: number, jj: number) => {
       const c = cellCenter(g, ii, jj);
-      return banned.some((a) => inArea(a, c.E, c.N));
+      return reserves.some((a) => inArea(a, c.E, c.N));
     };
     const reasons: string[] = [];
     const forestPct = Math.round(forestStats(g, i, j, 50).forest_pct);
@@ -159,11 +160,11 @@ async function main(): Promise<void> {
       reasons.push(
         `at ${Math.round(check.elevation ?? NaN)} m, outside ${spot.elevation_band.min}–${spot.elevation_band.max} m`,
       );
-    const inBan = banned.find((a) => inArea(a, E, N));
-    if (inBan) reasons.push(`in a no-picking area (${inBan.name})`);
+    const inReserve = reserves.find((a) => inArea(a, E, N));
+    if (inReserve) reasons.push(`in a reserve (${inReserve.name})`);
 
     if (reasons.length && values['move-pins']) {
-      const c = nearestGoodCell(g, i, j, spot.elevation_band, 1000, 20, isBanned);
+      const c = nearestGoodCell(g, i, j, spot.elevation_band, 1000, 20, isBlocked);
       const from = {
         lat: spot.lat,
         lon: spot.lon,

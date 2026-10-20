@@ -53,7 +53,13 @@ Habitat comes from `static/habitat.json` (see DATA_SOURCES.md). Spots are scored
 
 Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 
-**What the habitat build changed compared with the notes:** the site maps disagree with "acidic flysch" in several places. Ibergeregg – Alpthal (18M Karbonat-Tannen-Buchenwald), Hoch-Ybrig (18M), Unteriberg (60* Buntreitgras-Fichtenwald) and Wägital (18v Buntreitgras-Tannen-Buchenwald) are mapped as calcareous; Oberiberg, Sattel (46 Heidelbeer-Tannen-Fichtenwald) and Raten (19 Waldsimsen-Tannen-Buchenwald) as acidic. Acid-loving species (chanterelle, bay bolete) score lower on the calcareous ones than before. Ibergeregg – upper spruce lies in the cantonal nature reserve "Ibergeregg"; it is not on the Schwyz no-picking list, so it is flagged, not banned.
+**Second pass (2026-10-20):** pins now also stay out of every cantonal reserve, not only the no-picking ones.
+
+| Spot                      | Why                                         | Old pin          | New pin                                                                           | Moved |
+| ------------------------- | ------------------------------------------- | ---------------- | --------------------------------------------------------------------------------- | ----- |
+| Ibergeregg – upper spruce | in the cantonal nature reserve "Ibergeregg" | 47.0154, 8.71962 | 47.01597, 8.71647 (1,233 m, 26w Ahorn-Eschenwald mit Buntreitgras, 77 % conifers) | 247 m |
+
+**What the habitat build changed compared with the notes:** the site maps disagree with "acidic flysch" in several places. Ibergeregg – Alpthal (18M Karbonat-Tannen-Buchenwald), Hoch-Ybrig (18M), Unteriberg (60* Buntreitgras-Fichtenwald) and Wägital (18v Buntreitgras-Tannen-Buchenwald) are mapped as calcareous; Oberiberg, Sattel (46 Heidelbeer-Tannen-Fichtenwald) and Raten (19 Waldsimsen-Tannen-Buchenwald) as acidic. Acid-loving species (chanterelle, bay bolete) score lower on the calcareous ones than before. Ibergeregg – upper spruce was inside the cantonal nature reserve "Ibergeregg" and was moved out of it (second pass below).
 
 ## Golden test (real data)
 

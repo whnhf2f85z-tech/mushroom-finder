@@ -174,10 +174,26 @@ describe('daily run with the habitat build', () => {
     await run({ today: TODAY, backfill: 0, outDir: out, dataDir: DATA, deps });
     // Oberiberg is the 2nd spot in data/spots.json.
     expect(deps.requests[0]!.get('elevation')!.split(',')[1]).toBe('1234');
-    const l = await latest();
-    const withBuild = l.spots['oberiberg-ybrig']!.today.species.chanterelle!.components.H;
-    const withHints = l.spots['ibergeregg-alpthal']!.today.species.chanterelle!.components.H;
-    // Calcareous broadleaf site: worse for acid-loving, conifer-friendly chanterelle than the acidic hint.
-    expect(withBuild).toBeLessThan(withHints);
+    const calcareous = (await latest()).spots['oberiberg-ybrig']!.today.species.chanterelle!
+      .components.H;
+    // Same spot with an acidic conifer site: better for chanterelles.
+    await writeFile(
+      join(out, 'static', 'habitat.json'),
+      JSON.stringify({
+        schemaVersion: 1,
+        generatedAt: 'x',
+        spots: { 'oberiberg-ybrig': { ...entry, ph_class: 'acidic', conifer_pct: 85 } },
+      }),
+    );
+    await run({
+      today: TODAY,
+      backfill: 1,
+      outDir: out,
+      dataDir: DATA,
+      deps: fakeDeps({ today: TODAY }),
+    });
+    const acidic = (await latest()).spots['oberiberg-ybrig']!.today.species.chanterelle!.components
+      .H;
+    expect(calcareous).toBeLessThan(acidic);
   });
 });
