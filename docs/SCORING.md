@@ -63,14 +63,22 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 
 ## Golden test (real data)
 
-`pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`). 21–26 Oct was still a forecast then. The weather: dry from late September, ~36 mm on 8 Oct and ~10 mm on 10 Oct at Ibergeregg.
+`pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`) at the checked Ibergeregg – Alpthal pin (47.01929, 8.70945, 1,377 m). 21–26 Oct was still a forecast then. The weather: dry from late September, ~38 mm on 8 Oct and ~9 mm on 10 Oct.
 
-| Ibergeregg (1,250 m)            | 10 Oct | 14 Oct | 17 Oct | 20 Oct | 22 Oct | 24 Oct | 26 Oct |
-| ------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Chanterelle                     | 39     | 48     | 70     | 55     | 55     | 32     | 23     |
-| Winter chanterelle              | 39     | 57     | 79     | 65     | 74     | 60     | 56     |
-| _Weinland (420 m), chanterelle_ | 35     | 45     | 50     | 40     | 45     | 37     | 33     |
+**Habitat:** since Milestone 3 the test uses the spot's real habitat from the habitat build, not the old note "acidic flysch, spruce-fir". The site map says limestone fir-beech forest (18M Karbonat-Tannen-Buchenwald) with ~40 % conifers. Chanterelle (pH score 0.3 on limestone) and winter chanterelle (0.2) are acid-loving, so their habitat score H drops to 0.73 and 0.56.
 
-What the test checks: low (< 40) before the rain counts, good (≥ 60) in the flush, a delay instead of a jump on the day of the rain, winter chanterelle lasting into late October while chanterelle fades, and the dry, low Weinland staying lower during the flush (14–22 Oct).
+| Ibergeregg – Alpthal (1,377 m, limestone) | 10 Oct | 14 Oct | 17 Oct | 20 Oct | 22 Oct | 24 Oct | 26 Oct |
+| ----------------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| Chanterelle                               | 21     | 30     | 47     | 37     | 35     | 17     | 9      |
+| Winter chanterelle                        | 17     | 31     | 43     | 35     | 40     | 33     | 30     |
+| Hedgehog (pH-tolerant)                    | 29     | 54     | 74     | 60     | 68     | 56     | 50     |
+| _Weinland (420 m), winter chanterelle_    | 21     | 29     | 32     | 26     | 28     | 24     | 21     |
 
-**Difference from SPEC §8:** the spec expects the rise "between ~20 and 26 Oct". With the real weather and the species' 7–14-day rain delay, the rise comes **12–18 Oct** (one to two weeks after the 8 Oct rain). From 23 Oct, the forecast cools Ibergeregg to 3–5 °C and the chanterelle season ends, so chanterelle falls while winter chanterelle stays good. The forecast rain on 21 Oct (~30 mm) would only count from ~28 Oct.
+**Expectations, and what changed (Milestone 4 prep):**
+
+- Chanterelle and winter chanterelle rise from **low (< 25) to medium (40–59)**, no longer to "good". The rain response is the same as before; limestone caps it. _Before:_ low → good (≥ 60), with the acidic hint.
+- New check: **hedgehog**, which doesn't mind the soil, still goes from low to good (≥ 60) at the same spot. This shows the weather signal is intact.
+- The delay check now applies to hedgehog too.
+- Winter chanterelle outlasts chanterelle: on 26 Oct it's more than twice chanterelle's score, and chanterelle has fallen 30+ points from its peak.
+- The "Weinland stays lower" check now covers winter chanterelle and hedgehog, **not chanterelle**: Weinland's soil isn't mapped yet (counted as average), while Ibergeregg's is mapped limestone, so that comparison isn't like for like. Milestone 4's grid gives Weinland real habitat; the test then uses it.
+- The spec's "rise between ~20 and 26 Oct" still comes earlier with the real weather (14–18 Oct; see Milestone 2).

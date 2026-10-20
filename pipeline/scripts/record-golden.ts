@@ -3,7 +3,7 @@
  * Re-run after ~28 Oct 2026 to replace the forecast part (21–26 Oct) with what actually happened.
  *   npm run record:golden
  */
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { addDays, zurichToday } from '../src/dates.js';
@@ -22,9 +22,12 @@ const OUT = join(
 );
 const END = '2026-10-26';
 
+// Ibergeregg – Alpthal side: the checked pin at its terrain-model elevation (from the habitat build).
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
+const hab = JSON.parse(await readFile(join(ROOT, 'web/public/data/static/habitat.json'), 'utf8')).spots['ibergeregg-alpthal'];
+
 export const GOLDEN_LOCATIONS: WeatherLocation[] = [
-  // Ibergeregg – Alpthal side, middle of its 1,100–1,400 m band.
-  { id: 'ibergeregg', lat: 47.022, lon: 8.708, elevation: 1250 },
+  { id: 'ibergeregg', lat: hab.lat, lon: hab.lon, elevation: hab.elevation },
   // Zürich Weinland near Andelfingen: low, the driest part of the Mittelland in ZH.
   { id: 'weinland', lat: 47.6, lon: 8.67, elevation: 420 },
 ];
