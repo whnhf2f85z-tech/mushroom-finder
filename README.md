@@ -39,7 +39,14 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 - Heatmap with the day slider and species chips; Squares / Spots / Both toggle; numbers on the squares when zoomed in; "Best forest squares" list; square detail with a 14-day chart.
 - Real reserve outlines: hatched red = no picking (SZ plant reserves and listed reserves, ZH nature protection zones), dashed orange = protected, check the rules (other reserves, ZH forest protection zones, federal moors).
 
-**Next: Milestone 5 (user pins + find log).** In-browser scoring for your own pins, export/import, find log with CSV export.
+**Milestone 5 (pins + find log): done**
+
+- **My pins:** long-press (phone) or right-click (computer) the map, "Add pin on the map", or "Enter coordinates". Pins must be in ZH or SZ. They are stored on this device and scored in the browser with the same engine, at the pin's own elevation (swisstopo). Tree mix, soil and slope come from the nearest forest square within 1.5 km (otherwise unknown, lower confidence); protection from the reserve outlines. Pin detail = the spot detail, incl. "Why this score". Export/import as JSON (`mushroom-finder-pins`), e.g. to share with friends or to add a pin to `data/spots.json` by hand.
+- **Squares:** "Why this score" via a live recalculation (same weather point and elevation shift as the daily job); shows the weather point (distance, elevation difference) and warns when the square is > 200 m above it.
+- **Find log:** "Log a visit" in spot, square and pin details; favourites listed first. Date, species, found / not found, grams, note. The score for that day (and its six parts when available) is saved automatically for calibration. Visits appear as ▲ / ✕ on the 14-day charts. Export CSV or JSON, import JSON. Stored on this device only.
+- Reserve outlines load in the background after the map.
+
+**Next: Milestone 6 (PWA polish):** offline use (cache the app, `latest.json`, the grid files and `static/reserves.geojson`), install, stale-data banner, About/attribution, species screen, accessibility pass.
 
 ## Develop
 

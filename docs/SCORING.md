@@ -68,7 +68,7 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 - **Scores:** the same engine and parameters as the spots (`scoreSpecies`), per species, for the 14 days and the 3 forecast days. Stored as one byte per cell per species (base64) in `grid/YYYY-MM-DD.json`; 255 = no score. The map shows the best of the favourites, or one species.
 - **Protection** is flagged, never zeroed (SPEC §5.1): a cell is "no picking" if one of its sample points is in a no-picking area, "protected" if in another protected area.
 - **Partial failure:** if a weather point fails, its cells keep the previous day's scores and are counted in `staleCells`.
-- **Not stored for cells:** the six components and their explanation. The spot detail has the "why this score" panel; for squares it's planned with in-browser scoring (Milestone 5).
+- **Not stored for cells:** the six components. Since Milestone 5 the square detail recalculates them in the browser (same engine, weather point and elevation shift) for the "why this score" panel; if newer weather changes the score, the panel says so.
 
 ## Golden test (real data)
 
@@ -91,3 +91,13 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 - Winter chanterelle outlasts chanterelle: on 26 Oct it's more than twice chanterelle's score, and chanterelle has fallen 30+ points from its peak.
 - The "Weinland stays lower" check covers winter chanterelle and hedgehog, **not chanterelle**. Since Milestone 4, Weinland uses the habitat of its nearest forest grid cell (1.2 km away): a neutral ash forest (29(7) Zweiblatt-Eschenmischwald) at 356 m with 24 % conifers. Chanterelle peaks about equal at both (Weinland 48, Ibergeregg 47), because Ibergeregg's limestone holds it back about as much as Weinland's dryness. Winter chanterelle (peak 21 vs 44) and hedgehog (54 vs 75) stay clearly lower in the lowland.
 - The spec's "rise between ~20 and 26 Oct" still comes earlier with the real weather (14–18 Oct; see Milestone 2).
+
+## User pins (Milestone 5)
+
+- Scored in the browser with `@mf/scoring` (same engine and parameters), weather fetched from Open-Meteo at the pin's coordinates and its swissALTI3D elevation (geo.admin `height` service). Same 61-day lookback as the daily job.
+- Habitat: elevation is the pin's own; tree cover, conifer share, pH (site type/geology), slope and aspect come from the nearest forest grid cell if it is within 1.5 km; otherwise they are unknown, which lowers confidence. Protection: the reserve outlines at the pin itself.
+- Pins must lie in ZH or SZ (geo.admin canton identify), so the canton rules apply.
+
+## Find log (calibration data)
+
+Each visit stores the score for that day at that place: published scores for spots and squares (`source: daily`; components for spots only on the current day, for squares from a live recalculation), live scores for pins (`source: live`), or nothing outside the 14 + 3-day window (`source: none`). CSV columns: `date, place_type, place_id, place_name, lat, lon, species_id, species, found, quantity_g, note, score_at_visit, score_source, S, M, T, F, D, H`. See docs/CALIBRATION.md.

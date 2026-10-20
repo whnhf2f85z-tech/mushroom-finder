@@ -148,6 +148,8 @@ const frame = (): void => {
 };
 frame();
 if (document.readyState !== 'complete') window.addEventListener('load', frame, { once: true });
+// Keep Leaflet's idea of the map size right when the layout changes (panel, rotation, window size).
+new ResizeObserver(() => map.invalidateSize()).observe($('map'));
 
 // --- Scores ----------------------------------------------------------------
 

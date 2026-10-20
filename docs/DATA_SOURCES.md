@@ -104,4 +104,12 @@ Built by `npm run grid` (`pipeline/terrain/build-grid.ts`), output `web/public/d
 
 **Weather for the grid:** one Open-Meteo point per 3 × 3 km block that contains forest cells, requested at the mean elevation of its cells. Each cell then gets its point's weather with temperatures shifted by 0.65 °C per 100 m (the standard lapse rate) to its own elevation. Rain is not adjusted. Calls are paced to stay below 500 weighted calls per minute (limit: 600).
 
+## In the browser (Milestone 5, verified 2026-10-20)
+
+All of these allow cross-origin requests (`Access-Control-Allow-Origin: *`), checked from the Pages origin:
+
+- Open-Meteo forecast and historical-forecast APIs (POST, form-encoded): weather for user pins and the square explanations. Cached for the browser session.
+- geo.admin `rest/services/height?easting=…&northing=…&sr=2056`: pin elevation (swissALTI3D).
+- geo.admin `identify` on `ch.swisstopo.swissboundaries3d-kanton-flaeche.fill`: canton of a pin.
+
 ## To verify (later milestones)
