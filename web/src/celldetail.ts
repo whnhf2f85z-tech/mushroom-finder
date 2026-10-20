@@ -1,5 +1,6 @@
 import {
   bandFor,
+  cellHabitat,
   elevationAboveWeatherPoint,
   isClosedDay,
   weatherDistanceKm,
@@ -13,6 +14,8 @@ import { speciesStyle } from './colors.js';
 import { badge } from './detail.js';
 import { dayMonth, esc, shortDate } from './format.js';
 import { cellCenter, cellScore, loadGridDay } from './gridlayer.js';
+import { scorePlaceLive } from './live.js';
+import { whyHtml } from './why.js';
 
 export interface CellContext {
   grid: GridFile;
@@ -131,9 +134,22 @@ export async function renderCellDetail(
             : `<li class="sp-row"><span class="sp-name">${ctx.favourites.includes(s.id) ? '★ ' : ''}${esc(s.name)}</span><span class="bar" aria-hidden="true"><span style="width:${v}%;background:${bandFor(v).color}"></span></span>${badge(v)}</li>`,
       )
       .join('')}</ul>
+    <h3>Why this score</h3>
+    <label class="why-pick">Species
+      <select id="cell-why-species">${rows
+        .map(
+          ({ s }) =>
+            `<option value="${s.id}"${s.id === fav?.id ? ' selected' : ''}>${esc(s.name)}</option>`,
+        )
+        .join('')}</select>
+    </label>
+    <p class="small" id="cell-why-note" aria-live="polite">Recalculating with the latest weather…</p>
+    <ul class="why" id="cell-why"></ul>
     <h3>Last 14 days and forecast</h3>
     <div class="chart" id="cell-chart"></div>
     <details class="table-view"><summary>Show as table</summary><div id="cell-table"></div></details>`;
+
+  void renderCellWhy(body, i, ctx, date, day);
 
   const lines: LineSeries[] = ctx.species.map((s, k) => ({
     label: s.name,
@@ -160,6 +176,71 @@ export async function renderCellDetail(
         `<tr><th scope="row">${dayMonth(d)}${k >= ctx.forecastFrom ? '*' : ''}</th>${shown.map((l) => `<td>${l.values[k] ?? '–'}</td>`).join('')}</tr>`,
     )
     .join('')}</tbody></table><p class="small">* forecast</p>`;
+}
+
+/** Live recalculation of the square (same engine, weather point and elevation shift as the daily job) → reasons. */
+async function renderCellWhy(
+  body: HTMLElement,
+  i: number,
+  ctx: CellContext,
+  date: string,
+  day: Awaited<ReturnType<typeof loadGridDay>>,
+): Promise<void> {
+  const g = ctx.grid;
+  const c = g.cells;
+  const k = c.weather[i]!;
+  const note = body.querySelector<HTMLElement>('#cell-why-note')!;
+  const list = body.querySelector<HTMLElement>('#cell-why')!;
+  const pick = body.querySelector<HTMLSelectElement>('#cell-why-species')!;
+  const site = c.site[i] !== null ? g.siteTypes[c.site[i]!] : null;
+  const facts = {
+    elevation: c.elevation[i]!,
+    conifer_pct: c.conifer[i] ?? null,
+    forest_pct: c.forest[i]!,
+    ph_class: c.ph[i]!,
+    ph_source: c.phSource[i]!,
+    site_type_name: site?.name ?? null,
+    aspect: c.aspect[i] ?? null,
+    slope: c.slope[i] ?? null,
+  };
+  let live;
+  try {
+    live = await scorePlaceLive(
+      ctx.species,
+      {
+        lat: g.weatherPoints.lat[k]!,
+        lon: g.weatherPoints.lon[k]!,
+        elevation: g.weatherPoints.elevation[k]!,
+      },
+      cellHabitat(g, i),
+      ctx.dates,
+      ctx.today,
+      { dz: elevationAboveWeatherPoint(g, i), ctx: { weatherDistanceKm: weatherDistanceKm(g, i) } },
+    );
+  } catch {
+    if (body.isConnected)
+      note.textContent =
+        'The reasons could not be loaded (weather service unavailable). Try again later.';
+    return;
+  }
+  if (!body.isConnected) return;
+  const render = (id: string) => {
+    const s = ctx.species.find((x) => x.id === id);
+    const r = live.results.get(date)?.species.find((x) => x.speciesId === id);
+    if (!s || !r) {
+      note.textContent = 'No weather for this day yet.';
+      list.innerHTML = '';
+      return;
+    }
+    const stored = cellScore(day, [id], i);
+    note.textContent =
+      stored !== null && stored !== r.score
+        ? `Recalculated now with the latest weather: ${r.score} (morning run: ${stored}).`
+        : `Score ${r.score} for ${shortDate(date)}.`;
+    list.innerHTML = whyHtml(s, r, facts);
+  };
+  pick.addEventListener('change', () => render(pick.value));
+  render(pick.value);
 }
 
 export function closeCellDetail(el: HTMLElement): void {

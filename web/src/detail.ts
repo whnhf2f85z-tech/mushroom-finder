@@ -1,8 +1,6 @@
 import {
   bandFor,
   bestOf,
-  explain,
-  type Details,
   type HabitatEntry,
   isClosedDay,
   type LatestFile,
@@ -13,6 +11,7 @@ import {
 import { rainChart, scoreChart, tempChart, type LineSeries } from './charts.js';
 import { speciesStyle } from './colors.js';
 import { dayMonth, esc, shortDate } from './format.js';
+import { whyHtml } from './why.js';
 
 export interface DetailContext {
   latest: LatestFile | null;
@@ -181,18 +180,10 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     conifer_pct: spot.habitat_hint?.conifer_pct ?? null,
   };
   const why = el.querySelector<HTMLElement>('#why')!;
-  const mark = { good: '✓', fair: '~', poor: '✗' };
-  const word = { good: 'Good', fair: 'Fair', poor: 'Poor' };
   const renderWhy = (id: string) => {
     const s = ctx.species.find((x) => x.id === id);
     const d = data.today.species[id];
-    if (!s || !d) return;
-    why.innerHTML = explain(s, d.components, d.details as unknown as Details, facts)
-      .map(
-        (e) =>
-          `<li class="why-item ${e.verdict}"><span class="why-mark" aria-hidden="true">${mark[e.verdict]}</span><div><strong>${e.title}</strong> <span class="visually-hidden">${word[e.verdict]}.</span><span class="small">${word[e.verdict]}</span>${e.lines.map((l) => `<p>${esc(l)}</p>`).join('')}</div></li>`,
-      )
-      .join('');
+    if (s && d) why.innerHTML = whyHtml(s, d, facts);
   };
   const pick = el.querySelector<HTMLSelectElement>('#why-species')!;
   pick.addEventListener('change', () => renderWhy(pick.value));
