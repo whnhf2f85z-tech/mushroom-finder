@@ -1,6 +1,8 @@
 import {
   bandFor,
+  elevationAboveWeatherPoint,
   isClosedDay,
+  weatherDistanceKm,
   seasonScore,
   type GridFile,
   type RulesFile,
@@ -61,6 +63,7 @@ export async function renderCellDetail(
   const site = c.site[i] !== null ? g.siteTypes[c.site[i]!] : null;
   const protName = c.protectedName[i] !== null ? g.protectedNames[c.protectedName[i]!] : null;
   const closed = isClosedDay(ctx.rules, canton, date);
+  const dz = elevationAboveWeatherPoint(g, i);
 
   el.innerHTML = `
     <div class="detail-head">
@@ -80,7 +83,13 @@ export async function renderCellDetail(
       Soil: ${PH[c.ph[i]!]}${site ? ` (forest type: ${esc(site.code)} ${esc(site.name)})` : c.phSource[i] === 'geology' ? ' (from the geology map)' : ''}.
       ${c.aspect[i] !== null && c.slope[i]! >= 5 ? `Mostly ${DIRS[Math.round(c.aspect[i]! / 45) % 8]}-facing slopes (${Math.round(c.slope[i]!)}°).` : ''}
     </p>
-    <p class="small">Scores for squares use the weather of a point up to ~2 km away, adjusted for elevation. Detailed reasons are shown for the named spots.</p>
+    <h3>Weather point</h3>
+    <p class="small">
+      Weather comes from a point ${weatherDistanceKm(g, i).toFixed(1)} km away at ${g.weatherPoints.elevation[c.weather[i]!]} m.
+      This square is ${Math.abs(dz)} m ${dz >= 0 ? 'higher' : 'lower'}, so its temperatures are adjusted by
+      ${(Math.abs(dz) * 0.0065).toFixed(1)} °C (${dz >= 0 ? 'cooler' : 'warmer'}). Rain is not adjusted.
+    </p>
+    ${dz > 200 ? '<p class="small warn-note"><strong>Rain may be underestimated here:</strong> this square is more than 200 m higher than its weather point, and higher ground usually gets more rain.</p>' : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day.</p>` : ''}
     <div class="actions">
       <a href="https://www.google.com/maps/search/?api=1&query=${center.lat.toFixed(5)},${center.lon.toFixed(5)}" target="_blank" rel="noopener">Open in Google Maps</a>

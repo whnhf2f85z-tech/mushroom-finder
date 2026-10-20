@@ -21,3 +21,6 @@ export {
   type Verdict,
 } from './explain.js';
 export { wgs84ToLv95, lv95ToWgs84 } from './lv95.js';
+export * from './openmeteo.js';
+export * from './grid.js';
+export { toSpotDay, toTodayDetail } from './spotday.js';

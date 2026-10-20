@@ -1,5 +1,7 @@
 import {
   scoreLocation,
+  toSpotDay,
+  toTodayDetail,
   type DailyWeather,
   type Habitat,
   type HabitatEntry,
@@ -12,6 +14,8 @@ import {
   type Spot,
 } from '@mf/scoring';
 import type { WeatherLocation } from './openmeteo.js';
+
+export { toSpotDay, toTodayDetail };
 
 /**
  * Weather point for a spot. With a habitat entry: the (checked) pin at its terrain-model elevation.
@@ -51,51 +55,7 @@ export const spotHabitat = (spot: Spot, e?: HabitatEntry): Habitat => {
   return h;
 };
 
-const r3 = (x: number): number => Math.round(x * 1000) / 1000;
 const r1 = (x: number): number => Math.round(x * 10) / 10;
-
-export const toSpotDay = (r: LocationResult): SpotDay => ({
-  metascore: r.metascore,
-  best: r.bestSpeciesId,
-  species: Object.fromEntries(
-    r.species.map((s) => [
-      s.speciesId,
-      {
-        score: s.score,
-        components: {
-          S: r3(s.components.S),
-          M: r3(s.components.M),
-          T: r3(s.components.T),
-          F: r3(s.components.F),
-          D: r3(s.components.D),
-          H: r3(s.components.H),
-        },
-        outOfSeason: s.outOfSeason,
-        confidence: s.confidence,
-      },
-    ]),
-  ),
-});
-
-/** Today's scores with the explanation details, for the spot detail panel. */
-export const toTodayDetail = (r: LocationResult): LatestSpot['today'] => {
-  const base = toSpotDay(r);
-  return {
-    ...base,
-    species: Object.fromEntries(
-      r.species.map((s) => [
-        s.speciesId,
-        {
-          ...base.species[s.speciesId]!,
-          confidenceIssues: s.confidenceIssues,
-          details: Object.fromEntries(
-            Object.entries(s.details).map(([k, v]) => [k, typeof v === 'number' ? r3(v) : v]),
-          ),
-        },
-      ]),
-    ),
-  };
-};
 
 /** Score a spot for `date` using only the weather up to that date. null if that day's weather is missing. */
 export function scoreSpotOn(

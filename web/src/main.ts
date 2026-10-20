@@ -495,7 +495,14 @@ async function loadGridLayer(): Promise<void> {
   applyView();
 }
 
+// Map and scores first; the reserve outlines (the largest file) load afterwards, when the browser is idle.
+const whenIdle = (fn: () => void) =>
+  'requestIdleCallback' in window
+    ? requestIdleCallback(fn, { timeout: 3000 })
+    : setTimeout(fn, 500);
+
 refresh();
 void loadHabitat();
-void loadReserves();
-void loadLatest().then(loadGridLayer);
+void loadLatest()
+  .then(loadGridLayer)
+  .finally(() => whenIdle(() => void loadReserves()));

@@ -748,3 +748,10 @@ dialog::backdrop {
   background: #8a8f8b;
   opacity: 0.6;
 }
+
+.warn-note {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
