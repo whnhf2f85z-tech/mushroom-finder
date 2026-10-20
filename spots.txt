@@ -1,0 +1,26 @@
+Pilze Schwyz – spots (generated from data/spots.json on 2026-10-20)
+
+Eierschwämme & Trompetenpfifferlinge
+- Ibergeregg – Alpthal side | 1100–1400 m | 47.01929, 8.70945
+- Oberiberg – Ybrig forests | 1100–1300 m | 47.035, 8.79127
+- Unteriberg – Studen slopes | 900–1200 m | 47.06201, 8.83474
+- Wägital – Innerthal lake slopes | 900–1200 m | 47.09712, 8.93262
+- Sattel – Hochstuckli | 1000–1300 m | 47.075, 8.66
+- Raten – Biberegg side | 1000–1100 m | 47.11407, 8.6636
+
+Steinpilze (end of season)
+- Ibergeregg – upper spruce | 1200–1400 m | 47.01597, 8.71647
+- Hoch-Ybrig – Weglosen | 1050–1300 m | 47.03749, 8.8087
+- Hochstuckli – upper slopes | 1200–1400 m | 47.07197, 8.67133
+- Haggenegg – Alpthal side | 1100–1400 m | 47.04061, 8.69324
+
+Totentrompeten, Semmelstoppelpilze, Hallimasch (beech, lower)
+- Rigi north – above Küssnacht | 600–1000 m | 47.06015, 8.45424
+- Rigi – above Arth-Goldau | 600–1000 m | 47.04763, 8.52534
+- Morschach forest slopes | 650–1000 m | 46.975, 8.625
+- Gersau beech forests | 500–900 m | 46.995, 8.515
+
+No picking – reserves (approximate)
+- Rothenthurm moorland reserves | 47.1, 8.675
+- Schwantenau | 47.145, 8.735
+- Oberer Sihlsee | 47.1, 8.775
