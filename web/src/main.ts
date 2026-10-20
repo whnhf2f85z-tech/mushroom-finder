@@ -593,11 +593,30 @@ window.addEventListener('online', () => {
 });
 window.addEventListener('offline', renderOnline);
 
-/** Load every day of the grid once, so the whole 14-day window (and the forecast) is cached for offline use. */
-function prefetchGridDays(): void {
-  if (!grid || !latest || !navigator.onLine) return;
-  for (const d of [...latest.days, ...latest.forecastDays]) void loadGridDay(d, grid.count);
+/**
+ * Fetch the data for offline use through the service worker, which stores it: latest scores, grid, reserves,
+ * habitat and every day of the grid. On the very first visit the page loads before the worker is in control,
+ * so this runs again once it takes over (otherwise the first visit would leave nothing for offline use).
+ */
+function warmOfflineCache(): void {
+  if (!navigator.onLine || !navigator.serviceWorker?.controller) return;
+  const base = import.meta.env.BASE_URL;
+  const urls = [
+    'data/latest.json',
+    'data/static/grid.json',
+    'data/static/reserves.geojson',
+    'data/static/habitat.json',
+  ];
+  if (latest)
+    for (const d of [...latest.days, ...latest.forecastDays]) urls.push(`data/grid/${d}.json`);
+  for (const u of urls) void fetch(`${base}${u}`).catch(() => undefined);
 }
+function prefetchGridDays(): void {
+  if (grid && latest && navigator.onLine)
+    for (const d of [...latest.days, ...latest.forecastDays]) void loadGridDay(d, grid.count);
+  warmOfflineCache();
+}
+navigator.serviceWorker?.addEventListener('controllerchange', warmOfflineCache);
 
 // --- Data ------------------------------------------------------------------
 
