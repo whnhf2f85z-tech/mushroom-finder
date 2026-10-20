@@ -73,7 +73,13 @@ const reserveLayer = L.layerGroup(
 const markers = new Map<string, L.Marker>();
 const spotLayer = L.layerGroup().addTo(map);
 for (const spot of spots) {
-  const m = L.marker([spot.lat, spot.lon], { keyboard: true, title: spot.name, riseOnHover: true });
+  const m = L.marker([spot.lat, spot.lon], {
+    // Empty pin until scores load, so Leaflet doesn't fetch its default marker images.
+    icon: L.divIcon({ className: 'pin-wrap', html: '', iconSize: [34, 34] }),
+    keyboard: true,
+    title: spot.name,
+    riseOnHover: true,
+  });
   m.on('click', () => select(spot.id));
   markers.set(spot.id, m);
   spotLayer.addLayer(m);
