@@ -14,6 +14,12 @@ npx tsx validation/habitat-test.ts        # → validation/results/habitat.json
 npx tsx validation/season-test.ts         # → validation/results/season.json
 npx tsx validation/weather-test.ts        # ~6,000 Open-Meteo calls, ~1 h; resumable → validation/results/weather.json
 validation/.venv/bin/python validation/plots.py   # → docs/validation/*.png
+
+# Part B – past seasons
+npx tsx validation/past-seasons.ts        # ~4,200 Open-Meteo calls → validation/results/past-seasons.json
+                                          # (better: GitHub Actions → "Validation (manual)" → Run workflow)
+npx tsx validation/fetch-ticker.ts        # Pilz-Ticker report dates → validation/results/ticker.json
+validation/.venv/bin/python validation/plots.py
 ```
 
 Downloads (GBIF pages, weather, elevations) are cached in `validation/cache/` (git-ignored). The weather test stays below Open-Meteo's per-minute limit; if the daily limit is reached it stops and can be re-run later, continuing from the cache.

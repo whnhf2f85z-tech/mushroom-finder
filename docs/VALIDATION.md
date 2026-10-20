@@ -1,6 +1,6 @@
 # Validation
 
-Validation of the scoring model against existing data, before calibration with our own find log. Scripts: `validation/` (see `validation/README.md`). No model parameters were changed; proposed changes are listed per part and need approval.
+Validation of the scoring model against existing data, before calibration with our own find log. Scripts: `validation/` (see `validation/README.md`). Proposed changes are listed per part and are only applied after approval. Changes 1–6 of Part A were approved and applied on 2026-10-20 (details in [SCORING.md](SCORING.md)); Part B uses the updated parameters.
 
 ## Part A – Occurrence data (2026-10-20)
 
@@ -94,28 +94,30 @@ Record dates against the model's season (start–end) and peak, by elevation. St
 
 For each CH-precise record since 2021 (836): the weather part of the score, W = M<sup>0.6</sup> × T<sup>0.4</sup> × F × D (no season, no habitat), on the record date vs. control dates at the same place (3 km weather block, the record's elevation), ±30 days in the same year, excluding ±5 days around the record, and only on the same kind of day (weekend vs weekday). Result per record: the percentile of the record date among its controls; 0.5 = no signal.
 
-**Observer bias:** people go out (and post photos) when the weather is pleasant, at weekends, and often _because_ it rained a week before. Weekday matching handles the weekend effect. For the rest, a **placebo** is scored the same way: tinder fungus (_Fomes fomentarius_), which sits on trees all year, so its record dates only reflect when observers are out. Weather: Open-Meteo historical forecast (best match), 648 place-year windows, 5,890 weighted API calls.
+**Observer bias:** people go out (and post photos) when the weather is pleasant, at weekends, and often _because_ it rained a week before. Weekday matching handles the weekend effect. For the rest, a **placebo** is scored the same way: three bracket fungi that sit on trees all year (tinder fungus _Fomes fomentarius_, red-belted conk _Fomitopsis pinicola_, artist's conk _Ganoderma applanatum_; up to 300 CH-precise records since 2021, March–November), so their record dates only reflect when observers are out. Each species is compared with the placebo records from its own months (morel: spring). Weather: Open-Meteo historical forecast (best match), 648 place-year windows, 5,890 weighted API calls.
 
 ![Weather part of the score on record dates vs control dates](validation/weather-case-control.png)
 
-| Species            | Records | Percentile of W on record dates (95 % CI) | Placebo (tinder fungus, n ≈ 23) | Difference |
-| ------------------ | ------- | ----------------------------------------- | ------------------------------- | ---------- |
-| Chanterelle        | 57      | 0.59 (0.51–0.68)                          | 0.61 (0.49–0.74)                | −0.02      |
-| Porcini            | 113     | 0.67 (0.61–0.72)                          | 0.61 (0.51–0.72)                | +0.06      |
-| Winter chanterelle | 47      | 0.64 (0.55–0.72)                          | 0.53 (0.42–0.64)                | +0.12      |
-| Horn of plenty     | 45      | 0.57 (0.47–0.66)                          | 0.59 (0.46–0.72)                | −0.02      |
-| Bay bolete         | 62      | 0.61 (0.53–0.66)                          | 0.58 (0.47–0.71)                | +0.02      |
-| Hedgehog           | 24      | 0.58 (0.47–0.68)                          | 0.59 (0.48–0.72)                | −0.01      |
-| Honey fungus       | 239     | 0.50 (0.45–0.55)                          | 0.63 (0.53–0.74)                | −0.13      |
-| Parasol            | 194     | 0.69 (0.66–0.73)                          | 0.61 (0.50–0.73)                | +0.07      |
-| Morel              | 46      | 0.62 (0.52–0.71)                          | 0.54 (0.44–0.64)                | +0.07      |
+| Species            | Records | Percentile of W on record dates (95 % CI) | Placebo (bracket fungi, same months) | Difference |
+| ------------------ | ------- | ----------------------------------------- | ------------------------------------ | ---------- |
+| Chanterelle        | 57      | 0.59 (0.51–0.68)                          | 0.52 (0.47–0.56), n = 168            | +0.07      |
+| Porcini            | 113     | 0.67 (0.61–0.72)                          | 0.51 (0.47–0.56), n = 168            | +0.16      |
+| Winter chanterelle | 47      | 0.64 (0.56–0.72)                          | 0.52 (0.48–0.56), n = 168            | +0.12      |
+| Horn of plenty     | 45      | 0.57 (0.47–0.66)                          | 0.53 (0.49–0.57), n = 168            | +0.04      |
+| Bay bolete         | 62      | 0.61 (0.53–0.66)                          | 0.53 (0.50–0.58), n = 168            | +0.07      |
+| Hedgehog           | 24      | 0.58 (0.47–0.68)                          | 0.53 (0.49–0.57), n = 168            | +0.05      |
+| Honey fungus       | 239     | 0.50 (0.45–0.55)                          | 0.53 (0.50–0.58), n = 168            | −0.03      |
+| Parasol            | 194     | 0.69 (0.66–0.73)                          | 0.51 (0.47–0.56), n = 168            | +0.17      |
+| Morel              | 46      | 0.62 (0.52–0.71)                          | 0.60 (0.54–0.65), n = 95             | +0.02      |
 
-- **Matches:** for porcini, parasol, winter chanterelle, morel, bay bolete and chanterelle, record dates have clearly better weather scores than the control dates (CI above 0.5). For porcini and parasol it's mostly the moisture part (M percentile 0.66–0.67).
-- **But:** the placebo also scores ~0.6, so a good part of that signal is observer behaviour. After subtracting it, only **winter chanterelle (+0.12), parasol (+0.07), morel (+0.07) and porcini (+0.06)** keep a positive difference, and the placebo is so small (23 records) that none of these differences is statistically solid.
-- **Doesn't match:** **honey fungus** has no signal at all (0.50, n = 239, the largest sample), even below the placebo. Its weather response in the model (rain 5–10 days before, 6–15 °C) doesn't describe when it's recorded.
-- **Limits:** record dates are when someone _reported_ a mushroom, not when it fruited; a record says nothing about the days without one; Open-Meteo's weather at 3 km is not the forest floor; and the placebo is small. This test can show whether the model's weather response points the right way, not how strong it should be.
+_Placebo updated on 2026-10-20 with three bracket fungi instead of tinder fungus alone (n ≈ 23). The first, small placebo had suggested ~0.6 for all species._
 
-### Proposed parameter changes (not applied)
+- **Matches:** for porcini, parasol, winter chanterelle, bay bolete and chanterelle, record dates have clearly better weather scores than the control dates (CI above 0.5). For porcini and parasol it's mostly the moisture part (M percentile 0.66–0.67).
+- **Observer bias is small in summer and autumn:** the larger placebo scores only 0.51–0.53, so most of the signal above is real. **Parasol (+0.17), porcini (+0.16) and winter chanterelle (+0.12)** clearly beat it; chanterelle and bay bolete (+0.07) somewhat; horn of plenty and hedgehog (+0.04–0.05) barely, with small samples.
+- **Doesn't match:** **honey fungus** has no signal at all (0.50, n = 239, the largest sample), slightly below the placebo. Its weather response in the model (rain 5–10 days before, 6–15 °C) doesn't describe when it's recorded. **Morel** (0.62) is no better than the spring placebo (0.60): people go out on nice spring days, and that explains the morel signal.
+- **Limits:** record dates are when someone _reported_ a mushroom, not when it fruited; a record says nothing about the days without one; Open-Meteo's weather at 3 km is not the forest floor. This test can show whether the model's weather response points the right way, not how strong it should be.
+
+### Proposed parameter changes (1–6 approved and applied on 2026-10-20, 4 and 5 in a milder form; see SCORING.md)
 
 | #   | Species            | Change                                                                                                                           | Evidence                                    | Confidence |
 | --- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ---------- |
@@ -127,4 +129,54 @@ For each CH-precise record since 2021 (836): the weather part of the score, W = 
 | 6   | Bay bolete         | Conifer preference 50–100 % → 20–100 %                                                                                           | Habitat host part AUC 0.35 (n = 8)          | Low        |
 | 7   | Honey fungus       | No change yet: look at it in Part B (longer rain lag, e.g. 10–20 days, or the cooling trigger)                                   | Weather test: no signal                     | –          |
 
-**Data improvements:** request precise SwissFungi records from WSL; use a larger placebo group (e.g. add _Fomitopsis pinicola_ and _Ganoderma applanatum_, also perennial) to measure observer bias better.
+**Data improvements:** request precise SwissFungi records from WSL (the larger placebo group is now in place).
+
+## Part B – Past seasons (2026-10-20)
+
+### Method
+
+The app's engine with the current parameters recomputed every day from 1 June to 15 November for 2021–2025, and 2026 up to 18 October: the 14 spots and a fixed sample of 30 forest squares (15 ZH, 15 SZ, chosen at random with a fixed seed). Weather: Open-Meteo historical forecast (best match), 4,230 weighted calls, run on GitHub Actions (workflow "Validation (manual)"). The curve shown is the weekly mean of the map score (best of the default favourites).
+
+This was compared with two independent sources:
+
+1. **Documented good and poor periods** from news reports and mushroom-control statistics (table below). They describe Switzerland or the region as a whole and give dates only to within a week or two.
+2. **Pilz-Ticker Schweiz** ([passion-pilze-sammeln.com](https://www.passion-pilze-sammeln.com/pilztickerarchiv_schweiz.html)): readers' dated reports, mostly from eastern and central Switzerland. `validation/fetch-ticker.ts` reads the 60 archive pages (robots.txt allows it, 1 s between pages) and keeps only the date of each report and whether it says "nothing / too dry" (keyword match, rough). 210 reports for 2021–2026, 26–43 per year.
+
+### Documented periods
+
+| Year | What was reported                                                                                                                                               | Sources                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2021 | Strong flush late June – early July, then hardly anything until the end of September: a poor year                                                               | [Aargauer Zeitung, 13 Jan 2022](https://www.aargauerzeitung.ch/aargau/wyna-suhre/aargau-west-von-drogenpilzli-und-falschen-champignons-so-war-die-pilz-saison-2021-ld.2237720)                                                                                                                                                                                                                                        |
+| 2022 | Hot, dry summer; boom from early September; record year (VAPKO: 27,812 controls, 39,354 kg; Zürich: 8,600 control slips)                                        | [SRF, 17 Sep 2022](https://www.srf.ch/news/schweiz/pilzboom-in-der-schweiz-wetterumschwung-laesst-pilze-nun-doch-spriessen), [watson](https://www.watson.ch/schweiz/daten/819199035-pilzsaison-schweiz-so-viele-toedlich-giftige-pilze-wurden-2022-gesammelt)                                                                                                                                                         |
+| 2023 | Good porcini in July, hot and dry August, weak year overall (Zürich: ~3,600 control slips, less than half of 2022)                                              | [Kanton Zürich](https://www.zh.ch/de/news-uebersicht/mitteilungen/2024/gesundheit/lebensmittel/pilzkontrollen-im-kanton-zuerich-2023.html), [Tierwelt](https://www.tierwelt.ch/artikel/natur-umwelt/fazit-der-pilzsaison-dieses-jahr-war-ein-schlechtes-pilzjahr-496077)                                                                                                                                              |
+| 2024 | Wet summer but a weak late summer; boom in October; productive year                                                                                             | [Dorfblitz](https://dorfblitz.ch/pilzjahr-2024/), [OnlineReports](https://onlinereports.ch/a/pilzsaison-2024-ein-drittel-des-sammelguts-war-giftig-23199)                                                                                                                                                                                                                                                             |
+| 2025 | Schwyz region: good start, then it stopped (10 Sep 2025). Local controls mixed: Küsnacht ZH below average, Spreitenbach AG busy until November. Dates uncertain | [Bote der Urschweiz, 10 Sep 2025](https://www.bote.ch/nachrichten/schwyz/guter-start-in-die-pilzsaison-dann-war-schluss-art-1619861), [nau.ch Spreitenbach](https://www.nau.ch/ort/dietikon/pilzsaison-2025-mit-rekordzahlen-bei-kontrollen-67082355), [Pilze unter der Lupe (Küsnacht)](https://goldkueste24.ch/articles/357038-pilze-unter-der-lupe)                                                                |
+| 2026 | Drought: summer season practically failed, Zürich forests empty in August; Pilz-Ticker reports a big flush around 6 September; rain again ~8–10 October         | [SRF, 6 Aug 2026](https://www.srf.ch/radio-srf-1/rare-eierschwaemmchen-hitze-bremst-pilzsaison-aus-es-ist-ganz-schitter), [20 Minuten, 14 Aug 2026](https://www.20min.ch/story/pilze-in-der-schweiz-trockenheit-laesst-waelder-fast-leer-zurueck-103615448), [Limmattaler Zeitung, 13 Aug 2026](https://www.limmattalerzeitung.ch/limmattal/zuerich/pilze-im-kanton-zuerich-trockenheit-bremst-die-saison-ld.4216559) |
+
+No official per-season control statistics for Schwyz, or for Zürich after 2023, were found online.
+
+![Weekly model score per year vs documented periods and Pilz-Ticker reports](validation/past-seasons.png)
+
+![Model season strength per year](validation/past-seasons-summary.png)
+
+### Results
+
+- **Matches – dry spells:** the model reacts well to drought. 2022: low in late July and mid-August (23–32), then 83–94 from the start of September through mid-October, exactly the documented boom. 2026: 16–25 for most of August, 86 in the week of the 6 September flush, a drop in early October and a rise again after the rain of 8–10 October. 2023: the drop in late August (39) matches the hot, dry end of August.
+- **Matches – year ranking (partly):** the model's season strength (mean score 15 Aug – 31 Oct at the spots) puts **2023 (63) and 2026 (57)** clearly lowest, as documented, and **2024 (83)** highest. The October 2024 boom is the model's highest stretch (93–95).
+- **Matches – Pilz-Ticker:** weeks with a positive ticker report have a higher model score (mean 67, 83 weeks) than weeks without (62, 53 weeks) and weeks with only "nothing / too dry" reports (51, 9 weeks). The direction is right, but the ticker has only 1–6 reports per week, so it can't say how good a week was.
+- **Doesn't match – wet summers:** the model is too optimistic when it rains regularly. **2021** (very wet summer) scores 80–89 from late July to September, when hardly anything was found; it ranks 2021 (77) level with the record year 2022 (78). Late summer **2024** (68–79, documented weak) and the September 2025 pause (78–94) show the same pattern. When it rains every week, the moisture part stays near its maximum and nothing pulls the score down.
+- **Doesn't match – early August 2023:** documented hot and dry, the model is still at 85–89 because July was wet; it falls only in the last third of the month.
+- **Honey fungus:** the ticker doesn't name species, so Part B can't test it on its own. Note only that the model gives it the highest late-season means of all species (52–73) with little difference between years, which fits the missing weather signal of Part A.
+- **Spots vs squares:** the random squares follow the spots week by week, 0–20 points lower (spots were chosen for good habitat), so what is said above holds for the whole grid.
+- **Limits:** documented periods are national or regional and roughly dated; good years also mean more people out picking; the ticker is small and mostly from eastern Switzerland; 2025 dates are uncertain.
+
+### Proposed parameter changes (not applied)
+
+| #   | Species      | Change                                                                                                                                                                                                                                   | Evidence                                                                        | Confidence |
+| --- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------- |
+| 1   | All          | Make the moisture part less generous in long wet spells: measure soil moisture against a longer window (soilRangeDays 60 → 120, so a wet summer is no longer "the wettest in 60 days" every week) To be tested in Part C before deciding | 2021, late summer 2024 and Sep 2025 overrated; 2021 ranked like the record 2022 | Low–medium |
+| 2   | All          | Optional, more experimental: a "recovery" term, i.e. a flush needs a wet spell after a drier one; continuous rain gives less than rain after a dry week                                                                                  | Same three periods, plus the strong booms after drought in 2022 and 2026        | Low        |
+| 3   | Honey fungus | Test in Part C: rain lag 10–20 days instead of 5–10, and the cooling trigger as a requirement (it fruits after the first cold nights in autumn)                                                                                          | Part A: no weather signal; Part B: high every year                              | Low        |
+| 4   | –            | No change to the drought response (D factor, rain cap): dry spells are reproduced well                                                                                                                                                   | 2022, 2023, 2026                                                                | Medium     |
+
+Scripts: `validation/past-seasons.ts` (via the manual workflow, ~4,200 Open-Meteo calls), `validation/fetch-ticker.ts`, charts in `validation/plots.py`.
