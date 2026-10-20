@@ -9,3 +9,5 @@ coverage/
 .vite/
 *.tsbuildinfo
 .claude/settings.local.json
+test-results/
+playwright-report/

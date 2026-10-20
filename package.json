@@ -22,9 +22,11 @@
     "record:golden": "tsx pipeline/scripts/record-golden.ts",
     "terrain": "tsx pipeline/terrain/build-habitat.ts",
     "export:spots": "tsx pipeline/scripts/export-spots.ts",
-    "grid": "tsx pipeline/terrain/build-grid.ts"
+    "grid": "tsx pipeline/terrain/build-grid.ts",
+    "e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",

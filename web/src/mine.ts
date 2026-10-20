@@ -245,13 +245,16 @@ export function setupMine(h: MineHooks) {
     if (!s || s === 'loading' || s === 'error') {
       detail.hidden = false;
       detail.innerHTML = `<div class="detail-head"><div><h2>${esc(pin.name)}</h2><p class="small">My pin · ${pin.canton}</p></div><button type="button" class="close" aria-label="Close">×</button></div>
-        <p class="small">${s === 'error' ? 'The weather for this pin could not be loaded. <button type="button" class="link-button" data-act="retry">Try again</button>' : 'Scoring this pin with the latest weather…'}</p>
-        <div class="actions"><button type="button" class="action-button secondary" data-act="delete">Delete pin</button></div>`;
+        <p class="small">${s === 'error' ? 'The weather for this pin could not be loaded (offline?). You can still log a visit: its score is added when you are back online. <button type="button" class="link-button" data-act="retry">Try again</button>' : 'Scoring this pin with the latest weather…'}</p>
+        <div class="actions"><button type="button" class="action-button" data-act="log">Log a visit</button><button type="button" class="action-button secondary" data-act="delete">Delete pin</button></div>`;
       detail.querySelector('.close')!.addEventListener('click', closePin);
       detail
         .querySelector('[data-act="retry"]')
         ?.addEventListener('click', () => void scorePin(pin));
       detail.querySelector('[data-act="delete"]')!.addEventListener('click', () => deletePin(pin));
+      detail
+        .querySelector('[data-act="log"]')!
+        .addEventListener('click', () => openVisit(placeOfPin(pin), captureForPin(pin)));
     } else {
       const built = pinLatest(pin, s);
       if (!built) return;
