@@ -39,6 +39,8 @@ describe('why this score', () => {
     const r = scoreSpecies(s, series(END, 60), { ...IBERGEREGG, elevation: 600 });
     const season = explain(s, r.components, r.details, { ...IBERGEREGG, elevation: 600 })[0]!;
     expect(season.verdict).toBe('poor');
-    expect(season.lines[0]).toMatch(/^Out of season: fruits from about 1 Mar to 31 May at 600 m/);
+    expect(season.lines[0]).toMatch(
+      /^Out of season: fruits from about \d+ Mar to \d+ (May|Jun) at 600 m/,
+    );
   });
 });

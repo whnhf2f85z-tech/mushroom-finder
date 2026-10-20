@@ -29,7 +29,9 @@ describe('season S', () => {
   it('starts earlier higher up for autumn species', () => {
     const [aLow] = shiftedSeason(ch, 600);
     const [aHigh] = shiftedSeason(ch, 1400);
-    expect(aLow - aHigh).toBeCloseTo(32); // 8 × 100 m × 4 days
+    // 8 × 100 m × the species' start shift (days per 100 m, negative = earlier higher up).
+    expect(aLow - aHigh).toBeCloseTo(-8 * ch.elevationShift.startDaysPer100m);
+    expect(aLow - aHigh).toBeGreaterThan(0);
   });
 
   it('starts later higher up for morels', () => {

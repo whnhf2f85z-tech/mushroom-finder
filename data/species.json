@@ -14,8 +14,8 @@
       },
       "elevationShift": {
         "referenceElevation": 1000,
-        "startDaysPer100m": -4,
-        "endDaysPer100m": -2
+        "startDaysPer100m": -2,
+        "endDaysPer100m": -1
       },
       "hosts": ["spruce", "fir", "beech", "oak"],
       "conifer_pct": {
@@ -133,8 +133,8 @@
       "german": "Trompetenpfifferling",
       "latin": "Craterellus tubaeformis",
       "season": {
-        "start": "08-20",
-        "peakStart": "09-20",
+        "start": "08-01",
+        "peakStart": "09-01",
         "peakEnd": "11-20",
         "end": "12-31"
       },
@@ -266,7 +266,7 @@
       },
       "hosts": ["spruce", "pine"],
       "conifer_pct": {
-        "min": 50,
+        "min": 20,
         "max": 100
       },
       "forest_pct": {
@@ -442,9 +442,9 @@
       "latin": "Macrolepiota procera",
       "season": {
         "start": "06-20",
-        "peakStart": "07-25",
-        "peakEnd": "10-05",
-        "end": "11-01"
+        "peakStart": "08-10",
+        "peakEnd": "10-25",
+        "end": "11-20"
       },
       "elevationShift": {
         "referenceElevation": 1000,
@@ -458,7 +458,7 @@
       },
       "forest_pct": {
         "min": 20,
-        "max": 60
+        "max": 100
       },
       "ph": {
         "acidic": 0.5,
@@ -519,14 +519,14 @@
       "latin": "Morchella spp.",
       "season": {
         "start": "03-01",
-        "peakStart": "03-25",
-        "peakEnd": "04-30",
-        "end": "05-31"
+        "peakStart": "04-08",
+        "peakEnd": "05-12",
+        "end": "06-10"
       },
       "elevationShift": {
         "referenceElevation": 600,
-        "startDaysPer100m": 5,
-        "endDaysPer100m": 5
+        "startDaysPer100m": 3,
+        "endDaysPer100m": 3
       },
       "hosts": ["ash", "elm", "riparian forest", "gravel"],
       "conifer_pct": {

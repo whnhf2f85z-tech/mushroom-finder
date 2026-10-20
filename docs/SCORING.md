@@ -70,6 +70,21 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 - **Partial failure:** if a weather point fails, its cells keep the previous day's scores and are counted in `staleCells`.
 - **Not stored for cells:** the six components. Since Milestone 5 the square detail recalculates them in the browser (same engine, weather point and elevation shift) for the "why this score" panel; if newer weather changes the score, the panel says so.
 
+## Parameter changes after validation Part A (2026-10-20)
+
+Approved by the owner after [VALIDATION.md, Part A](VALIDATION.md#part-a--occurrence-data-2026-10-20). Season dates apply at each species' reference elevation (1,000 m; morel 600 m) and move with elevation as before.
+
+| #   | Species            | Change (before → after)                                                                                                                 | Evidence                                                                                                                                              | Confidence |
+| --- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1   | Parasol            | Season: peakStart 07-25 → **08-10**, peakEnd 10-05 → **10-25**, end 11-01 → **11-20**                                                   | 237 precise CH records: median date 2–4 weeks after the old peak midpoint at every elevation; only 68 % inside the old peak                           | Medium     |
+| 2   | Parasol            | Tree-cover preference 20–60 % → **20–100 %** (1 km squares can't show forest edges)                                                     | Habitat test: records in denser squares, AUC 0.37 (forest part 0.31), n = 19 squares                                                                  | Low–medium |
+| 3   | Morel              | Season: peakStart 03-25 → **04-08**, peakEnd 04-30 → **05-12**, end 05-31 → **06-10**; elevation shift +5 → **+3** days per 100 m       | 71 precise CH records (low-elevation median 20 Apr vs model 31 Mar; slope +2.5 days per 100 m) and 298 SwissFungi dates (peak mid-April to early May) | Medium     |
+| 4   | Chanterelle        | Elevation shift halved: start −4 → **−2**, end −2 → **−1** days per 100 m                                                               | 66 precise CH records: no earlier fruiting higher up (slope +0.3)                                                                                     | Low–medium |
+| 5   | Winter chanterelle | Season start 08-20 → **08-01**, full season (peakStart) 09-20 → **09-01**; elevation shift unchanged, so at 600 m about 17 Aug / 17 Sep | SwissFungi records from August; 12 % of CH records before the old start                                                                               | Low–medium |
+| 6   | Bay bolete         | Conifer preference 50–100 % → **20–100 %**                                                                                              | Habitat test: record squares median 33 % conifers, host part AUC 0.35, n = 8                                                                          | Low        |
+
+Not changed: honey fungus (no signal in the weather test; looked at in Part B). The golden test still passes; the numbers below use these parameters.
+
 ## Golden test (real data)
 
 `pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`) at the checked Ibergeregg – Alpthal pin (47.01929, 8.70945, 1,377 m). 21–26 Oct was still a forecast then. The weather: dry from late September, ~38 mm on 8 Oct and ~9 mm on 10 Oct.
@@ -78,10 +93,10 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 
 | Ibergeregg – Alpthal (1,377 m, limestone)         | 10 Oct | 14 Oct | 17 Oct | 20 Oct | 22 Oct | 24 Oct | 26 Oct |
 | ------------------------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Chanterelle                                       | 21     | 30     | 47     | 37     | 35     | 17     | 9      |
+| Chanterelle                                       | 22     | 32     | 50     | 40     | 37     | 19     | 10     |
 | Winter chanterelle                                | 17     | 31     | 43     | 35     | 40     | 33     | 30     |
 | Hedgehog (pH-tolerant)                            | 29     | 54     | 74     | 60     | 68     | 56     | 50     |
-| _Weinland (grid cell, 356 m), winter chanterelle_ | 13     | 18     | 21     | 17     | 18     | 15     | 14     |
+| _Weinland (grid cell, 356 m), winter chanterelle_ | 15     | 19     | 21     | 17     | 18     | 15     | 14     |
 
 **Expectations, and what changed (Milestone 4 prep):**
 
@@ -89,7 +104,7 @@ Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
 - New check: **hedgehog**, which doesn't mind the soil, still goes from low to good (≥ 60) at the same spot. This shows the weather signal is intact.
 - The delay check now applies to hedgehog too.
 - Winter chanterelle outlasts chanterelle: on 26 Oct it's more than twice chanterelle's score, and chanterelle has fallen 30+ points from its peak.
-- The "Weinland stays lower" check covers winter chanterelle and hedgehog, **not chanterelle**. Since Milestone 4, Weinland uses the habitat of its nearest forest grid cell (1.2 km away): a neutral ash forest (29(7) Zweiblatt-Eschenmischwald) at 356 m with 24 % conifers. Chanterelle peaks about equal at both (Weinland 48, Ibergeregg 47), because Ibergeregg's limestone holds it back about as much as Weinland's dryness. Winter chanterelle (peak 21 vs 44) and hedgehog (54 vs 75) stay clearly lower in the lowland.
+- The "Weinland stays lower" check covers winter chanterelle and hedgehog, **not chanterelle**. Since Milestone 4, Weinland uses the habitat of its nearest forest grid cell (1.2 km away): a neutral ash forest (29(7) Zweiblatt-Eschenmischwald) at 356 m with 24 % conifers. Chanterelle peaks about equal at both (Weinland 48, Ibergeregg 50), because Ibergeregg's limestone holds it back about as much as Weinland's dryness. Winter chanterelle (peak 21 vs 44) and hedgehog (54 vs 75) stay clearly lower in the lowland.
 - The spec's "rise between ~20 and 26 Oct" still comes earlier with the real weather (14–18 Oct; see Milestone 2).
 
 ## User pins (Milestone 5)

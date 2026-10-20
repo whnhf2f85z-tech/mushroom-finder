@@ -55,19 +55,11 @@ describe('habitat H', () => {
     expect(a).toBeCloseTo(c);
   });
 
-  it('prefers partly open cells for parasol', () => {
-    const edge = habitatScore(
-      { ...IBERGEREGG, elevation: 800, ph_class: 'neutral', forest_pct: 40 },
-      sp('parasol'),
-      1,
-      cfg,
-    ).H;
-    const dense = habitatScore(
-      { ...IBERGEREGG, elevation: 800, ph_class: 'neutral', forest_pct: 100 },
-      sp('parasol'),
-      1,
-      cfg,
-    ).H;
+  it('applies a tree-cover preference (forest_pct range)', () => {
+    const edgeLover = { ...sp('parasol'), forest_pct: { min: 20, max: 60 } };
+    const base = { ...IBERGEREGG, elevation: 800, ph_class: 'neutral' as const };
+    const edge = habitatScore({ ...base, forest_pct: 40 }, edgeLover, 1, cfg).H;
+    const dense = habitatScore({ ...base, forest_pct: 100 }, edgeLover, 1, cfg).H;
     expect(edge).toBeGreaterThan(dense);
   });
 
