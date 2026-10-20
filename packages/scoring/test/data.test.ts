@@ -47,3 +47,33 @@ describe('data files', () => {
     expect(isClosedDay(rules, 'SZ', '2026-11-05')).toBe(false);
   });
 });
+
+describe('species safety data', () => {
+  const sp = (id: string) => species.find((s) => s.id === id)!;
+  const names = (id: string) =>
+    sp(id)
+      .lookalikes.map((l) => `${l.name} ${l.latin}`)
+      .join(' | ');
+
+  it('names the key dangerous look-alikes', () => {
+    expect(names('parasol')).toMatch(/Amanita phalloides/);
+    expect(names('parasol')).toMatch(/Lepiota/);
+    expect(names('morel')).toMatch(/Gyromitra/);
+    expect(names('chanterelle')).toMatch(/Hygrophoropsis/);
+    expect(names('honey_fungus')).toMatch(/Galerina/);
+    expect(sp('parasol').lookalikes.some((l) => l.danger === 'deadly')).toBe(true);
+  });
+
+  it('warns that honey fungus and morels must be cooked thoroughly', () => {
+    expect(sp('honey_fungus').safety).toMatch(/cooked thoroughly/);
+    expect(sp('morel').safety).toMatch(/cooked thoroughly/);
+  });
+
+  it('never explains how to tell look-alikes apart', () => {
+    for (const s of species)
+      for (const l of s.lookalikes)
+        expect(`${l.name} ${l.latin}`, s.id).not.toMatch(
+          /pores|cap\b.*like|gills|smell|colour|color/i,
+        );
+  });
+});

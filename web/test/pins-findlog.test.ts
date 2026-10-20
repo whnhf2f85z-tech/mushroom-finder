@@ -36,6 +36,7 @@ const entry = (over: Partial<FindEntry> = {}): FindEntry => ({
   quantityG: 350,
   note: 'Under spruce, "lots" of moss, near path',
   score: { value: 64, components: { S: 0.9, M: 0.8, T: 1, F: 1, D: 0.9, H: 1 }, source: 'daily' },
+  pending: false,
   created: '2026-10-18T15:00:00.000Z',
   ...over,
 });

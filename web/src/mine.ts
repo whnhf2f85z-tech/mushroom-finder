@@ -22,6 +22,18 @@ import { esc, shortDate } from './format.js';
 import { scorePlaceLive } from './live.js';
 import { cantonAt, elevationAt, pinHabitat, reserveAt } from './pinplace.js';
 import { exportPins, importPins, loadPins, newId, savePins } from './pins.js';
+import { requestPersist } from './storage.js';
+import { readStore, writeStore } from './store.js';
+
+const EXPORT_KEY = 'mf.lastExport.v1';
+const REMIND_DAYS = 14;
+
+/** Give up on a score after a few seconds (e.g. offline): the visit is saved and filled in later. */
+const withTimeout = <T>(p: Promise<T>, ms: number): Promise<T> =>
+  Promise.race([
+    p,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms)),
+  ]);
 
 export type Place = FindEntry['place'];
 export type ScoreCapture = (date: string, speciesId: string) => Promise<FindEntry['score']>;
@@ -42,6 +54,8 @@ export interface MineHooks {
   /** The detail panel was closed: show the overview again. */
   closed: () => void;
   status: (msg: string) => void;
+  /** Score capture for spots and squares (from the published scores); pins are handled here. */
+  captureFor: (place: Place) => ScoreCapture | null;
 }
 
 interface PinScores {
@@ -373,6 +387,7 @@ export function setupMine(h: MineHooks) {
       created: new Date().toISOString(),
     };
     pins = [...pins, pin];
+    void requestPersist();
     if (!savePins(pins))
       h.status(
         'Your browser did not allow saving: the pin is only kept until you close this page.',
@@ -399,7 +414,10 @@ export function setupMine(h: MineHooks) {
   }
   $('pin-add').addEventListener('click', () => {
     setAddMode(true);
-    $('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('map').scrollIntoView({
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'center',
+    });
   });
   $('add-cancel').addEventListener('click', () => setAddMode(false));
   $('pin-coords').addEventListener('click', () => openPinDialog(null));
@@ -486,11 +504,14 @@ export function setupMine(h: MineHooks) {
     const qtyRaw = ($('visit-qty') as HTMLInputElement).value;
     const qty = qtyRaw === '' ? null : Math.max(0, Math.round(Number(qtyRaw)));
     ($('visit-save') as HTMLButtonElement).disabled = true;
-    const score = await visitCapture(date, species).catch(() => ({
-      value: null,
-      components: null,
-      source: 'none' as const,
-    }));
+    const none = { value: null, components: null, source: 'none' as const };
+    let failed = !navigator.onLine;
+    const score = failed
+      ? none
+      : await withTimeout(visitCapture(date, species), 8000).catch(() => {
+          failed = true;
+          return none;
+        });
     const entry: FindEntry = {
       id: newId('visit'),
       date,
@@ -502,22 +523,88 @@ export function setupMine(h: MineHooks) {
       quantityG: Number.isFinite(qty) ? qty : null,
       note: ($('visit-note') as HTMLTextAreaElement).value.trim(),
       score,
+      // No score because we're offline (or the request failed): fill it in later.
+      pending: score.value === null && failed,
       created: new Date().toISOString(),
     };
     log = [...log, entry];
+    void requestPersist();
     if (!saveLog(log))
       h.status(
         'Your browser did not allow saving: the visit is only kept until you close this page.',
       );
     vdialog.close();
     renderLog();
-    h.status(`Visit saved${score.value !== null ? ` (score that day: ${score.value})` : ''}.`);
+    h.status(
+      entry.pending
+        ? 'Visit saved. You seem to be offline: its score will be added when you are back online.'
+        : `Visit saved${score.value !== null ? ` (score that day: ${score.value})` : ''}.`,
+    );
     // Re-open the same detail so the new marker shows on its chart.
     if (selectedPin) openPin(selectedPin, false);
     else document.dispatchEvent(new CustomEvent('mf:visit-saved'));
   });
 
+  function markExported(): void {
+    writeStore(EXPORT_KEY, new Date().toISOString());
+    renderBackup();
+  }
+
+  /** "Last exported" and a gentle reminder after two weeks (the log only lives on this device). */
+  function renderBackup(): void {
+    const el = $('log-backup');
+    if (!log.length) {
+      el.textContent = '';
+      return;
+    }
+    const last = readStore<string | null>(
+      EXPORT_KEY,
+      (v) => (typeof v === 'string' ? v : null),
+      null,
+    );
+    const days = last ? (Date.now() - Date.parse(last)) / 86_400_000 : Infinity;
+    const when = last ? `Last exported: ${shortDate(last.slice(0, 10))}.` : 'Not exported yet.';
+    el.innerHTML =
+      days > REMIND_DAYS
+        ? `<span class="warning-box small">${when} Your find log is only on this device: export a copy now and then so you don't lose it.</span>`
+        : when;
+  }
+
+  /**
+   * Fill in the score of visits logged offline: published scores for spots and squares (if the date is still
+   * in the 14-day window), live scores for pins. Visits whose date is no longer available stay without a score.
+   */
+  async function fillPending(): Promise<void> {
+    const todo = log.filter((e) => e.pending);
+    if (!todo.length || !navigator.onLine || !h.latest()) return;
+    if (todo.some((e) => e.place.kind === 'pin')) await scoreAll();
+    const ds = dates();
+    let filled = 0;
+    for (const e of todo) {
+      const pin = e.place.kind === 'pin' ? pins.find((p) => p.id === e.place.id) : undefined;
+      const capture =
+        e.place.kind === 'pin' ? (pin ? captureForPin(pin) : null) : h.captureFor(e.place);
+      if (!capture || !ds.includes(e.date)) {
+        e.pending = false; // too old (or the pin was deleted): it stays without a score
+        continue;
+      }
+      try {
+        const score = await withTimeout(capture(e.date, e.species), 10_000);
+        e.score = score;
+        e.pending = false;
+        if (score.value !== null) filled++;
+      } catch {
+        // Still no luck: try again next time.
+      }
+    }
+    log = [...log];
+    saveLog(log);
+    renderLog();
+    if (filled) h.status(`Added the score to ${filled} visit(s) logged offline.`);
+  }
+
   function renderLog(): void {
+    renderBackup();
     const name = (id: string) => h.species.find((s) => s.id === id)?.name ?? id;
     $('log-list').innerHTML = log.length
       ? sortLog(log)
@@ -525,7 +612,7 @@ export function setupMine(h: MineHooks) {
           .map(
             (e) =>
               `<li><div><span class="found">${e.found ? '▲ Found' : '✕ Not found'}</span> ${esc(name(e.species))}${e.quantityG ? ` · ${e.quantityG} g` : ''}
-              <span class="meta">${shortDate(e.date)} · ${esc(e.place.name)}${e.score.value !== null ? ` · score ${e.score.value}` : ''}</span>
+              <span class="meta">${shortDate(e.date)} · ${esc(e.place.name)}${e.score.value !== null ? ` · score ${e.score.value}` : e.pending ? ' · score added when online' : ''}</span>
               ${e.note ? `<span class="meta">${esc(e.note)}</span>` : ''}</div>
               <button type="button" class="link-button" data-del="${e.id}" aria-label="Delete this visit">Delete</button></li>`,
           )
@@ -550,10 +637,12 @@ export function setupMine(h: MineHooks) {
       exportLogCsv(log, h.species),
       'text/csv;charset=utf-8',
     );
+    markExported();
   });
   $('log-json').addEventListener('click', () => {
     if (!log.length) return h.status('The find log is empty.');
     download(`mushroom-finder-findlog-${h.today}.json`, exportLogJson(log), 'application/json');
+    markExported();
   });
   $('log-import').addEventListener('click', async () => {
     const text = await pickFile();
@@ -581,9 +670,11 @@ export function setupMine(h: MineHooks) {
   }
 
   refresh();
+  window.addEventListener('online', () => void fillPending());
   return {
     refresh,
     scoreAll,
+    fillPending,
     openVisit,
     visitsFor,
     isPinOpen: () => selectedPin !== null,

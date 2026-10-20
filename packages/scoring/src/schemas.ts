@@ -50,7 +50,18 @@ export const SpeciesSchema = z.object({
     .partial()
     .optional(),
   notes: z.string(),
-  lookalikes: z.string(),
+  /** Look-alikes by name and danger only: the app never explains how to tell mushrooms apart. */
+  lookalikes: z
+    .array(
+      z.object({
+        name: z.string(),
+        latin: z.string(),
+        danger: z.enum(['deadly', 'poisonous', 'inedible']),
+      }),
+    )
+    .min(1),
+  /** Extra safety note (e.g. must be cooked thoroughly); empty if none. */
+  safety: z.string(),
 });
 
 export const SpeciesFileSchema = z.object({

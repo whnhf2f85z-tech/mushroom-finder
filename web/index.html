@@ -8,132 +8,142 @@
       content="How likely you are to find edible mushrooms right now in Zürich and Schwyz."
     />
     <meta name="theme-color" content="#2f5d3a" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M8 30a24 20 0 0 1 48 0z' fill='%23b2182b'/%3E%3Crect x='24' y='30' width='16' height='22' rx='6' fill='%23f3ead8'/%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
     <title>Mushroom Finder</title>
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Mushrooms" />
   </head>
   <body>
+    <a class="skip-link" href="#spot-list">Skip to the spot list</a>
     <header class="topbar">
       <div>
         <h1>Mushroom Finder</h1>
         <p class="sub">Zürich &amp; Schwyz · <span id="updated">loading scores…</span></p>
       </div>
       <div id="rules-today" class="rules-today" aria-live="polite"></div>
+      <nav class="tabs" aria-label="Sections">
+        <a href="#map" data-page="map" aria-current="page">Map</a>
+        <a href="#species" data-page="species">Species</a>
+        <a href="#log" data-page="log">Find log</a>
+        <a href="#about" data-page="about">About</a>
+      </nav>
     </header>
+    <p id="offline" class="notice offline" role="status" hidden></p>
     <p id="status" class="notice" role="status" hidden></p>
     <p id="add-hint" class="notice add-hint" role="status" hidden>
       Tap the map where you want your pin.
       <button type="button" id="add-cancel" class="link-button">Cancel</button>
     </p>
-    <div class="controls">
-      <div class="species-control">
-        <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
-        <button type="button" id="edit-favourites" class="link-button">Edit favourites</button>
-      </div>
-      <div class="view-control" role="radiogroup" aria-label="Show on the map">
-        <button type="button" class="chip" role="radio" aria-checked="false" data-view="grid">
-          Squares
-        </button>
-        <button type="button" class="chip" role="radio" aria-checked="false" data-view="spots">
-          Spots
-        </button>
-        <button type="button" class="chip" role="radio" aria-checked="true" data-view="both">
-          Both
-        </button>
-      </div>
-      <div class="day-control">
-        <label for="day" id="day-label">Today</label>
-        <input id="day" type="range" min="0" max="16" step="1" value="13" />
-      </div>
-    </div>
-    <main class="layout">
-      <div id="map" class="map" aria-label="Map of spots"></div>
-      <aside class="panel">
-        <section id="detail" class="detail" hidden aria-live="polite"></section>
-        <div id="overview" class="overview">
-          <section aria-labelledby="spots-h">
-            <h2 id="spots-h">Spots</h2>
-            <ul id="spot-list" class="spot-list"></ul>
-          </section>
-          <section aria-labelledby="pins-h">
-            <h2 id="pins-h">My pins</h2>
-            <p class="small">
-              Your own places, stored on this device. Long-press (or right-click) the map, or use
-              the buttons.
-            </p>
-            <div class="button-row">
-              <button type="button" class="action-button" id="pin-add">Add pin on the map</button>
-              <button type="button" class="action-button secondary" id="pin-coords">
-                Enter coordinates
-              </button>
-            </div>
-            <ul id="pin-list" class="spot-list"></ul>
-            <div class="button-row">
-              <button type="button" class="link-button" id="pin-export">Export pins</button>
-              <button type="button" class="link-button" id="pin-import">Import pins</button>
-            </div>
-          </section>
-          <section aria-labelledby="log-h">
-            <h2 id="log-h">Find log</h2>
-            <p class="small">
-              Your visits, stored on this device, with the score at the time. Use "Log a visit" in a
-              spot, square or pin.
-            </p>
-            <ul id="log-list" class="log-list"></ul>
-            <div class="button-row">
-              <button type="button" class="link-button" id="log-csv">Export CSV</button>
-              <button type="button" class="link-button" id="log-json">Export JSON</button>
-              <button type="button" class="link-button" id="log-import">Import JSON</button>
-            </div>
-          </section>
-          <section aria-labelledby="cells-h" id="cells-section" hidden>
-            <h2 id="cells-h">Best forest squares</h2>
-            <p class="small">1 km squares with at least 20 % tree cover in Zürich and Schwyz.</p>
-            <ul id="cell-list" class="spot-list"></ul>
-          </section>
-          <section aria-labelledby="legend-h">
-            <h2 id="legend-h">Score legend</h2>
-            <ul id="legend" class="legend"></ul>
-            <ul class="legend legend-extra">
-              <li>
-                <span class="swatch swatch-hatch" aria-hidden="true"></span>No picking (reserve)
-              </li>
-              <li>
-                <span class="swatch swatch-dashed" aria-hidden="true"></span>Protected area: check
-                the rules
-              </li>
-              <li>
-                <span class="swatch swatch-closed" aria-hidden="true"></span>Closed that day (ZH
-                rule)
-              </li>
-            </ul>
-            <p class="small">
-              0–100: how likely you are to find the species right now, from weather, season and
-              habitat. Estimates, not a promise. Zoom in to see the numbers on the squares.
-            </p>
-          </section>
-          <section aria-labelledby="rules-h">
-            <h2 id="rules-h">Canton rules</h2>
-            <div id="rules"></div>
-          </section>
-          <section class="disclaimer" aria-labelledby="about-h">
-            <h2 id="about-h">About</h2>
-            <p>
-              <strong>This app does not identify mushrooms.</strong> Check every find at an official
-              mushroom control (Pilzkontrolle).
-            </p>
-            <p class="small">
-              Weather: <a href="https://open-meteo.com">Open-Meteo</a> (CC BY 4.0). Base map and
-              canton borders © <a href="https://www.swisstopo.admin.ch">swisstopo</a>. Map library
-              <a href="https://leafletjs.com">Leaflet</a>, charts
-              <a href="https://github.com/leeoniya/uPlot">uPlot</a>. Source on
-              <a href="https://github.com/whnhf2f85z-tech/mushroom-finder">GitHub</a>.
-            </p>
-          </section>
+    <div id="page-map" class="page-map">
+      <div class="controls">
+        <div class="species-control">
+          <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
+          <button type="button" id="edit-favourites" class="link-button">Edit favourites</button>
         </div>
-      </aside>
+        <div class="view-control" role="radiogroup" aria-label="Show on the map">
+          <button type="button" class="chip" role="radio" aria-checked="false" data-view="grid">
+            Squares
+          </button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-view="spots">
+            Spots
+          </button>
+          <button type="button" class="chip" role="radio" aria-checked="true" data-view="both">
+            Both
+          </button>
+        </div>
+        <div class="day-control">
+          <label for="day" id="day-label">Today</label>
+          <input id="day" type="range" min="0" max="16" step="1" value="13" />
+        </div>
+      </div>
+      <main class="layout">
+        <div id="map" class="map" aria-label="Map of spots"></div>
+        <aside class="panel">
+          <section id="detail" class="detail" hidden aria-live="polite"></section>
+          <div id="overview" class="overview">
+            <section aria-labelledby="spots-h">
+              <h2 id="spots-h">Spots</h2>
+              <ul id="spot-list" class="spot-list" tabindex="-1"></ul>
+            </section>
+            <section aria-labelledby="pins-h">
+              <h2 id="pins-h">My pins</h2>
+              <p class="small">
+                Your own places, stored on this device. Long-press (or right-click) the map, or use
+                the buttons.
+              </p>
+              <div class="button-row">
+                <button type="button" class="action-button" id="pin-add">Add pin on the map</button>
+                <button type="button" class="action-button secondary" id="pin-coords">
+                  Enter coordinates
+                </button>
+              </div>
+              <ul id="pin-list" class="spot-list"></ul>
+              <div class="button-row">
+                <button type="button" class="link-button" id="pin-export">Export pins</button>
+                <button type="button" class="link-button" id="pin-import">Import pins</button>
+              </div>
+            </section>
+            <section aria-labelledby="cells-h" id="cells-section" hidden>
+              <h2 id="cells-h">Best forest squares</h2>
+              <p class="small">1 km squares with at least 20 % tree cover in Zürich and Schwyz.</p>
+              <ul id="cell-list" class="spot-list"></ul>
+            </section>
+            <section aria-labelledby="legend-h">
+              <h2 id="legend-h">Score legend</h2>
+              <ul id="legend" class="legend"></ul>
+              <ul class="legend legend-extra">
+                <li>
+                  <span class="swatch swatch-hatch" aria-hidden="true"></span>No picking (reserve)
+                </li>
+                <li>
+                  <span class="swatch swatch-dashed" aria-hidden="true"></span>Protected area: check
+                  the rules
+                </li>
+                <li>
+                  <span class="swatch swatch-closed" aria-hidden="true"></span>Closed that day (ZH
+                  rule)
+                </li>
+              </ul>
+              <p class="small">
+                0–100: how likely you are to find the species right now, from weather, season and
+                habitat. Estimates, not a promise. Zoom in to see the numbers on the squares.
+              </p>
+            </section>
+            <section aria-labelledby="rules-h">
+              <h2 id="rules-h">Canton rules</h2>
+              <div id="rules"></div>
+            </section>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <main id="page-species" class="page" hidden aria-labelledby="species-h">
+      <h2 id="species-h">Species</h2>
+      <p class="warning-box">
+        <strong>This app does not identify mushrooms.</strong> The look-alikes below are listed so
+        you know what is at stake, not to tell mushrooms apart. Check every find at an official
+        mushroom control (Pilzkontrolle).
+      </p>
+      <div id="species-list" class="species-list"></div>
+    </main>
+    <main id="page-log" class="page" hidden aria-labelledby="log-h">
+      <h2 id="log-h">Find log</h2>
+      <p class="small">
+        Your visits, stored on this device, with the score at the time. Use "Log a visit" in a spot,
+        square or pin on the map. It also works without a connection: the score is filled in later.
+      </p>
+      <p id="log-backup" class="small" aria-live="polite"></p>
+      <div class="button-row">
+        <button type="button" class="action-button" id="log-csv">Export CSV</button>
+        <button type="button" class="action-button secondary" id="log-json">Export JSON</button>
+        <button type="button" class="action-button secondary" id="log-import">Import JSON</button>
+      </div>
+      <ul id="log-list" class="log-list"></ul>
+    </main>
+    <main id="page-about" class="page" hidden aria-labelledby="about-page-h">
+      <h2 id="about-page-h">About</h2>
+      <div id="about"></div>
     </main>
     <input type="file" id="file-input" accept="application/json,.json" hidden />
     <dialog id="pin-dialog" aria-labelledby="pin-h">

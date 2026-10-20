@@ -24,7 +24,10 @@ import rulesJson from '../../data/rules.json';
 import speciesJson from '../../data/species.json';
 import spotsJson from '../../data/spots.json';
 import { closeCellDetail, renderCellDetail, scoreCellLive } from './celldetail.js';
-import { setupMine, type ScoreCapture } from './mine.js';
+import { renderAbout } from './about.js';
+import { setupMine, type Place, type ScoreCapture } from './mine.js';
+import { setupPages } from './pages.js';
+import { renderSpeciesPage } from './speciespage.js';
 import { closeDetail, renderDetail, resetChartLines } from './detail.js';
 import {
   GridLayer,
@@ -499,6 +502,15 @@ mine = setupMine({
     refresh();
   },
   status: showStatus,
+  captureFor: (place: Place) => {
+    if (place.kind === 'spot') return captureSpot(place.id);
+    if (place.kind === 'square' && grid) {
+      const [e, n] = place.id.split('-').map(Number);
+      const i = grid.cells.e.findIndex((x, k) => x === e && grid!.cells.n[k] === n);
+      return i >= 0 ? captureCell(i) : null;
+    }
+    return null;
+  },
 });
 
 const cellPlace = (i: number) => {
@@ -556,6 +568,36 @@ document.addEventListener('mf:visit-saved', () => {
   if (state.selected) select(state.selected);
   else if (state.selectedCell !== null) void openCell(state.selectedCell, false);
 });
+
+// --- Pages, offline ----------------------------------------------------------
+
+renderSpeciesPage($('species-list'), species);
+renderAbout($('about'), {
+  onFavourites: () => $('edit-favourites').click(),
+  built: import.meta.env.VITE_BUILD ?? 'dev',
+});
+setupPages((p) => {
+  if (p === 'map') map.invalidateSize();
+});
+
+/** Offline banner: the app keeps working with the scores saved on this device. */
+function renderOnline(): void {
+  const el = $('offline');
+  el.hidden = navigator.onLine;
+  if (!navigator.onLine)
+    el.textContent = `You're offline: showing the scores saved on this device${latest ? ` (from ${dateTime(latest.generatedAt)})` : ''}. Visits you log are kept and get their score when you're back online.`;
+}
+window.addEventListener('online', () => {
+  renderOnline();
+  void mine?.scoreAll();
+});
+window.addEventListener('offline', renderOnline);
+
+/** Load every day of the grid once, so the whole 14-day window (and the forecast) is cached for offline use. */
+function prefetchGridDays(): void {
+  if (!grid || !latest || !navigator.onLine) return;
+  for (const d of [...latest.days, ...latest.forecastDays]) void loadGridDay(d, grid.count);
+}
 
 // --- Data ------------------------------------------------------------------
 
@@ -617,6 +659,10 @@ void loadLatest()
   .finally(() =>
     whenIdle(() => {
       // Pins are scored once the reserves are known (for their protection flag).
-      void loadReserves().finally(() => void mine?.scoreAll());
+      void loadReserves().finally(() => {
+        renderOnline();
+        prefetchGridDays();
+        void mine?.scoreAll().then(() => mine?.fillPending());
+      });
     }),
   );

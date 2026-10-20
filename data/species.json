@@ -6,214 +6,569 @@
       "name": "Chanterelle",
       "german": "Eierschwamm",
       "latin": "Cantharellus cibarius",
-      "season": { "start": "05-25", "peakStart": "07-01", "peakEnd": "10-15", "end": "11-20" },
+      "season": {
+        "start": "05-25",
+        "peakStart": "07-01",
+        "peakEnd": "10-15",
+        "end": "11-20"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "fir", "beech", "oak"],
-      "conifer_pct": { "min": 0, "max": 100 },
-      "forest_pct": { "min": 40, "max": 100 },
-      "ph": { "acidic": 1, "neutral": 0.6, "calcareous": 0.3, "unknown": 0.7 },
-      "elevation": { "min": 400, "max": 1600 },
-      "temperature": { "source": "air", "min": 10, "max": 20, "tail": 6 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 40,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 0.6,
+        "calcareous": 0.3,
+        "unknown": 0.7
+      },
+      "elevation": {
+        "min": 400,
+        "max": 1600
+      },
+      "temperature": {
+        "source": "air",
+        "min": 10,
+        "max": 20,
+        "tail": 6
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 7, "max": 14 },
+      "rainLag": {
+        "min": 7,
+        "max": 14
+      },
       "fullRainMm": 40,
       "frostTolerance": "low",
       "notes": "Mossy, acidic spruce-fir and beech forests, often on slopes and near paths. Fruits in flushes 1–2 weeks after good rain.",
-      "lookalikes": "False chanterelle (Hygrophoropsis aurantiaca) and the poisonous jack-o'-lantern (Omphalotus), which grows in clusters on wood."
+      "lookalikes": [
+        {
+          "name": "Jack-o'-lantern",
+          "latin": "Omphalotus olearius",
+          "danger": "poisonous"
+        },
+        {
+          "name": "False chanterelle",
+          "latin": "Hygrophoropsis aurantiaca",
+          "danger": "inedible"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "porcini",
       "name": "Porcini",
       "german": "Steinpilz",
       "latin": "Boletus edulis",
-      "season": { "start": "06-20", "peakStart": "08-01", "peakEnd": "10-05", "end": "11-05" },
+      "season": {
+        "start": "06-20",
+        "peakStart": "08-01",
+        "peakEnd": "10-05",
+        "end": "11-05"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "beech", "fir"],
-      "conifer_pct": { "min": 0, "max": 100 },
-      "forest_pct": { "min": 40, "max": 100 },
-      "ph": { "acidic": 1, "neutral": 0.9, "calcareous": 0.5, "unknown": 0.75 },
-      "elevation": { "min": 500, "max": 1800 },
-      "temperature": { "source": "air", "min": 10, "max": 18, "tail": 5 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 40,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 0.9,
+        "calcareous": 0.5,
+        "unknown": 0.75
+      },
+      "elevation": {
+        "min": 500,
+        "max": 1800
+      },
+      "temperature": {
+        "source": "air",
+        "min": 10,
+        "max": 18,
+        "tail": 5
+      },
       "coolingBonus": 0.15,
-      "rainLag": { "min": 10, "max": 14 },
+      "rainLag": {
+        "min": 10,
+        "max": 14
+      },
       "fullRainMm": 45,
       "frostTolerance": "low",
       "notes": "Spruce and beech forests, especially at forest edges and in grassy clearings. A drop in temperature after warm, wet weather often starts a flush.",
-      "lookalikes": "Bitter bolete (Tylopilus felleus, pinkish pores, very bitter) and other boletes, some of them poisonous (e.g. Rubroboletus satanas)."
+      "lookalikes": [
+        {
+          "name": "Devil's bolete",
+          "latin": "Rubroboletus satanas",
+          "danger": "poisonous"
+        },
+        {
+          "name": "Bitter bolete",
+          "latin": "Tylopilus felleus",
+          "danger": "inedible"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "winter_chanterelle",
       "name": "Winter chanterelle",
       "german": "Trompetenpfifferling",
       "latin": "Craterellus tubaeformis",
-      "season": { "start": "08-20", "peakStart": "09-20", "peakEnd": "11-20", "end": "12-31" },
+      "season": {
+        "start": "08-20",
+        "peakStart": "09-20",
+        "peakEnd": "11-20",
+        "end": "12-31"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "fir"],
-      "conifer_pct": { "min": 50, "max": 100 },
-      "forest_pct": { "min": 50, "max": 100 },
-      "ph": { "acidic": 1, "neutral": 0.5, "calcareous": 0.2, "unknown": 0.6 },
-      "elevation": { "min": 600, "max": 1500 },
-      "temperature": { "source": "air", "min": 4, "max": 14, "tail": 5 },
+      "conifer_pct": {
+        "min": 50,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 50,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 0.5,
+        "calcareous": 0.2,
+        "unknown": 0.6
+      },
+      "elevation": {
+        "min": 600,
+        "max": 1500
+      },
+      "temperature": {
+        "source": "air",
+        "min": 4,
+        "max": 14,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 7, "max": 14 },
+      "rainLag": {
+        "min": 7,
+        "max": 14
+      },
       "fullRainMm": 40,
       "frostTolerance": "high",
       "notes": "Moist, mossy spruce-fir forests on acidic soil, often on rotting wood and along streams. Grows in large groups late in the year.",
-      "lookalikes": "Other small brown funnel-shaped mushrooms, some of them poisonous."
+      "lookalikes": [
+        {
+          "name": "Deadly webcap",
+          "latin": "Cortinarius rubellus",
+          "danger": "deadly"
+        },
+        {
+          "name": "Other small brown mushrooms of mossy conifer forests",
+          "latin": "",
+          "danger": "poisonous"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "horn_of_plenty",
       "name": "Horn of plenty",
       "german": "Totentrompete",
       "latin": "Craterellus cornucopioides",
-      "season": { "start": "07-20", "peakStart": "08-25", "peakEnd": "10-31", "end": "11-30" },
+      "season": {
+        "start": "07-20",
+        "peakStart": "08-25",
+        "peakEnd": "10-31",
+        "end": "11-30"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["beech", "oak"],
-      "conifer_pct": { "min": 0, "max": 40 },
-      "forest_pct": { "min": 50, "max": 100 },
-      "ph": { "acidic": 0.4, "neutral": 0.9, "calcareous": 1, "unknown": 0.65 },
-      "elevation": { "min": 400, "max": 1200 },
-      "temperature": { "source": "air", "min": 8, "max": 16, "tail": 5 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 40
+      },
+      "forest_pct": {
+        "min": 50,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 0.4,
+        "neutral": 0.9,
+        "calcareous": 1,
+        "unknown": 0.65
+      },
+      "elevation": {
+        "min": 400,
+        "max": 1200
+      },
+      "temperature": {
+        "source": "air",
+        "min": 8,
+        "max": 16,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 10, "max": 14 },
+      "rainLag": {
+        "min": 10,
+        "max": 14
+      },
       "fullRainMm": 40,
       "frostTolerance": "medium",
       "notes": "Beech forests on neutral to calcareous soil, hidden in leaf litter, often in groups along mossy banks.",
-      "lookalikes": "Hard to see rather than easy to confuse, but other dark, small mushrooms grow in the same places."
+      "lookalikes": [
+        {
+          "name": "Other small dark mushrooms of the leaf litter",
+          "latin": "",
+          "danger": "inedible"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "bay_bolete",
       "name": "Bay bolete",
       "german": "Maronenröhrling",
       "latin": "Imleria badia",
-      "season": { "start": "07-20", "peakStart": "08-25", "peakEnd": "10-31", "end": "11-30" },
+      "season": {
+        "start": "07-20",
+        "peakStart": "08-25",
+        "peakEnd": "10-31",
+        "end": "11-30"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "pine"],
-      "conifer_pct": { "min": 50, "max": 100 },
-      "forest_pct": { "min": 40, "max": 100 },
-      "ph": { "acidic": 1, "neutral": 0.6, "calcareous": 0.3, "unknown": 0.7 },
-      "elevation": { "min": 400, "max": 1500 },
-      "temperature": { "source": "air", "min": 8, "max": 16, "tail": 5 },
+      "conifer_pct": {
+        "min": 50,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 40,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 0.6,
+        "calcareous": 0.3,
+        "unknown": 0.7
+      },
+      "elevation": {
+        "min": 400,
+        "max": 1500
+      },
+      "temperature": {
+        "source": "air",
+        "min": 8,
+        "max": 16,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 7, "max": 12 },
+      "rainLag": {
+        "min": 7,
+        "max": 12
+      },
       "fullRainMm": 40,
       "frostTolerance": "medium",
       "notes": "Acidic spruce and pine forests, often among moss and needles, also on old stumps.",
-      "lookalikes": "Bitter bolete (Tylopilus felleus) and other brown boletes."
+      "lookalikes": [
+        {
+          "name": "Bitter bolete",
+          "latin": "Tylopilus felleus",
+          "danger": "inedible"
+        },
+        {
+          "name": "Other brown boletes",
+          "latin": "",
+          "danger": "inedible"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "hedgehog",
       "name": "Hedgehog mushroom",
       "german": "Semmelstoppelpilz",
       "latin": "Hydnum repandum",
-      "season": { "start": "07-20", "peakStart": "08-25", "peakEnd": "11-10", "end": "12-10" },
+      "season": {
+        "start": "07-20",
+        "peakStart": "08-25",
+        "peakEnd": "11-10",
+        "end": "12-10"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["beech", "spruce"],
-      "conifer_pct": { "min": 0, "max": 100 },
-      "forest_pct": { "min": 40, "max": 100 },
-      "ph": { "acidic": 0.9, "neutral": 1, "calcareous": 0.9, "unknown": 0.85 },
-      "elevation": { "min": 400, "max": 1500 },
-      "temperature": { "source": "air", "min": 6, "max": 16, "tail": 5 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 40,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 0.9,
+        "neutral": 1,
+        "calcareous": 0.9,
+        "unknown": 0.85
+      },
+      "elevation": {
+        "min": 400,
+        "max": 1500
+      },
+      "temperature": {
+        "source": "air",
+        "min": 6,
+        "max": 16,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 7, "max": 14 },
+      "rainLag": {
+        "min": 7,
+        "max": 14
+      },
       "fullRainMm": 40,
       "frostTolerance": "medium-high",
       "notes": "Beech and spruce forests on many soil types, often in rings or rows. Spines under the cap instead of gills.",
-      "lookalikes": "Other spined (tooth) fungi, some of them bitter or tough."
+      "lookalikes": [
+        {
+          "name": "Other tooth fungi",
+          "latin": "Sarcodon, Hydnellum",
+          "danger": "inedible"
+        }
+      ],
+      "safety": ""
     },
     {
       "id": "honey_fungus",
       "name": "Honey fungus",
       "german": "Hallimasch",
       "latin": "Armillaria spp.",
-      "season": { "start": "08-20", "peakStart": "09-15", "peakEnd": "11-15", "end": "12-10" },
+      "season": {
+        "start": "08-20",
+        "peakStart": "09-15",
+        "peakEnd": "11-15",
+        "end": "12-10"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["stumps", "all forest types"],
-      "conifer_pct": { "min": 0, "max": 100 },
-      "forest_pct": { "min": 20, "max": 100 },
-      "ph": { "acidic": 1, "neutral": 1, "calcareous": 1, "unknown": 1 },
-      "elevation": { "min": 300, "max": 1400 },
-      "temperature": { "source": "air", "min": 6, "max": 15, "tail": 5 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 20,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 1,
+        "calcareous": 1,
+        "unknown": 1
+      },
+      "elevation": {
+        "min": 300,
+        "max": 1400
+      },
+      "temperature": {
+        "source": "air",
+        "min": 6,
+        "max": 15,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 5, "max": 10 },
+      "rainLag": {
+        "min": 5,
+        "max": 10
+      },
       "fullRainMm": 30,
       "frostTolerance": "high",
-      "habitatWeights": { "ph": 0.05 },
-      "notes": "Dense clusters on stumps, roots and dead wood in all forest types. Depends little on soil. Raw or undercooked it causes stomach upsets.",
-      "lookalikes": "The deadly funeral bell (Galerina marginata), which also grows in clusters on wood."
+      "habitatWeights": {
+        "ph": 0.05
+      },
+      "notes": "Dense clusters on stumps, roots and dead wood in all forest types. Depends little on soil.",
+      "lookalikes": [
+        {
+          "name": "Funeral bell",
+          "latin": "Galerina marginata",
+          "danger": "deadly"
+        },
+        {
+          "name": "Sulphur tuft",
+          "latin": "Hypholoma fasciculare",
+          "danger": "poisonous"
+        }
+      ],
+      "safety": "Honey fungus must always be cooked thoroughly: raw or undercooked it causes poisoning, and some people react even to well-cooked honey fungus."
     },
     {
       "id": "parasol",
       "name": "Parasol",
       "german": "Parasol",
       "latin": "Macrolepiota procera",
-      "season": { "start": "06-20", "peakStart": "07-25", "peakEnd": "10-05", "end": "11-01" },
+      "season": {
+        "start": "06-20",
+        "peakStart": "07-25",
+        "peakEnd": "10-05",
+        "end": "11-01"
+      },
       "elevationShift": {
         "referenceElevation": 1000,
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
       "hosts": ["forest edges", "clearings", "meadows"],
-      "conifer_pct": { "min": 0, "max": 100 },
-      "forest_pct": { "min": 20, "max": 60 },
-      "ph": { "acidic": 0.5, "neutral": 1, "calcareous": 1, "unknown": 0.75 },
-      "elevation": { "min": 300, "max": 1200 },
-      "temperature": { "source": "air", "min": 12, "max": 20, "tail": 5 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 100
+      },
+      "forest_pct": {
+        "min": 20,
+        "max": 60
+      },
+      "ph": {
+        "acidic": 0.5,
+        "neutral": 1,
+        "calcareous": 1,
+        "unknown": 0.75
+      },
+      "elevation": {
+        "min": 300,
+        "max": 1200
+      },
+      "temperature": {
+        "source": "air",
+        "min": 12,
+        "max": 20,
+        "tail": 5
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 7, "max": 10 },
+      "rainLag": {
+        "min": 7,
+        "max": 10
+      },
       "fullRainMm": 35,
       "frostTolerance": "low",
-      "habitatWeights": { "host": 0.1, "forest": 0.35 },
+      "habitatWeights": {
+        "host": 0.1,
+        "forest": 0.35
+      },
       "notes": "Forest edges, clearings and meadows next to forest, rarely in dense forest.",
-      "lookalikes": "Small, deadly Lepiota species, the shaggy parasol (Chlorophyllum) and, when young, the deadly death cap (Amanita phalloides)."
+      "lookalikes": [
+        {
+          "name": "Death cap (young)",
+          "latin": "Amanita phalloides",
+          "danger": "deadly"
+        },
+        {
+          "name": "Small Lepiota species",
+          "latin": "Lepiota spp., e.g. L. brunneoincarnata",
+          "danger": "deadly"
+        },
+        {
+          "name": "Panther cap",
+          "latin": "Amanita pantherina",
+          "danger": "poisonous"
+        },
+        {
+          "name": "Shaggy parasols",
+          "latin": "Chlorophyllum spp.",
+          "danger": "poisonous"
+        }
+      ],
+      "safety": "Some of its look-alikes are deadly. Small parasol-like mushrooms are especially dangerous."
     },
     {
       "id": "morel",
       "name": "Morel",
       "german": "Morchel",
       "latin": "Morchella spp.",
-      "season": { "start": "03-01", "peakStart": "03-25", "peakEnd": "04-30", "end": "05-31" },
-      "elevationShift": { "referenceElevation": 600, "startDaysPer100m": 5, "endDaysPer100m": 5 },
+      "season": {
+        "start": "03-01",
+        "peakStart": "03-25",
+        "peakEnd": "04-30",
+        "end": "05-31"
+      },
+      "elevationShift": {
+        "referenceElevation": 600,
+        "startDaysPer100m": 5,
+        "endDaysPer100m": 5
+      },
       "hosts": ["ash", "elm", "riparian forest", "gravel"],
-      "conifer_pct": { "min": 0, "max": 30 },
-      "forest_pct": { "min": 20, "max": 100 },
-      "ph": { "acidic": 0.2, "neutral": 0.6, "calcareous": 1, "unknown": 0.5 },
-      "elevation": { "min": 300, "max": 1000 },
-      "temperature": { "source": "soil", "min": 8, "max": 12, "tail": 4 },
+      "conifer_pct": {
+        "min": 0,
+        "max": 30
+      },
+      "forest_pct": {
+        "min": 20,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 0.2,
+        "neutral": 0.6,
+        "calcareous": 1,
+        "unknown": 0.5
+      },
+      "elevation": {
+        "min": 300,
+        "max": 1000
+      },
+      "temperature": {
+        "source": "soil",
+        "min": 8,
+        "max": 12,
+        "tail": 4
+      },
       "coolingBonus": 0,
-      "rainLag": { "min": 5, "max": 10 },
+      "rainLag": {
+        "min": 5,
+        "max": 10
+      },
       "fullRainMm": 30,
       "frostTolerance": "low",
       "notes": "Spring only. Ash and elm in riverside forests, gravel banks and calcareous soil, once the soil warms to about 8–12 °C. In Schwyz the limit is 1 kg of morels per person per day.",
-      "lookalikes": "The deadly false morel (Gyromitra esculenta), with a brain-like, not honeycomb, cap."
+      "lookalikes": [
+        {
+          "name": "False morel",
+          "latin": "Gyromitra esculenta",
+          "danger": "deadly"
+        }
+      ],
+      "safety": "Morels must be cooked thoroughly: raw or undercooked they are poisonous."
     }
   ]
 }

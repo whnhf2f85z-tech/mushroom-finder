@@ -867,3 +867,138 @@ dialog::backdrop {
   gap: 0.3rem;
   font-weight: 400 !important;
 }
+
+/* Pages and navigation */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  width: 100%;
+  overflow-x: auto;
+}
+.tabs a {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.tabs a[aria-current='page'] {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+.tabs a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (min-width: 900px) {
+  .tabs {
+    width: auto;
+  }
+}
+.page {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 1rem 16px 3rem;
+}
+.page h2 {
+  font-size: 1.2rem;
+}
+.page h3 {
+  font-size: 1rem;
+  margin: 1.2rem 0 0.4rem;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 2000;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+.warning-box {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+}
+.species-list {
+  display: grid;
+  gap: 0.9rem;
+}
+.species-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+}
+.species-card h3 {
+  margin: 0 0 0.3rem;
+}
+.species-card p {
+  margin: 0.35rem 0;
+}
+.lookalikes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.3rem 0;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.88rem;
+}
+.danger {
+  display: inline-block;
+  min-width: 5.2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  margin-right: 0.3rem;
+}
+.danger-deadly {
+  background: #b2182b;
+  color: #fff;
+}
+.danger-poisonous {
+  background: #ef8a62;
+  color: #1a1a1a;
+}
+.danger-inedible {
+  background: var(--grid);
+  color: var(--text);
+}
+.control-note {
+  border-top: 1px solid var(--border);
+  padding-top: 0.4rem;
+}
+.offline {
+  background: #dbe7f5;
+  color: #13304f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .offline {
+    background: #1d2c3d;
+    color: #cfe0f2;
+  }
+}
+:root[data-theme='dark'] .offline {
+  background: #1d2c3d;
+  color: #cfe0f2;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+.plain {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}

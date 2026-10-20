@@ -250,6 +250,8 @@ export const FindEntrySchema = z.object({
     /** "daily" = from the published scores, "live" = calculated in the browser, "none" = not available. */
     source: z.enum(['daily', 'live', 'none']),
   }),
+  /** Logged without a connection: the score is filled in automatically when the app is next online. */
+  pending: z.boolean().default(false),
   created: z.string(),
 });
 
