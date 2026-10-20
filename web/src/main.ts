@@ -116,7 +116,14 @@ L.control
   )
   .addTo(map);
 
-map.fitBounds(L.latLngBounds(spots.map((s) => [s.lat, s.lon] as [number, number])).pad(0.25));
+// Frame ZH + SZ. Refit once layout and styles have settled, otherwise Leaflet can measure a wrong size.
+const ZH_SZ_BOUNDS = L.latLngBounds([46.93, 8.35], [47.7, 9.0]);
+const frame = (): void => {
+  map.invalidateSize();
+  map.fitBounds(ZH_SZ_BOUNDS);
+};
+frame();
+if (document.readyState !== 'complete') window.addEventListener('load', frame, { once: true });
 
 // --- Panel -----------------------------------------------------------------
 
