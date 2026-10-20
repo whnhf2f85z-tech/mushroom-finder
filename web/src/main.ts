@@ -252,18 +252,17 @@ $('edit-favourites').addEventListener('click', () => {
   dialog.showModal();
 });
 $('fav-reset').addEventListener('click', () => renderFavList(DEFAULT_FAVOURITES));
+// Save updates the map directly instead of waiting for the dialog's close event, which isn't reliable.
 $('fav-save').addEventListener('click', (e) => {
+  e.preventDefault();
   const ids = [...favList.querySelectorAll<HTMLInputElement>('input:checked')].map((i) => i.value);
   if (ids.length === 0) {
-    e.preventDefault();
     $('fav-error').hidden = false;
     return;
   }
   favourites = ids;
   saveFavourites(ids);
-});
-dialog.addEventListener('close', () => {
-  if (dialog.returnValue !== 'save') return;
+  dialog.close('save');
   resetChartLines();
   refresh();
   if (state.selected) select(state.selected);
