@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "reserves": [
+    {
+      "id": "rothenthurm",
+      "name": "Rothenthurm moorland reserves",
+      "canton": "SZ",
+      "lat": 47.1,
+      "lon": 8.675,
+      "approximate": true,
+      "notes": "Approximate centre only. No picking in the listed reserves (e.g. Breitried, Schützenried). Real boundaries come in a later version."
+    },
+    {
+      "id": "schwantenau",
+      "name": "Schwantenau",
+      "canton": "SZ",
+      "lat": 47.145,
+      "lon": 8.735,
+      "approximate": true,
+      "notes": "Approximate centre only. Nature reserve, no picking. Roblosen is also nearby."
+    },
+    {
+      "id": "oberer-sihlsee",
+      "name": "Oberer Sihlsee",
+      "canton": "SZ",
+      "lat": 47.1,
+      "lon": 8.775,
+      "approximate": true,
+      "notes": "Approximate centre only. Nature reserve at the upper end of the lake, no picking."
+    }
+  ]
+}

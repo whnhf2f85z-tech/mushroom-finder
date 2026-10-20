@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "cantons": {
+    "SZ": {
+      "name": "Schwyz",
+      "maxKgPerPersonPerDay": 2,
+      "speciesLimits": [{ "species": "morel", "maxKg": 1 }],
+      "closedDaysOfMonth": [],
+      "groupPickingBanned": true,
+      "rules": [
+        "Max 2 kg of mushrooms per person per day, of which max 1 kg of morels.",
+        "No closed days (abolished in 2010).",
+        "Organised group picking events are not allowed.",
+        "No picking in the cantonal plant protection areas and the listed nature reserves."
+      ],
+      "noPickingAreas": [
+        "Cantonal plant protection areas (Pflanzenschutzreservate)",
+        "Schwantenau",
+        "Roblosen",
+        "Breitried",
+        "Schützenried",
+        "Oberer Sihlsee",
+        "Allmig",
+        "Nature protection zones of Lauerzersee-Sägel-Schutt, Bätzimatt, Nuoler Ried and Frauenwinkel"
+      ],
+      "cantonalMapUrl": "https://map.geo.sz.ch",
+      "sources": [
+        {
+          "title": "Kanton Schwyz – Pilz- und Beerensammeln",
+          "url": "https://www.sz.ch/umweltdepartement/amt-fuer-wald-und-natur/natur-und-landschaft/artenschutz/pilz-und-beerensammeln.html/8756-8758-8802-9447-9454-9459-10665-10668"
+        }
+      ],
+      "checked": "2026-10-20"
+    },
+    "ZH": {
+      "name": "Zürich",
+      "maxKgPerPersonPerDay": 1,
+      "speciesLimits": [],
+      "closedDaysOfMonth": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "groupPickingBanned": null,
+      "rules": [
+        "No picking from the 1st to the 10th of every month.",
+        "Max 1 kg of mushrooms per person per day.",
+        "Have every find checked at one of the 31 official mushroom controls (closed during the no-picking days)."
+      ],
+      "noPickingAreas": ["Nature reserves with a picking ban (check maps.zh.ch)"],
+      "cantonalMapUrl": "https://maps.zh.ch",
+      "sources": [
+        {
+          "title": "Kanton Zürich – Pilze sicher geniessen (2025)",
+          "url": "https://www.zh.ch/de/news-uebersicht/mitteilungen/2025/gesundheit/lebensmittel/pilze-sicher-geniessen.html"
+        }
+      ],
+      "checked": "2026-10-20"
+    }
+  }
+}
