@@ -1,0 +1,241 @@
+:root {
+  --bg: #f7f5ef;
+  --surface: #ffffff;
+  --text: #1d231e;
+  --muted: #5b655d;
+  --border: #d9d6cc;
+  --accent: #2f5d3a;
+  --accent-text: #ffffff;
+  --warn-bg: #fff1c7;
+  --warn-text: #5a4300;
+  --danger: #b2182b;
+  --spot: #4a5a4e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #141815;
+    --surface: #1d221e;
+    --text: #e8ebe6;
+    --muted: #a3ada5;
+    --border: #343b35;
+    --accent: #7fb08a;
+    --accent-text: #0f1a12;
+    --warn-bg: #3d3210;
+    --warn-text: #f5e2a8;
+    --danger: #ff7a85;
+    --spot: #c9d3cb;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #141815;
+  --surface: #1d221e;
+  --text: #e8ebe6;
+  --muted: #a3ada5;
+  --border: #343b35;
+  --accent: #7fb08a;
+  --accent-text: #0f1a12;
+  --warn-bg: #3d3210;
+  --warn-text: #f5e2a8;
+  --danger: #ff7a85;
+  --spot: #c9d3cb;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    16px/1.45 system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+a {
+  color: var(--accent);
+}
+h1 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+.sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.small {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(0.75rem + env(safe-area-inset-top)) 16px 0.75rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.rules-today {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.badge.closed {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-color: transparent;
+}
+.notice {
+  margin: 0;
+  padding: 0.5rem 16px;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-size: 0.85rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.map {
+  height: 62vh;
+  min-height: 320px;
+}
+.panel {
+  padding: 1rem 16px 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr 360px;
+    height: calc(100vh - 7rem);
+  }
+  .map {
+    height: 100%;
+  }
+  .panel {
+    overflow-y: auto;
+    border-left: 1px solid var(--border);
+  }
+}
+
+.spot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.spot-list button {
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.spot-list button:hover,
+.spot-list button:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.spot-list .meta {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.swatch {
+  min-width: 3.6rem;
+  text-align: center;
+  border-radius: 4px;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.rules-block {
+  margin-bottom: 0.75rem;
+}
+.rules-block ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+}
+.disclaimer p {
+  margin: 0 0 0.5rem;
+}
+
+/* Leaflet popups follow the theme. */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface);
+  color: var(--text);
+}
+.leaflet-popup-content {
+  margin: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+}
+.popup h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+.popup p {
+  margin: 0.3rem 0;
+}
+.popup .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.popup .actions a {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.reserve-label {
+  color: var(--danger);
+  font-weight: 700;
+}

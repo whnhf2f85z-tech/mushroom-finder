@@ -1,0 +1,22 @@
+# Data sources
+
+Findings from checking each source. Status: ✅ verified and used · 🔜 to verify in a later milestone.
+
+## Verified (Milestone 1, 2026-10-20)
+
+| Source                | What                             | How                                                                                                                                                                                                                     | Notes                                                                                                                                                     |
+| --------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| swisstopo WMTS        | Base map (grey national map)     | `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg`                                                                                                                    | Free, attribution "© swisstopo". Web Mercator tiles work directly in Leaflet.                                                                             |
+| swisstopo WMTS        | Canton borders overlay           | `.../ch.swisstopo.swissboundaries3d-kanton-flaeche.fill/default/current/3857/{z}/{x}/{y}.png`                                                                                                                           | Same terms.                                                                                                                                               |
+| geo.admin.ch identify | Which canton a point is in       | `https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryPoint&geometry=LON,LAT&sr=4326&layers=all:ch.swisstopo.swissboundaries3d-kanton-flaeche.fill&tolerance=0&returnGeometry=false` | Attribute `ak` = canton code. Used to check the seed spots: "Raten – Biberegg side" at 47.115, 8.660 is in **ZG**; moved to 47.115, 8.665 (SZ, ~1,005 m). |
+| geo.admin.ch height   | Point elevation                  | `/rest/services/height`                                                                                                                                                                                                 | Accepts only LV95/LV03 (`sr=2056`/`21781`), not WGS84. Use Open-Meteo for WGS84 points, or convert.                                                       |
+| Open-Meteo elevation  | Point elevation (WGS84, batched) | `https://api.open-meteo.com/v1/elevation?latitude=a,b&longitude=c,d`                                                                                                                                                    | Copernicus DEM 90 m. Several pins lie above/below their stated elevation band (pins mark areas).                                                          |
+| Kanton Zürich         | Picking rules                    | [zh.ch – Pilze sicher geniessen (2025)](https://www.zh.ch/de/news-uebersicht/mitteilungen/2025/gesundheit/lebensmittel/pilze-sicher-geniessen.html)                                                                     | No picking 1st–10th of each month; max 1 kg per person per day. Group-picking rule and legal basis not stated there → open question.                      |
+| Kanton Schwyz         | Picking rules                    | [sz.ch – Pilz- und Beerensammeln](https://www.sz.ch/umweltdepartement/amt-fuer-wald-und-natur/natur-und-landschaft/artenschutz/pilz-und-beerensammeln.html/8756-8758-8802-9447-9454-9459-10665-10668)                   | 2 kg/person/day, morels 1 kg; no closed days since 2010; organised events banned; list of no-picking reserves (stored in `data/rules.json`).              |
+
+## To verify (later milestones)
+
+- 🔜 Open-Meteo forecast (`past_days`), archive API, ICON-CH model availability, batch limits (M2).
+- 🔜 BAFU forest mix `ch.bafu.landesforstinventar-waldmischungsgrad`, forest mask, swissALTI3D (M3–M4).
+- 🔜 ZH Waldvegetationskarte WMS/WFS, SZ forest site layer on `wfs.geo.sz.ch`, GeoCover geology (M3).
+- 🔜 Protected-area layers: federal moor inventories, SZ and ZH nature reserves (M4).

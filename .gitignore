@@ -8,3 +8,4 @@ coverage/
 !.env.example
 .vite/
 *.tsbuildinfo
+.claude/settings.local.json
