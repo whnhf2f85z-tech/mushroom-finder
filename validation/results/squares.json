@@ -1,0 +1,2294 @@
+{
+ "squares": [
+  {
+   "id": "2675_1244",
+   "canton": "ZH",
+   "elevation": 512,
+   "app": {
+    "forest": 22,
+    "conifer": 28,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "7as Typischer Waldmeister-Buchenwald (mit Wald-Ziest)"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 12,
+    "woodsPct": 14,
+    "classes": [
+     [
+      "Ackerland",
+      25
+     ],
+     [
+      "Naturwiesen",
+      19
+     ],
+     [
+      "Heimweiden",
+      13
+     ],
+     [
+      "Normalwald",
+      12
+     ],
+     [
+      "Strassen, Wege",
+      6
+     ],
+     [
+      "Gartenbauflächen",
+      3
+     ],
+     [
+      "Holzschläge",
+      3
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      3
+     ],
+     [
+      "Umschwung von Mehrfamilienhäusern",
+      3
+     ],
+     [
+      "Feldgehölze, Hecken",
+      2
+     ],
+     [
+      "Strassengrün",
+      2
+     ],
+     [
+      "Obstanlagen",
+      2
+     ],
+     [
+      "Feldobst",
+      2
+     ],
+     [
+      "Sportanlagen",
+      1
+     ],
+     [
+      "Ein- und Zweifamilienhäuser",
+      1
+     ],
+     [
+      "Mehrfamilienhäuser",
+      1
+     ],
+     [
+      "Reihen- und Terrassenhäuser",
+      1
+     ],
+     [
+      "Umschwung von öffentlichen Gebäuden",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 22,
+    "coniferPct": 28
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 2
+   }
+  },
+  {
+   "id": "2680_1274",
+   "canton": "ZH",
+   "elevation": 488,
+   "app": {
+    "forest": 70,
+    "conifer": 63,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "7* Waldmeister-Buchenwald mit Rippenfarn"
+   },
+   "arealstatistik": {
+    "points": 86,
+    "forestPct": 70,
+    "woodsPct": 71,
+    "classes": [
+     [
+      "Normalwald",
+      69
+     ],
+     [
+      "Heimweiden",
+      4
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Ackerland",
+      3
+     ],
+     [
+      "Feuchtgebiete",
+      2
+     ],
+     [
+      "Rebbauflächen",
+      2
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ],
+     [
+      "Naturwiesen",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 70,
+    "coniferPct": 63
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "acidic",
+    "geology9": "neutral",
+    "sitesFound": 8
+   }
+  },
+  {
+   "id": "2697_1246",
+   "canton": "ZH",
+   "elevation": 498,
+   "app": {
+    "forest": 26,
+    "conifer": 42,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "6 Waldmeister-Buchenwald mit Hainsimse"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 19,
+    "woodsPct": 19,
+    "classes": [
+     [
+      "Ackerland",
+      24
+     ],
+     [
+      "Normalwald",
+      18
+     ],
+     [
+      "Sportanlagen",
+      12
+     ],
+     [
+      "Strassen, Wege",
+      9
+     ],
+     [
+      "Umschwung von Industrie- und Gewerbegebäuden",
+      6
+     ],
+     [
+      "Autobahnen",
+      5
+     ],
+     [
+      "Heimweiden",
+      5
+     ],
+     [
+      "Naturwiesen",
+      4
+     ],
+     [
+      "Schrebergärten",
+      4
+     ],
+     [
+      "Baustellen",
+      3
+     ],
+     [
+      "Autobahngrün",
+      2
+     ],
+     [
+      "Parkplatzareal",
+      2
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Holzschläge",
+      1
+     ],
+     [
+      "Öffentliche Parkanlagen",
+      1
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Industrie- und Gewerbegebäude",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 26,
+    "coniferPct": 42
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "acidic",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2705_1257",
+   "canton": "ZH",
+   "elevation": 733,
+   "app": {
+    "forest": 59,
+    "conifer": 53,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "12g Zahnwurz-Buchenwald mit Bärlauch"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 55,
+    "woodsPct": 57,
+    "classes": [
+     [
+      "Normalwald",
+      52
+     ],
+     [
+      "Heimweiden",
+      11
+     ],
+     [
+      "Naturwiesen",
+      11
+     ],
+     [
+      "Holzschläge",
+      8
+     ],
+     [
+      "Ackerland",
+      7
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      3
+     ],
+     [
+      "Schmaler Wald",
+      3
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      2
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Feldobst",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 59,
+    "coniferPct": 53
+   },
+   "naturalConiferPct": 10,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "neutral",
+    "sitesFound": 4
+   }
+  },
+  {
+   "id": "2684_1258",
+   "canton": "ZH",
+   "elevation": 443,
+   "app": {
+    "forest": 28,
+    "conifer": 24,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "7d Typischer Waldmeister-Buchenwald (mit Hainsimse)"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 19,
+    "woodsPct": 19,
+    "classes": [
+     [
+      "Ackerland",
+      22
+     ],
+     [
+      "Naturwiesen",
+      17
+     ],
+     [
+      "Normalwald",
+      17
+     ],
+     [
+      "Feuchtgebiete",
+      14
+     ],
+     [
+      "Flugplätze",
+      6
+     ],
+     [
+      "Autobahnen",
+      4
+     ],
+     [
+      "Graspisten, Flugplatzgrün",
+      3
+     ],
+     [
+      "Gartenbauflächen",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      2
+     ],
+     [
+      "Autobahngrün",
+      2
+     ],
+     [
+      "Strassengrün",
+      2
+     ],
+     [
+      "Sportanlagen",
+      2
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Heimweiden",
+      1
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      1
+     ],
+     [
+      "Parkplatzareal",
+      1
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 28,
+    "coniferPct": 24
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2690_1277",
+   "canton": "ZH",
+   "elevation": 414,
+   "app": {
+    "forest": 34,
+    "conifer": 15,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "7f Waldmeister-Buchenwald mit Lungenkraut"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 33,
+    "woodsPct": 34,
+    "classes": [
+     [
+      "Ackerland",
+      54
+     ],
+     [
+      "Normalwald",
+      33
+     ],
+     [
+      "Naturwiesen",
+      6
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Bahngrün",
+      2
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 34,
+    "coniferPct": 15
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2691_1269",
+   "canton": "ZH",
+   "elevation": 498,
+   "app": {
+    "forest": 49,
+    "conifer": 39,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "10w Lungenkraut-Buchenwald mit Immenblatt (mit Liguster)"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 45,
+    "woodsPct": 47,
+    "classes": [
+     [
+      "Normalwald",
+      45
+     ],
+     [
+      "Ackerland",
+      21
+     ],
+     [
+      "Naturwiesen",
+      11
+     ],
+     [
+      "Heimweiden",
+      6
+     ],
+     [
+      "Feldobst",
+      4
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      3
+     ],
+     [
+      "Rebbauflächen",
+      3
+     ],
+     [
+      "Feldgehölze, Hecken",
+      2
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Öffentliche Parkanlagen",
+      1
+     ],
+     [
+      "Öffentliche Gebäude",
+      1
+     ],
+     [
+      "Strassengrün",
+      1
+     ],
+     [
+      "Sportanlagen",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 49,
+    "coniferPct": 39
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 5
+   }
+  },
+  {
+   "id": "2706_1251",
+   "canton": "ZH",
+   "elevation": 648,
+   "app": {
+    "forest": 40,
+    "conifer": 43,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "12w Zahnwurz-Buchenwald mit Liguster"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 33,
+    "woodsPct": 35,
+    "classes": [
+     [
+      "Normalwald",
+      27
+     ],
+     [
+      "Naturwiesen",
+      17
+     ],
+     [
+      "Ackerland",
+      16
+     ],
+     [
+      "Feuchtgebiete",
+      14
+     ],
+     [
+      "Heimweiden",
+      6
+     ],
+     [
+      "Strassen, Wege",
+      5
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      5
+     ],
+     [
+      "Holzschläge",
+      4
+     ],
+     [
+      "Deponien",
+      1
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 40,
+    "coniferPct": 43
+   },
+   "naturalConiferPct": 10,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2680_1241",
+   "canton": "ZH",
+   "elevation": 679,
+   "app": {
+    "forest": 56,
+    "conifer": 25,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "8e Waldhirsen-Buchenwald mit Hornstrauch"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 61,
+    "woodsPct": 63,
+    "classes": [
+     [
+      "Normalwald",
+      59
+     ],
+     [
+      "Ackerland",
+      13
+     ],
+     [
+      "Heimweiden",
+      12
+     ],
+     [
+      "Naturwiesen",
+      7
+     ],
+     [
+      "Holzschläge",
+      3
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 56,
+    "coniferPct": 25
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2704_1256",
+   "canton": "ZH",
+   "elevation": 621,
+   "app": {
+    "forest": 59,
+    "conifer": 24,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "12 Typischer Zahnwurz-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 54,
+    "woodsPct": 55,
+    "classes": [
+     [
+      "Normalwald",
+      51
+     ],
+     [
+      "Naturwiesen",
+      17
+     ],
+     [
+      "Ackerland",
+      8
+     ],
+     [
+      "Heimweiden",
+      6
+     ],
+     [
+      "Feldobst",
+      3
+     ],
+     [
+      "Schmaler Wald",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Friedhöfe",
+      2
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      2
+     ],
+     [
+      "Umschwung von nicht spezifizierten Gebäuden",
+      1
+     ],
+     [
+      "Umschwung von öffentlichen Gebäuden",
+      1
+     ],
+     [
+      "Ein- und Zweifamilienhäuser",
+      1
+     ],
+     [
+      "Schrebergärten",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 59,
+    "coniferPct": 24
+   },
+   "naturalConiferPct": 10,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 7
+   }
+  },
+  {
+   "id": "2672_1263",
+   "canton": "ZH",
+   "elevation": 607,
+   "app": {
+    "forest": 96,
+    "conifer": 58,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "7*(1) Waldmeister-Buchenwald mit Rippenfarn Uebergang zu 1"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 96,
+    "woodsPct": 96,
+    "classes": [
+     [
+      "Normalwald",
+      94
+     ],
+     [
+      "Holzschläge",
+      4
+     ],
+     [
+      "Waldschäden",
+      2
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 96,
+    "coniferPct": 58
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "acidic",
+    "geology9": "neutral",
+    "sitesFound": 9
+   }
+  },
+  {
+   "id": "2701_1259",
+   "canton": "ZH",
+   "elevation": 543,
+   "app": {
+    "forest": 62,
+    "conifer": 45,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "12t Typischer Zahnwurz-Buchenwald (artenarm)"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 56,
+    "woodsPct": 60,
+    "classes": [
+     [
+      "Normalwald",
+      56
+     ],
+     [
+      "Ackerland",
+      20
+     ],
+     [
+      "Heimweiden",
+      8
+     ],
+     [
+      "Naturwiesen",
+      6
+     ],
+     [
+      "Feldgehölze, Hecken",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Holzschläge",
+      2
+     ],
+     [
+      "Umschwung von Mehrfamilienhäusern",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 62,
+    "coniferPct": 45
+   },
+   "naturalConiferPct": 10,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "neutral",
+    "sitesFound": 5
+   }
+  },
+  {
+   "id": "2699_1235",
+   "canton": "ZH",
+   "elevation": 547,
+   "app": {
+    "forest": 36,
+    "conifer": 30,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "7a Typischer Waldmeister-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 32,
+    "woodsPct": 33,
+    "classes": [
+     [
+      "Naturwiesen",
+      40
+     ],
+     [
+      "Normalwald",
+      32
+     ],
+     [
+      "Ackerland",
+      9
+     ],
+     [
+      "Heimweiden",
+      8
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      3
+     ],
+     [
+      "Feldobst",
+      2
+     ],
+     [
+      "Holzschläge",
+      2
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ],
+     [
+      "Strassengrün",
+      1
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ],
+     [
+      "Obstanlagen",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 36,
+    "coniferPct": 30
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "calcareous",
+    "sitesFound": 2
+   }
+  },
+  {
+   "id": "2683_1232",
+   "canton": "ZH",
+   "elevation": 656,
+   "app": {
+    "forest": 28,
+    "conifer": 27,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "8f Waldhirsen-Buchenwald mit Lungenkraut"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 20,
+    "woodsPct": 20,
+    "classes": [
+     [
+      "Ackerland",
+      30
+     ],
+     [
+      "Normalwald",
+      18
+     ],
+     [
+      "Naturwiesen",
+      15
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      7
+     ],
+     [
+      "Umschwung von öffentlichen Gebäuden",
+      7
+     ],
+     [
+      "Sportanlagen",
+      5
+     ],
+     [
+      "Heimweiden",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      2
+     ],
+     [
+      "Öffentliche Gebäude",
+      2
+     ],
+     [
+      "Umschwung von Mehrfamilienhäusern",
+      2
+     ],
+     [
+      "Schmaler Wald",
+      2
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      2
+     ],
+     [
+      "Mehrfamilienhäuser",
+      1
+     ],
+     [
+      "Ein- und Zweifamilienhäuser",
+      1
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      1
+     ],
+     [
+      "Feldobst",
+      1
+     ],
+     [
+      "Friedhöfe",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 28,
+    "coniferPct": 27
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2681_1252",
+   "canton": "ZH",
+   "elevation": 452,
+   "app": {
+    "forest": 50,
+    "conifer": 34,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "7a Typischer Waldmeister-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 44,
+    "woodsPct": 44,
+    "classes": [
+     [
+      "Normalwald",
+      44
+     ],
+     [
+      "Umschwung von Mehrfamilienhäusern",
+      9
+     ],
+     [
+      "Strassen, Wege",
+      9
+     ],
+     [
+      "Ackerland",
+      8
+     ],
+     [
+      "Mehrfamilienhäuser",
+      4
+     ],
+     [
+      "Parkplatzareal",
+      4
+     ],
+     [
+      "Sportanlagen",
+      4
+     ],
+     [
+      "Öffentliche Gebäude",
+      3
+     ],
+     [
+      "Heimweiden",
+      2
+     ],
+     [
+      "Befestigtes Bahnareal",
+      2
+     ],
+     [
+      "Bahngrün",
+      2
+     ],
+     [
+      "Umschwung von Reihen- und Terrassenhäusern",
+      2
+     ],
+     [
+      "Umschwung von öffentlichen Gebäuden",
+      2
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Gartenbauflächen",
+      1
+     ],
+     [
+      "Ein- und Zweifamilienhäuser",
+      1
+     ],
+     [
+      "Umschwung von nicht spezifizierten Gebäuden",
+      1
+     ],
+     [
+      "Feldobst",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 50,
+    "coniferPct": 34
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 5
+   }
+  },
+  {
+   "id": "2705_1200",
+   "canton": "SZ",
+   "elevation": 998,
+   "app": {
+    "forest": 62,
+    "conifer": 30,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "18v Buntreitgras-Tannen-Buchenwald mit Rostsegge"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 62,
+    "woodsPct": 68,
+    "classes": [
+     [
+      "Normalwald",
+      58
+     ],
+     [
+      "Heimweiden",
+      10
+     ],
+     [
+      "Naturwiesen",
+      10
+     ],
+     [
+      "Wasserläufe",
+      5
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      5
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      2
+     ],
+     [
+      "Gebüschwald",
+      2
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      2
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Verbuschte Wiesen und Heimweiden",
+      1
+     ],
+     [
+      "Gebüsch, Strauchvegetation",
+      1
+     ],
+     [
+      "Energieversorgungsanlagen",
+      1
+     ],
+     [
+      "Alpwiesen",
+      1
+     ],
+     [
+      "Geröll, Sand",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 62,
+    "coniferPct": 30
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "calcareous",
+    "sitesFound": 7
+   }
+  },
+  {
+   "id": "2689_1203",
+   "canton": "SZ",
+   "elevation": 588,
+   "app": {
+    "forest": 29,
+    "conifer": 28,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "10 Platterbsen-Buchenwald mit Weisssegge"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 24,
+    "woodsPct": 29,
+    "classes": [
+     [
+      "Naturwiesen",
+      29
+     ],
+     [
+      "Stehende Gewässer",
+      24
+     ],
+     [
+      "Normalwald",
+      22
+     ],
+     [
+      "Heimweiden",
+      11
+     ],
+     [
+      "Feldgehölze, Hecken",
+      4
+     ],
+     [
+      "Umschwung von öffentlichen Gebäuden",
+      2
+     ],
+     [
+      "Strassengrün",
+      1
+     ],
+     [
+      "Befestigtes Bahnareal",
+      1
+     ],
+     [
+      "Bahngrün",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Umschwung von Industrie- und Gewerbegebäuden",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 29,
+    "coniferPct": 28
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "calcareous",
+    "sitesFound": 3
+   }
+  },
+  {
+   "id": "2710_1219",
+   "canton": "SZ",
+   "elevation": 899,
+   "app": {
+    "forest": 64,
+    "conifer": 31,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "22 Hirschzungen-Ahornwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 65,
+    "woodsPct": 72,
+    "classes": [
+     [
+      "Normalwald",
+      62
+     ],
+     [
+      "Heimweiden",
+      13
+     ],
+     [
+      "Naturwiesen",
+      9
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      3
+     ],
+     [
+      "Holzschläge",
+      2
+     ],
+     [
+      "Feldgehölze, Hecken",
+      2
+     ],
+     [
+      "Schmaler Wald",
+      2
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Lawinen- und Steinschlagverbauungen",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Umschwung von Mehrfamilienhäusern",
+      1
+     ],
+     [
+      "Campingplätze",
+      1
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      1
+     ],
+     [
+      "Gebüsch, Strauchvegetation",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 64,
+    "coniferPct": 31
+   },
+   "naturalConiferPct": 0,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "neutral",
+    "sitesFound": 6
+   }
+  },
+  {
+   "id": "2699_1215",
+   "canton": "SZ",
+   "elevation": 1257,
+   "app": {
+    "forest": 66,
+    "conifer": 77,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "18 Waldschwingel-Tannen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 85,
+    "woodsPct": 86,
+    "classes": [
+     [
+      "Normalwald",
+      60
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      15
+     ],
+     [
+      "Waldschäden",
+      9
+     ],
+     [
+      "Holzschläge",
+      7
+     ],
+     [
+      "Wasserläufe",
+      4
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      2
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Hochwasserverbauungen",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 66,
+    "coniferPct": 77
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 9
+   }
+  },
+  {
+   "id": "2707_1221",
+   "canton": "SZ",
+   "elevation": 1204,
+   "app": {
+    "forest": 82,
+    "conifer": 90,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "49 Schachtelhalm-Tannen-Fichtenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 86,
+    "woodsPct": 86,
+    "classes": [
+     [
+      "Normalwald",
+      74
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      11
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      10
+     ],
+     [
+      "Holzschläge",
+      2
+     ],
+     [
+      "Waldschäden",
+      1
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 82,
+    "coniferPct": 90
+   },
+   "naturalConiferPct": 95,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "calcareous",
+    "sitesFound": 9
+   }
+  },
+  {
+   "id": "2711_1214",
+   "canton": "SZ",
+   "elevation": 1037,
+   "app": {
+    "forest": 73,
+    "conifer": 63,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "18 Waldschwingel-Tannen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 77,
+    "woodsPct": 79,
+    "classes": [
+     [
+      "Normalwald",
+      74
+     ],
+     [
+      "Naturwiesen",
+      12
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      5
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      2
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      2
+     ],
+     [
+      "Wasserläufe",
+      1
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Parkplatzareal",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 73,
+    "coniferPct": 63
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 6
+   }
+  },
+  {
+   "id": "2694_1209",
+   "canton": "SZ",
+   "elevation": 1225,
+   "app": {
+    "forest": 67,
+    "conifer": 77,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "60* Buntreitgras-Fichtenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 63,
+    "woodsPct": 73,
+    "classes": [
+     [
+      "Normalwald",
+      59
+     ],
+     [
+      "Fels",
+      9
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      7
+     ],
+     [
+      "Geröll, Sand",
+      6
+     ],
+     [
+      "Holzschläge",
+      6
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      5
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      3
+     ],
+     [
+      "Gebüsch, Strauchvegetation",
+      2
+     ],
+     [
+      "Waldschäden",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 67,
+    "coniferPct": 77
+   },
+   "naturalConiferPct": 95,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "neutral",
+    "sitesFound": 8
+   }
+  },
+  {
+   "id": "2696_1217",
+   "canton": "SZ",
+   "elevation": 1100,
+   "app": {
+    "forest": 57,
+    "conifer": 81,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "19 Waldsimsen-Tannen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 59,
+    "woodsPct": 61,
+    "classes": [
+     [
+      "Normalwald",
+      53
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      26
+     ],
+     [
+      "Holzschläge",
+      5
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      4
+     ],
+     [
+      "Naturwiesen",
+      4
+     ],
+     [
+      "Heimweiden",
+      3
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf Landwirtschaftsflächen)",
+      1
+     ],
+     [
+      "Strassen, Wege",
+      1
+     ],
+     [
+      "Waldschäden",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 57,
+    "coniferPct": 81
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "acidic",
+    "geology9": "neutral",
+    "sitesFound": 7
+   }
+  },
+  {
+   "id": "2690_1201",
+   "canton": "SZ",
+   "elevation": 930,
+   "app": {
+    "forest": 72,
+    "conifer": 50,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "14 Seggen-Buchenwald mit Weisssegge"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 70,
+    "woodsPct": 73,
+    "classes": [
+     [
+      "Normalwald",
+      60
+     ],
+     [
+      "Naturwiesen",
+      20
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      8
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      4
+     ],
+     [
+      "Schmaler Wald",
+      2
+     ],
+     [
+      "Heimweiden",
+      1
+     ],
+     [
+      "Schafalpen",
+      1
+     ],
+     [
+      "Baumgruppen (auf unproduktiven Flächen)",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 72,
+    "coniferPct": 50
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "calcareous",
+    "sitesFound": 7
+   }
+  },
+  {
+   "id": "2711_1220",
+   "canton": "SZ",
+   "elevation": 948,
+   "app": {
+    "forest": 25,
+    "conifer": 33,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "13 Bingelkraut-Buchenwald mit Hirschzunge"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 13,
+    "woodsPct": 20,
+    "classes": [
+     [
+      "Naturwiesen",
+      41
+     ],
+     [
+      "Heimweiden",
+      19
+     ],
+     [
+      "Normalwald",
+      9
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      5
+     ],
+     [
+      "Alpwiesen",
+      5
+     ],
+     [
+      "Schmaler Wald",
+      4
+     ],
+     [
+      "Feldgehölze, Hecken",
+      4
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      3
+     ],
+     [
+      "Verbuschte Wiesen und Heimweiden",
+      1
+     ],
+     [
+      "Ein- und Zweifamilienhäuser",
+      1
+     ],
+     [
+      "Landwirtschaftliche Gebäude",
+      1
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 25,
+    "coniferPct": 33
+   },
+   "naturalConiferPct": 10,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 2
+   }
+  },
+  {
+   "id": "2699_1214",
+   "canton": "SZ",
+   "elevation": 1368,
+   "app": {
+    "forest": 53,
+    "conifer": 92,
+    "ph": "acidic",
+    "phSource": "site_type",
+    "site": "46 Heidelbeer-Tannen-Fichtenwald mit Farn"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 53,
+    "woodsPct": 57,
+    "classes": [
+     [
+      "Normalwald",
+      38
+     ],
+     [
+      "Holzschläge",
+      23
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      19
+     ],
+     [
+      "Waldschäden",
+      7
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      4
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      4
+     ],
+     [
+      "Aufgelöster Wald (auf Landwirtschaftsflächen)",
+      4
+     ],
+     [
+      "Wasserläufe",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 53,
+    "coniferPct": 92
+   },
+   "naturalConiferPct": 95,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 8
+   }
+  },
+  {
+   "id": "2687_1207",
+   "canton": "SZ",
+   "elevation": 1096,
+   "app": {
+    "forest": 68,
+    "conifer": 63,
+    "ph": "calcareous",
+    "phSource": "site_type",
+    "site": "18 Waldschwingel-Tannen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 57,
+    "woodsPct": 60,
+    "classes": [
+     [
+      "Normalwald",
+      56
+     ],
+     [
+      "Günstige Alp- und Juraweiden",
+      20
+     ],
+     [
+      "Heimweiden",
+      11
+     ],
+     [
+      "Holzschläge",
+      4
+     ],
+     [
+      "Naturwiesen",
+      3
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      2
+     ],
+     [
+      "Umschwung von Ein- und Zweifamilienhäusern",
+      1
+     ],
+     [
+      "Umschwung von nicht spezifizierten Gebäuden",
+      1
+     ],
+     [
+      "Feldgehölze, Hecken",
+      1
+     ],
+     [
+      "Aufgelöster Wald (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 68,
+    "coniferPct": 63
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "calcareous",
+    "geology9": "calcareous",
+    "sitesFound": 7
+   }
+  },
+  {
+   "id": "2693_1211",
+   "canton": "SZ",
+   "elevation": 1148,
+   "app": {
+    "forest": 42,
+    "conifer": 59,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "18 Waldschwingel-Tannen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 36,
+    "woodsPct": 38,
+    "classes": [
+     [
+      "Naturwiesen",
+      44
+     ],
+     [
+      "Normalwald",
+      34
+     ],
+     [
+      "Heimweiden",
+      14
+     ],
+     [
+      "Strassen, Wege",
+      3
+     ],
+     [
+      "Schmaler Wald",
+      2
+     ],
+     [
+      "Feldgehölze, Hecken",
+      2
+     ],
+     [
+      "Hochwasserverbauungen",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 42,
+    "coniferPct": 59
+   },
+   "naturalConiferPct": 50,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 5
+   }
+  },
+  {
+   "id": "2685_1212",
+   "canton": "SZ",
+   "elevation": 657,
+   "app": {
+    "forest": 69,
+    "conifer": 60,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "48 Blockschutt-Tannen-Fichtenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 65,
+    "woodsPct": 68,
+    "classes": [
+     [
+      "Normalwald",
+      64
+     ],
+     [
+      "Naturwiesen",
+      11
+     ],
+     [
+      "Heimweiden",
+      5
+     ],
+     [
+      "Feldobst",
+      5
+     ],
+     [
+      "Holzschläge",
+      4
+     ],
+     [
+      "Öffentliche Parkanlagen",
+      3
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      3
+     ],
+     [
+      "Strassen, Wege",
+      2
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      1
+     ],
+     [
+      "Umschwung von landwirtschaftlichen Gebäuden",
+      1
+     ],
+     [
+      "Schmaler Wald",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 69,
+    "coniferPct": 60
+   },
+   "naturalConiferPct": 95,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "neutral",
+    "sitesFound": 8
+   }
+  },
+  {
+   "id": "2700_1204",
+   "canton": "SZ",
+   "elevation": 1112,
+   "app": {
+    "forest": 60,
+    "conifer": 23,
+    "ph": "neutral",
+    "phSource": "site_type",
+    "site": "9 Platterbsen-Buchenwald"
+   },
+   "arealstatistik": {
+    "points": 100,
+    "forestPct": 51,
+    "woodsPct": 58,
+    "classes": [
+     [
+      "Normalwald",
+      43
+     ],
+     [
+      "Naturwiesen",
+      13
+     ],
+     [
+      "Heimweiden",
+      11
+     ],
+     [
+      "Unproduktive Gras- und Krautvegetation",
+      8
+     ],
+     [
+      "Holzschläge",
+      5
+     ],
+     [
+      "Schmaler Wald",
+      4
+     ],
+     [
+      "Feldgehölze, Hecken",
+      3
+     ],
+     [
+      "Fels",
+      3
+     ],
+     [
+      "Aufgelöster Wald (auf unproduktiven Flächen)",
+      3
+     ],
+     [
+      "Gebüsch, Strauchvegetation",
+      2
+     ],
+     [
+      "Baumgruppen (auf Landwirtschaftsflächen)",
+      2
+     ],
+     [
+      "Lawinen- und Steinschlagverbauungen",
+      2
+     ],
+     [
+      "Aufgelöster Wald (auf Landwirtschaftsflächen)",
+      1
+     ]
+    ]
+   },
+   "forestMixReRead": {
+    "treePct": 60,
+    "coniferPct": 23
+   },
+   "naturalConiferPct": 5,
+   "ph": {
+    "siteType9": "neutral",
+    "geology9": "calcareous",
+    "sitesFound": 2
+   }
+  }
+ ]
+}

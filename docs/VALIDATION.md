@@ -286,3 +286,75 @@ For 6 of 9 species almost every forest square counts as good habitat, so the map
 For 2, the strict rule would pick H1 (only the window changes). I recommend H1b because it improves things as much without pushing honey fungus, already the highest-scoring species, even higher (in the poor year 2021: 68 instead of 72). Even with the change, honey fungus remains the species with the weakest weather signal.
 
 Scripts: `validation/variants.ts` (no API calls; needs the weather caches from `past-seasons.ts` with lookback 150 and `fetch-history.ts`, both runnable via the "Validation (manual)" workflow), `validation/sanity.ts`, charts in `validation/plots.py`.
+
+## Part D – Weather stations and official layers (2026-10-21)
+
+### Weather: 53 MeteoSwiss stations
+
+`validation/stations.ts` (GitHub Actions, 3,900 Open-Meteo calls). All MeteoSwiss stations within 3 km of a forest square: 15 automatic weather stations (13 with temperature, 12 with rain), 20 automatic and 18 manual rain gauges; 50 with complete rain. Periods: Apr – mid-Nov 2025 and Jan – 18 Oct 2026. Measurements: MeteoSwiss open data (daily values, `rre150d0`, `tre200d0/dn/dx`), "Source: MeteoSwiss". Open-Meteo `best_match` was read at each station and at the app's grid weather point nearest to it, shifted to the station's height (what a square there gets). The daily values line up best without a day shift (r = 0.72–0.75 per network).
+
+![Weather stations](validation/stations.png)
+
+| What the score uses                   | App weather vs measured (median of the stations)                                                                                                                            |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rain total                            | ×1.03 (0.76–1.32); wetter higher up: +6 % per 500 m (Hoch-Ybrig ×1.32, Oberiberg ×1.28)                                                                                     |
+| Daily rain                            | r = 0.73, mean error 2.1 mm/day; 86 % of days with ≥ 5 mm measured are found (≥ 2 mm); 11 % false wet days                                                                  |
+| 11-day rain sums (the rain window)    | **r = 0.91**, ×1.03, mean error 8.7 mm                                                                                                                                      |
+| 60-day rain sums (dry-spell factor)   | **r = 0.93**, ×1.01                                                                                                                                                         |
+| Daily mean temperature                | bias −0.1 °C (−1.1 to +0.9), mean error 0.64 °C; 7-day means 0.52 °C                                                                                                        |
+| Night minimum                         | **+0.7 °C too warm**; valley and lakeshore stations up to +2.5 °C (Pfäffikon ZH), hilltops too cold (Hörnli, Lägern)                                                        |
+| Frost nights (≤ −1 °C) from September | 5 measured at the 13 stations, 2 in the app weather                                                                                                                         |
+| **Effect on the map score**, Jun–Nov  | measured rain and temperature instead: **3.5 points** mean change (2.1–5.3), no overall bias (−0.2), 90 % of days within 11 points; the colour band changes on 15 % of days |
+
+- **Matches:** the rain the score depends on (sums over 1–3 weeks and 60 days) is well reproduced at almost every station, at the station itself and at the app's weather point alike: the 3 km weather blocks lose almost nothing. Temperature means are within ±1 °C.
+- **Doesn't match:** rain is overestimated at higher stations (~+20–30 % above 1,000 m; part of this is gauge undercatch, larger for snow in winter) and underestimated at a few hilly ZH stations (Allenwinden ×0.76, Bauma ×0.81). Night minimums in valleys are too warm, so the frost factor misses frost there.
+- **Proposals (not applied):** (1) no change of weather source; (2) optionally, a valley frost correction: lower tmin by ~1.5 °C for squares in valley bottoms or near lakes before the frost factor, to be tested in autumn with the find log (low confidence, only 13 temperature stations and 5 frost nights); (3) no rain correction by elevation yet: the overestimate is partly gauge undercatch, and the score uses rain relative to species thresholds that were set with this same weather.
+
+### Habitat: 30 random squares against the official layers
+
+`validation/squares.ts`: 15 ZH and 15 SZ forest squares (fixed seed). Official layers: Arealstatistik 2013/18 (BFS, 100 points per square), the NFI forest mix raster (BAFU) re-read with independent code, the cantonal site type maps at 9 points, and GeoCover geology at the same points. Contact sheet with the official map of each square:
+
+![30 squares](validation/squares.png)
+
+| Check                                | Result                                                                                                                                                                                                                                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tree cover vs Arealstatistik         | **r = 0.97**; app 3 points higher than the Arealstatistik forest classes (mean absolute difference 5), 0.3 points higher than forest + hedges/tree groups. The app counts every tree pixel, Arealstatistik forest only. Largest gaps: −19 (SZ 2699/1215, open forest above 1,200 m), +12. |
+| Tree cover and conifer share re-read | identical in **30 of 30** squares: the grid build reads the raster correctly (including the legend: the raster holds the broadleaf share).                                                                                                                                                |
+| Conifer share vs natural forest      | 20 squares are beech sites (natural conifers 5–10 %) with **15–63 % conifers today** (mean 36 %): planted spruce. The 10 fir/spruce sites: 69 % conifers today vs 68 % natural.                                                                                                           |
+| pH class: site types, 9 vs 5 points  | same class in **25 of 30**; the 5 differences are mixed squares where the 9 points find a neutral majority.                                                                                                                                                                               |
+| pH class: geology vs site types      | same class in only 14 of 30. In Zürich GeoCover gives "neutral" (moraine, molasse) for 14 of 15 squares: geology alone hardly separates soils there. It's only the fallback (60 squares, 4 %).                                                                                            |
+
+- **Matches:** tree cover, conifer share and the site-type pH are read correctly and agree with the official layers.
+- **Doesn't match / limits:** pH from 5 points is a coarse majority in mixed squares; geology is uninformative in Zürich. Today's conifer share is mostly planted spruce on beech sites, so the natural site type alone can't give the current trees (see the host-tree proposal below).
+- **Proposals (not applied):** none for the grid build. Optionally use 9 instead of 5 site-type points (3 more requests per square, 5 of 30 squares would change class).
+
+## Habitat with host trees (proposal, 2026-10-21)
+
+Requested after Part C: replace each species' preference for a conifer share by specific host trees. Sources and tables: [DATA_SOURCES.md, "Tree species and host trees"](DATA_SOURCES.md#tree-species-and-host-trees-proposal-2026-10-21-not-used-by-the-app-yet).
+
+- **Tree mix of each square:** the cantonal site type gives the natural main trees; the NFI conifer share (current stand) is split among them; conifers on beech sites count as planted spruce. The WSL tree species map would give the current species directly, but it is only available on request.
+- **Host preference per species:** SwissFungi's Swiss records per mycorrhizal partner tree, divided by each tree's share of the forest (NFI); literature for winter chanterelle; none for honey fungus and parasol (not mycorrhizal).
+- **Host score** = Σ tree share × preference, capped at 1 (an average Swiss forest = 1; a square of poor hosts lower; floor 0.2). It replaces the conifer-share part of H; weights, pH, elevation and tree cover are unchanged. `validation/hosts.ts`.
+
+| Species            | Record squares (ZH/SZ, precise) | AUC vs all forest: current → host trees | vs target group | SwissFungi 5 km squares (n) | Median H    | Squares with H ≥ 0.7 |
+| ------------------ | ------------------------------- | --------------------------------------- | --------------- | --------------------------- | ----------- | -------------------- |
+| Chanterelle        | 0                               | –                                       | –               | 0.61 → 0.59 (41)            | 0.88 → 0.86 | 97 → 90 %            |
+| Porcini            | 4                               | 0.53 → 0.52                             | 0.50 → 0.51     | 0.50 → 0.50 (54)            | 0.94 → 0.93 | 100 → 99 %           |
+| Winter chanterelle | 6                               | 0.59 → 0.62                             | 0.62 → 0.64     | 0.62 → 0.61 (40)            | 0.65 → 0.70 | 37 → 50 %            |
+| Horn of plenty     | 4                               | 0.85 → 0.89                             | 0.79 → 0.84     | 0.58 → 0.55 (40)            | 0.83 → 0.88 | 73 → 87 %            |
+| Bay bolete         | 8                               | 0.61 → 0.63                             | 0.54 → 0.57     | 0.59 → 0.59 (53)            | 0.87 → 0.87 | 97 → 94 %            |
+| Hedgehog           | 2                               | 0.65 → 0.69                             | 0.53 → 0.60     | 0.50 → 0.49 (58)            | 0.97 → 0.97 | 100 → 100 %          |
+| Honey fungus       | 32                              | 0.52 → 0.52                             | 0.51 → 0.51     | 0.53 → 0.53 (40)            | 1.00 → 1.00 | 100 → 100 %          |
+| Parasol            | 19                              | 0.52 → 0.52                             | 0.47 → 0.47     | 0.52 → 0.52 (45)            | 1.00 → 1.00 | 97 → 97 %            |
+| Morel              | 5                               | 0.57 → 0.60                             | 0.47 → 0.51     | 0.56 → 0.57 (48)            | 0.75 → 0.86 | 56 → 73 %            |
+
+Habitat maps, current vs host trees: [chanterelle](validation/habitat-hosts-chanterelle.png), [porcini](validation/habitat-hosts-porcini.png), [winter chanterelle](validation/habitat-hosts-winter-chanterelle.png), [horn of plenty](validation/habitat-hosts-horn-of-plenty.png), [bay bolete](validation/habitat-hosts-bay-bolete.png), [hedgehog](validation/habitat-hosts-hedgehog.png), [honey fungus](validation/habitat-hosts-honey-fungus.png), [parasol](validation/habitat-hosts-parasol.png), [morel](validation/habitat-hosts-morel.png).
+
+![Horn of plenty, current vs host trees](validation/habitat-hosts-horn-of-plenty.png)
+
+- **Matches:** on the precise records the host-tree version is slightly better for 5 of 6 testable species (+0.02 to +0.04), and the preferences are biologically sensible (beech, oak and fir for chanterelle and horn of plenty; pine for bay bolete; ash for morel; ash and maple poor for all mycorrhizal species).
+- **But it can't be shown to be better:** the precise samples are 2–8 squares per species, and on the larger SwissFungi test (40–58 squares of 5 km, averaged over 25 km²) the two versions are equal within ±0.03 (chanterelle −0.02, horn of plenty −0.03). With 1 km squares and a tree mix partly estimated from the site type, the habitat part still barely separates find places.
+- **What changes on the map:** horn of plenty and morel gain in fir-rich mountain squares (horn of plenty under conifers: 0.41 → 0.71 at Oberiberg; fir is a good partner in the SwissFungi data, while the current model only allows up to 40 % conifers); chanterelle loses a little in spruce-dominated squares (spruce 0.7); winter chanterelle gains in conifer squares.
+- **Spots:** most spots change by less than 0.05; the largest changes are horn of plenty (+0.13 to +0.33 at the 7 conifer-rich spots in the Ybrig, Sattel and Alpthal areas) and morel (−0.10 to +0.30).
+
+**Recommendation (not applied):** adopt the host-tree version as the better-founded model (Swiss partner data instead of a guessed conifer range, and the "why" panel can then name the host trees), but **with low confidence that it improves predictions**: the available tests can't tell the two apart. Its main weakness is the estimated tree mix; ask WSL for the tree species map, which would replace the estimate by measured species. If adopted: species.json gets per-species host preferences (table in DATA_SOURCES.md) instead of `conifer_pct`, and grid.json/habitat.json get each place's tree mix.

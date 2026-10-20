@@ -29,6 +29,15 @@ npx tsx validation/variants.ts            # no API calls → validation/results/
 npx tsx validation/sanity.ts              # no API calls → validation/results/sanity.json
 npm test                                  # includes the monotonicity tests (packages/scoring/test/monotonicity.test.ts)
 validation/.venv/bin/python validation/plots.py
+
+# Part D – weather stations and official layers
+npx tsx validation/stations.ts            # ~3,900 Open-Meteo calls (GitHub: "Validation (manual)") → results/stations.json
+npx tsx validation/squares.ts             # 30 squares vs Arealstatistik, NFI raster, site types, geology → results/squares.json
+
+# Host trees instead of conifer share (proposal)
+npx tsx validation/fetch-swissfungi-hosts.ts   # SwissFungi partner-tree counts → data/swissfungi-hosts.json
+npx tsx validation/hosts.ts               # habitat test and maps, current vs host trees → results/hosts.json
+validation/.venv/bin/python validation/plots.py
 ```
 
 Downloads (GBIF pages, weather, elevations) are cached in `validation/cache/` (git-ignored). The weather test stays below Open-Meteo's per-minute limit; if the daily limit is reached it stops and can be re-run later, continuing from the cache.

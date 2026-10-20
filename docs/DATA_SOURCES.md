@@ -68,6 +68,8 @@ Temperature, daily mean (EIN, GES): ICON-CH1 has the smallest error (0.22–0.33
 
 Caveat: this is 19 days at 6 stations. Repeat the check after a few more rain events.
 
+**Repeated in validation Part D (2026-10-21)** with 53 stations within 3 km of a forest square (automatic stations, automatic and manual rain gauges), Apr–Nov 2025 and Jan–Oct 2026: see [VALIDATION.md, Part D](VALIDATION.md#part-d--weather-stations-and-official-layers-2026-10-21). `best_match` stays: rain totals ×1.02 (median), rain in the 11-day windows the score uses r = 0.91. Its night temperatures are ~0.7 °C too warm, so it misses some frost nights.
+
 ## Habitat (Milestone 3, verified 2026-10-20)
 
 Built by `npm run terrain` (`pipeline/terrain/`, TypeScript, no GIS install needed). Output: `web/public/data/static/habitat.json`. Rasters are read in small windows over HTTP from cloud-optimised GeoTIFFs with [geotiff.js](https://geotiffjs.github.io/).
@@ -111,5 +113,65 @@ All of these allow cross-origin requests (`Access-Control-Allow-Origin: *`), che
 - Open-Meteo forecast and historical-forecast APIs (POST, form-encoded): weather for user pins and the square explanations. Cached for the browser session.
 - geo.admin `rest/services/height?easting=…&northing=…&sr=2056`: pin elevation (swissALTI3D).
 - geo.admin `identify` on `ch.swisstopo.swissboundaries3d-kanton-flaeche.fill`: canton of a pin.
+
+## Tree species and host trees (proposal, 2026-10-21; not used by the app yet)
+
+### Current tree species: WSL tree species map — not openly available
+
+**Tree species map of Switzerland** (Koch, Hobi, Morsdorf & Waser 2024, WSL), [EnviDat, DOI 10.16904/envidat.506](https://www.envidat.ch/dataset/tree-species-map-of-switzerland): dominant tree species of the forest, 10 m, from Sentinel-2 (2020), NFI plots and the DEM; 15 species (fir, sycamore, black and grey alder, birch, chestnut, beech, ash, spruce, stone pine, mountain pine, Scots pine, sessile and pedunculate oak, rowan); raster (.tif) or vector (.gpkg), EPSG 3035. **Licence CC BY-SA, but "Access will be granted upon request"**: only a preview image is public. If WSL grants access, it becomes the preferred source for the current tree mix, with the site types below as fallback. Share-alike: data derived from it (our grid file) would also have to be CC BY-SA.
+
+### Site type → natural main trees
+
+`pipeline/terrain/trees.ts`. Both cantonal layers number their units after Ellenberg & Klötzli (1972) and NaiS; the leading number of the code (e.g. "7a", "18M", "46\*") selects the group. Shares are our rounded reading of the main species each group is named and described with, **not values from the sources**; they describe the natural forest, not today's stand.
+
+| Units | Group                                                                      | Natural main trees (share)                         |
+| ----- | -------------------------------------------------------------------------- | -------------------------------------------------- |
+| 1–5   | Acid beech forests (Hainsimsen-/Waldsimsen-Buchenwälder)                   | beech 75 %, oak 15 %, fir 10 %                     |
+| 6–11  | Beech forests on mull (Waldmeister-, Waldhirsen-, Lungenkraut-, Aronstab-) | beech 70 %, oak 10 %, ash 10 %, maple 5 %, fir 5 % |
+| 12–13 | Beech forests on base-rich soils (Zahnwurz-, Bingelkraut-)                 | beech 70 %, maple 10 %, ash 10 %, fir 10 %         |
+| 14–17 | Dry limestone beech forests (Seggen-, Weisseggen-, Eiben-, Steilhang-)     | beech 80 %, oak, maple, pine, other 5 % each       |
+| 18–21 | Fir-beech forests (Tannen-Buchenwälder)                                    | beech 50 %, fir 40 %, spruce 10 %                  |
+| 22–24 | Maple forests on scree (Ahornwälder)                                       | maple 50 %, ash 20 %, lime 20 %, beech 10 %        |
+| 25    | Lime forests (Lindenwälder)                                                | lime 50 %, maple 20 %, beech 20 %, ash 10 %        |
+| 26    | Maple-ash forests (Ahorn-Eschenwälder)                                     | ash 45 %, maple 35 %, beech 10 %, fir 10 %         |
+| 27–30 | Ash forests on wet soils, floodplains (Bach-, Zweiblatt-Eschenwälder …)    | ash 60 %, alder 20 %, maple 10 %, oak 10 %         |
+| 31–32 | Alder floodplain forests                                                   | alder 70 %, ash 20 %, other 10 %                   |
+| 33–37 | Oak-hornbeam forests (Hainbuchenmischwälder)                               | hornbeam 40 %, oak 30 %, beech 20 %, lime 10 %     |
+| 38–43 | Oak forests                                                                | oak 70 %, pine, hornbeam, lime 10 % each           |
+| 44–45 | Pine-birch bog forests                                                     | pine 50 %, birch 40 %, spruce 10 %                 |
+| 46–51 | Fir-spruce forests (Tannen-Fichtenwälder)                                  | spruce 50 %, fir 45 %, other 5 %                   |
+| 52–60 | Spruce forests (Fichtenwälder)                                             | spruce 85 %, fir, larch, maple 5 % each            |
+| 61–66 | Scots pine forests (Föhrenwälder)                                          | pine 80 %, spruce 10 %, oak 5 %, beech 5 %         |
+| 67–71 | Mountain pine forests (Bergföhrenwälder)                                   | pine 80 %, spruce 20 %                             |
+| 72    | Stone pine / larch forests                                                 | pine 50 %, larch 40 %, spruce 10 %                 |
+| AV    | Green alder scrub (Grünerlengebüsch)                                       | alder 100 %                                        |
+
+Checked against the 129 site types in the grid and the 14 at the spots: the top tree of each group appears in the unit's German name, except the hornbeam-oak forests (named after hornbeam only), two mosaics and the "Molasse-Steilhang-Komplex"; "ub unbestockt" has no trees.
+
+**Current tree mix of a square:** the measured NFI conifer share (current stand) is split among the site's natural conifers, the rest among its natural broadleaves. Where conifers make up less than 30 % of the natural forest (lowland beech sites), today's conifers are taken as **planted spruce**: 20 of 30 checked squares are such sites with 15–63 % conifers today (Part D).
+
+Sources: H. Ellenberg & F. Klötzli (1972), _Waldgesellschaften und Waldstandorte der Schweiz_, Mitt. EAFV 48; M. Frehner, J. Burnand, G. Carraro (2009), [NaiS Anhang 2A, Bestimmen des Standortstyps](https://www.bafu.admin.ch/dam/de/sd-web/nEmDSLgMHRSG/2a_bestimmen_desstandortstyps.pdf) (BAFU), with its short descriptions of the site-type groups ([list of NaiS site types](https://www.gebirgswald.ch/files/gebirgswald/de/02_NaiS/Liste_Standortstypen_NaiS.pdf)); the unit names of the [SZ Waldstandorte](https://map.geo.sz.ch) and [ZH Waldvegetationskarte](https://wms.zh.ch/WaldVKWMS) layers.
+
+### Host trees per mushroom species
+
+- **SwissFungi** (WSL, Swiss National Fungi Databank), [distribution map](https://www.wsl.ch/map_fungi): for each species, the number of Swiss records per mycorrhizal partner tree (`rest/diagram/observations/byMykoPartner/<taxonId>`; also `byHostPlant`, `bySubstrateCoarse`). Fetched 2026-10-21 by `validation/fetch-swissfungi-hosts.ts` into `validation/data/swissfungi-hosts.json` (counts only). Credit: "SwissFungi, WSL". The map page states no terms of use; worth confirming with WSL together with the tree map request.
+- **Swiss forest composition:** share of stems per tree species, NFI 4 (2009–2017), via [waldwissen.net, "Die häufigsten Waldbäume der Schweiz"](https://www.waldwissen.net/de/lebensraum-wald/baeume-und-waldpflanzen/haeufigste-waldbaeume-schweiz): spruce 37 %, beech 18 %, fir 11 %, larch 6 %, maple 5 %, ash 4 %, pines ~4 %, birch 2 %, oaks 1.5 %, …
+- **Preference** of a tree = its share among the species' partner records ÷ its share of the forest's stems (smoothed with 10 pseudo-records spread like the forest). 1 = found with that tree as often as the tree occurs; > 1 preferred.
+
+| Species            | Source (partner records)                     | spruce | fir | pine | larch | beech | oak | hornbeam | ash | maple | birch |
+| ------------------ | -------------------------------------------- | ------ | --- | ---- | ----- | ----- | --- | -------- | --- | ----- | ----- |
+| Chanterelle        | SwissFungi (2,229)                           | 0.7    | 1.7 | 0.7  | 0.4   | 2.2   | 2.1 | 2.2      | 0.1 | 0.2   | 0.6   |
+| Porcini            | SwissFungi (2,063)                           | 1.1    | 1.5 | 1.1  | 0.4   | 1.3   | 2.8 | 0.8      | 0.0 | 0.3   | 0.9   |
+| Winter chanterelle | Literature¹ (SwissFungi: 6)                  | 1.5    | 1.5 | 1.0  | 1.0   | 0.5   | 0.3 | 0.3      | 0.3 | 0.3   | 0.3   |
+| Horn of plenty     | SwissFungi (1,109)                           | 0.3    | 2.0 | 0.7  | 0.1   | 2.7   | 5.0 | 3.0      | 0.2 | 0.3   | 0.3   |
+| Bay bolete         | SwissFungi (1,505)                           | 1.3    | 1.5 | 2.2  | 0.2   | 1.1   | 1.3 | 0.3      | 0.1 | 0.3   | 0.9   |
+| Hedgehog           | SwissFungi (1,618)                           | 0.7    | 1.8 | 1.7  | 0.3   | 2.0   | 2.9 | 1.4      | 0.1 | 0.4   | 0.5   |
+| Honey fungus       | none: parasite/decomposer of nearly any tree | 1      | 1   | 1    | 1     | 1     | 1   | 1        | 1   | 1     | 1     |
+| Parasol            | none: decomposer, not mycorrhizal            | 1      | 1   | 1    | 1     | 1     | 1   | 1        | 1   | 1     | 1     |
+| Morel              | SwissFungi (642)                             | 0.5    | 2.0 | 0.8  | 0.1   | 0.7   | 0.9 | 1.9      | 5.5 | 1.0   | 0.6   |
+
+¹ Mainly spruce and fir, occasionally broadleaves (G. J. Krieglsteiner (ed.) 2000, _Die Großpilze Baden-Württembergs_ vol. 2, as summarised in [de.wikipedia, Trompeten-Pfifferling](https://de.wikipedia.org/wiki/Trompeten-Pfifferling)); SwissFungi has 1,842 records but only 6 with a partner tree.
+
+Consistency check: ash and maple, which form a different type of mycorrhiza (arbuscular), come out at 0.0–0.4 for all mycorrhizal species, as expected. Biases: the counts are national and follow where people record (lowlands and Pre-Alps), so trees of the inner Alps (larch, stone pine) look worse than they may be; stem shares count small trees, which under-weights large oaks.
 
 ## To verify (later milestones)

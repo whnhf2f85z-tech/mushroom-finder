@@ -346,6 +346,127 @@ def variants(vr):
     plt.close(fig)
 
 
+# Part D: MeteoSwiss stations.
+def stations(st):
+    import numpy as np
+
+    rows = [s for s in st["stations"] if s["rain"]]
+    fig, axes = plt.subplots(2, 2, figsize=(10, 7))
+    nets = [("automatic station", BLUE, "o"), ("automatic rain gauge", ORANGE, "s"), ("manual rain gauge", GREY, "^")]
+    ax = axes[0, 0]
+    for net, color, marker in nets:
+        sel = [s for s in rows if s["network"] == net]
+        ax.scatter([s["elevation"] for s in sel], [s["rain"]["point"]["totalModel"] / s["rain"]["point"]["totalMeasured"] for s in sel], color=color, marker=marker, s=26, label=net, zorder=3)
+    ax.axhline(1, color=MUTED, lw=1)
+    x = np.array([s["elevation"] for s in rows], float)
+    y = np.array([s["rain"]["point"]["totalModel"] / s["rain"]["point"]["totalMeasured"] for s in rows])
+    k, b = np.polyfit(x, y, 1)
+    xs = np.array([x.min(), x.max()])
+    ax.plot(xs, k * xs + b, color=INK, lw=1, ls="--")
+    ax.text(xs[1], k * xs[1] + b + 0.02, f"+{100 * k * 500:.0f} % per 500 m", ha="right", fontsize=7.5, color=INK)
+    ax.set_xlabel("Station elevation (m)")
+    ax.set_ylabel("Rain total, app weather ÷ measured")
+    ax.legend(frameon=False, fontsize=7, loc="upper left")
+    ax.set_title("Rain total (Apr–Nov 2025, Jan–Oct 2026)", loc="left", color=INK)
+
+    ax = axes[0, 1]
+    for i, (key, lab, color) in enumerate((("dailyR", "daily", GREY), ("sum11", "11-day sums", BLUE), ("sum60", "60-day sums", INK))):
+        v = [s["rain"]["point"][key] if key == "dailyR" else s["rain"]["point"][key]["r"] for s in rows]
+        ax.scatter(np.full(len(v), i) + (np.random.default_rng(1).random(len(v)) - 0.5) * 0.3, v, color=color, s=14, alpha=0.8)
+        ax.plot([i - 0.25, i + 0.25], [np.median(v)] * 2, color=INK, lw=2)
+        ax.text(i + 0.3, np.median(v), f"{np.median(v):.2f}", va="center", fontsize=8, color=INK)
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(["Daily rain", "11-day sums\n(the rain window)", "60-day sums\n(dry-spell factor)"], fontsize=8)
+    ax.set_ylim(0.5, 1.0)
+    ax.set_ylabel("Correlation with measured rain")
+    ax.set_title("How well the rain timing matches (50 stations)", loc="left", color=INK)
+
+    ax = axes[1, 0]
+    t = [s for s in st["stations"] if s["temperature"] and s["temperature"]["point"]]
+    t.sort(key=lambda s: s["elevation"])
+    yy = range(len(t))
+    ax.barh(list(yy), [s["temperature"]["point"]["bias"] for s in t], color=BLUE, height=0.4, label="Daily mean")
+    ax.barh([i + 0.4 for i in yy], [s["temperature"]["point"]["minBias"] for s in t], color=ORANGE, height=0.4, label="Night minimum")
+    ax.set_yticks([i + 0.2 for i in yy])
+    ax.set_yticklabels([f"{s['name'][:18]} ({s['elevation']} m)" for s in t], fontsize=7)
+    ax.axvline(0, color=MUTED, lw=1)
+    ax.set_xlabel("App temperature minus measured (°C)")
+    ax.legend(frameon=False, fontsize=7, loc="lower right")
+    ax.set_title("Temperature bias (13 automatic stations)", loc="left", color=INK)
+
+    ax = axes[1, 1]
+    v = sorted(s["scoreImpact"]["meanAbsDiff"] for s in rows)
+    ax.hist([s["scoreImpact"]["meanAbsDiff"] for s in rows], bins=np.arange(1.5, 6.01, 0.5), color=BLUE, rwidth=0.85)
+    ax.set_xlabel("Mean score change with measured weather (points)")
+    ax.set_ylabel("Stations")
+    med = np.median(v)
+    ax.axvline(med, color=INK, lw=1, ls="--")
+    ax.text(med + 0.05, ax.get_ylim()[1] * 0.92, f"median {med:.1f}", fontsize=8, color=INK)
+    ax.set_title("Effect on the map score (Jun–Nov)", loc="left", color=INK)
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, "stations.png"))
+    plt.close(fig)
+
+
+# Part D: the 30 squares on the official map (NFI forest mix over the swisstopo map), with the app's values.
+def squares(sq):
+    from PIL import Image
+
+    rows = sq["squares"]
+    fig, axes = plt.subplots(5, 6, figsize=(12, 13))
+    for ax, r in zip(axes.flat, rows):
+        path = os.path.join(HERE, "cache", "squares", f"wms_{r['id']}.png")
+        if os.path.exists(path):
+            ax.imshow(Image.open(path))
+        ax.set_xticks([])
+        ax.set_yticks([])
+        a = r["app"]
+        ax.set_title(f"{r['canton']} {r['id'].replace('_', '/')} · {r['elevation']} m", fontsize=7.5, color=INK, loc="left")
+        ax.set_xlabel(
+            f"cover {a['forest']} % (BFS {r['arealstatistik']['forestPct']} %)\nconifers {a['conifer']} % (natural {r['naturalConiferPct'] if r['naturalConiferPct'] is not None else '–'} %)\npH {a['ph']} ({r['ph']['siteType9']}, geology {r['ph']['geology9']})",
+            fontsize=6.5,
+            color=MUTED,
+        )
+    fig.suptitle("30 random squares on the official NFI forest-mix map (dark blue = conifer, green = broadleaf) with the app's values", x=0.01, ha="left", fontsize=10, fontweight="bold", color=INK)
+    fig.tight_layout(rect=(0, 0, 1, 0.98))
+    fig.savefig(os.path.join(OUT, "squares.png"), dpi=110)
+    plt.close(fig)
+
+
+# Host trees vs conifer share: habitat maps side by side.
+def hosts(hs):
+    import numpy as np
+    from matplotlib.colors import LinearSegmentedColormap
+
+    cmap = LinearSegmentedColormap.from_list("hab", ["#f2efe6", "#a9cfa0", "#3c8a4e", "#18452a"])
+    h = hs["habitat"]
+    e = np.array(h["e"]) + 0.5
+    n = np.array(h["n"]) + 0.5
+    for sid in NAMES:
+        r = hs["results"][sid]
+        old = np.array(sn_H_current(sid))
+        new = np.array(h["H"][sid])
+        fig, axes = plt.subplots(1, 2, figsize=(9.6, 5.6))
+        for ax, H, title, res in ((axes[0], old, "Current: conifer share", r["current"]), (axes[1], new, "Proposed: host trees", r["hostTrees"])):
+            ax.scatter(e, n, c=H, cmap=cmap, vmin=0, vmax=1, marker="s", s=7, lw=0)
+            ax.set_aspect("equal")
+            ax.set_xticks([])
+            ax.set_yticks([])
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+            sp_ = res["spread"]
+            ax.set_title(title, loc="left", color=INK, fontsize=9)
+            ax.text(0, -0.02, f"H 10–90 %: {sp_['p10']:.2f}–{sp_['p90']:.2f}; ≥ 0.7: {100 * sp_['above07']:.0f} %", transform=ax.transAxes, fontsize=7.5, color=MUTED, va="top")
+        fig.suptitle(f"{NAMES[sid]}: habitat score per square", x=0.01, ha="left", fontsize=10, fontweight="bold", color=INK)
+        fig.tight_layout(rect=(0, 0, 1, 0.95))
+        fig.savefig(os.path.join(OUT, f"habitat-hosts-{sid.replace('_', '-')}.png"))
+        plt.close(fig)
+
+
+def sn_H_current(sid):
+    return load("sanity")["habitat"]["H"][sid]
+
+
 if __name__ == "__main__":
     s = load("season")
     if s:
@@ -366,4 +487,13 @@ if __name__ == "__main__":
     vr = load("variants")
     if vr:
         variants(vr)
+    st = load("stations")
+    if st:
+        stations(st)
+    sq = load("squares")
+    if sq:
+        squares(sq)
+    hs = load("hosts")
+    if hs and load("sanity"):
+        hosts(hs)
     print("Charts written to", os.path.abspath(OUT))
