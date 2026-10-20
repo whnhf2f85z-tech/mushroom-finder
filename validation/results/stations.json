@@ -1,0 +1,3222 @@
+{
+ "periods": [
+  {
+   "start": "2025-04-01",
+   "end": "2025-11-15",
+   "scoreFrom": "2025-06-01"
+  },
+  {
+   "start": "2026-01-01",
+   "end": "2026-10-18",
+   "scoreFrom": "2026-06-01"
+  }
+ ],
+ "maxDistanceKm": 3,
+ "shift": {
+  "ogd-smn": 0,
+  "ogd-smn-precip": 0,
+  "ogd-nime": 0
+ },
+ "bands": [
+  "Very low",
+  "Low",
+  "Medium",
+  "Good",
+  "Very good"
+ ],
+ "calls": 3863,
+ "stations": [
+  {
+   "abbr": "EIN",
+   "name": "Einsiedeln",
+   "network": "automatic station",
+   "elevation": 911,
+   "distanceToForestKm": 1.5,
+   "weatherPoint": 230,
+   "pointElevation": 951,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2052.9000000000005,
+     "totalModel": 2232.199999999998,
+     "dailyR": 0.7356939350896919,
+     "dailyMae": 2.6936538461538455,
+     "sum11": {
+      "r": 0.9263782121601928,
+      "ratio": 1.0850528232663383,
+      "mae": 10.686800000000003
+     },
+     "sum60": {
+      "r": 0.9466670738788208,
+      "ratio": 1.067126530085842,
+      "mae": 31.80746268656721
+     },
+     "wetDaysHit": 0.8888888888888888,
+     "falseWet": 0.0967741935483871
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2052.9000000000005,
+     "totalModel": 2360.799999999997,
+     "dailyR": 0.7343316634464758,
+     "dailyMae": 2.9301923076923084,
+     "sum11": {
+      "r": 0.9249196461466652,
+      "ratio": 1.1480033385554052,
+      "mae": 11.891599999999992
+     },
+     "sum60": {
+      "r": 0.9513148316818025,
+      "ratio": 1.1235581062781423,
+      "mae": 37.100995024875616
+     },
+     "wetDaysHit": 0.8803418803418803,
+     "falseWet": 0.11904761904761904
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.6130769230769237,
+     "mae": 0.671153846153847,
+     "mae7": 0.6178008998875139,
+     "minBias": 1.3432692307692313,
+     "frostMeasured": 1,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": 0.10980769230769268,
+     "mae": 0.444884615384615,
+     "mae7": 0.2694769403824521,
+     "minBias": 0.6851923076923092,
+     "frostMeasured": 1,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.048701298701298704,
+    "meanAbsDiff": 4.613636363636363,
+    "p90AbsDiff": 15,
+    "bandChangeShare": 0.16883116883116883
+   }
+  },
+  {
+   "abbr": "GES",
+   "name": "Gersau",
+   "network": "automatic station",
+   "elevation": 521,
+   "distanceToForestKm": 0.1,
+   "weatherPoint": 295,
+   "pointElevation": 723,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2267.899999999999,
+     "totalModel": 2289.299999999999,
+     "dailyR": 0.765859012271103,
+     "dailyMae": 2.9096153846153867,
+     "sum11": {
+      "r": 0.9122970618241125,
+      "ratio": 1.0093624645880908,
+      "mae": 12.417200000000005
+     },
+     "sum60": {
+      "r": 0.9568449751000638,
+      "ratio": 1.0044581681926992,
+      "mae": 33.41293532338306
+     },
+     "wetDaysHit": 0.9067796610169492,
+     "falseWet": 0.14049586776859505
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2267.899999999999,
+     "totalModel": 2289.299999999999,
+     "dailyR": 0.765859012271103,
+     "dailyMae": 2.9096153846153867,
+     "sum11": {
+      "r": 0.9122970618241125,
+      "ratio": 1.0093624645880908,
+      "mae": 12.417200000000005
+     },
+     "sum60": {
+      "r": 0.9568449751000638,
+      "ratio": 1.0044581681926992,
+      "mae": 33.41293532338306
+     },
+     "wetDaysHit": 0.9067796610169492,
+     "falseWet": 0.14049586776859505
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.9150000000000001,
+     "mae": 0.9246153846153847,
+     "mae7": 0.9143138357705283,
+     "minBias": 1.4840384615384603,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": 0.916461538461538,
+     "mae": 0.9262461538461535,
+     "mae7": 0.915643419572553,
+     "minBias": 1.4722307692307683,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -2.168831168831169,
+    "meanAbsDiff": 3.7142857142857144,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.2012987012987013
+   }
+  },
+  {
+   "abbr": "HOE",
+   "name": "Hörnli",
+   "network": "automatic station",
+   "elevation": 1133,
+   "distanceToForestKm": 0.3,
+   "weatherPoint": 143,
+   "pointElevation": 830,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1713.1999999999996,
+     "totalModel": 1486.3999999999994,
+     "dailyR": 0.7212319553321839,
+     "dailyMae": 2.137692307692308,
+     "sum11": {
+      "r": 0.9080404992811942,
+      "ratio": 0.8717939058648781,
+      "mae": 10.030600000000002
+     },
+     "sum60": {
+      "r": 0.9146823750904718,
+      "ratio": 0.8536986256209309,
+      "mae": 38.05870646766171
+     },
+     "wetDaysHit": 0.8645833333333334,
+     "falseWet": 0.0625
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1713.1999999999996,
+     "totalModel": 1487.8999999999996,
+     "dailyR": 0.7216307456353511,
+     "dailyMae": 2.134807692307693,
+     "sum11": {
+      "r": 0.9081814766734921,
+      "ratio": 0.8725634760895066,
+      "mae": 10.006799999999997
+     },
+     "sum60": {
+      "r": 0.9146622062213603,
+      "ratio": 0.8538599294266411,
+      "mae": 38.0216417910448
+     },
+     "wetDaysHit": 0.8645833333333334,
+     "falseWet": 0.0625
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": -1.065384615384615,
+     "mae": 1.1723076923076925,
+     "mae7": 1.0575928008998872,
+     "minBias": -1.3663461538461525,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -1.0745000000000002,
+     "mae": 1.184359615384615,
+     "mae7": 1.0671369516310467,
+     "minBias": -1.373923076923078,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.9642857142857143,
+    "meanAbsDiff": 3.8733766233766236,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.2077922077922078
+   }
+  },
+  {
+   "abbr": "KLO",
+   "name": "Zürich / Kloten",
+   "network": "automatic station",
+   "elevation": 426,
+   "distanceToForestKm": 0.9,
+   "weatherPoint": 85,
+   "pointElevation": 427,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1167.2,
+     "totalModel": 1248.0000000000005,
+     "dailyR": 0.716395825663298,
+     "dailyMae": 1.697692307692308,
+     "sum11": {
+      "r": 0.889107284127769,
+      "ratio": 1.0700456699969327,
+      "mae": 8.43499999999999
+     },
+     "sum60": {
+      "r": 0.8198986010513594,
+      "ratio": 1.031314451303845,
+      "mae": 30.44179104477609
+     },
+     "wetDaysHit": 0.8108108108108109,
+     "falseWet": 0.07142857142857142
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1167.2,
+     "totalModel": 1247.8000000000002,
+     "dailyR": 0.7164511807598372,
+     "dailyMae": 1.6969230769230774,
+     "sum11": {
+      "r": 0.8891255562354116,
+      "ratio": 1.0700771123356136,
+      "mae": 8.436599999999993
+     },
+     "sum60": {
+      "r": 0.8199446198011826,
+      "ratio": 1.0312693895519136,
+      "mae": 30.43532338308455
+     },
+     "wetDaysHit": 0.8243243243243243,
+     "falseWet": 0.07142857142857142
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": -0.251153846153846,
+     "mae": 0.4192307692307687,
+     "mae7": 0.26425759280090005,
+     "minBias": 0.7296153846153846,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.2460000000000002,
+     "mae": 0.4155846153846158,
+     "mae7": 0.2600441507311586,
+     "minBias": 0.7357307692307691,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.2792207792207793,
+    "meanAbsDiff": 4.214285714285714,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.16233766233766234
+   }
+  },
+  {
+   "abbr": "LAC",
+   "name": "Lachen / Galgenen",
+   "network": "automatic station",
+   "elevation": 468,
+   "distanceToForestKm": 0.8,
+   "weatherPoint": 225,
+   "pointElevation": 737,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1770.5999999999995,
+     "totalModel": 1900.9999999999989,
+     "dailyR": 0.728546227569434,
+     "dailyMae": 2.4761538461538457,
+     "sum11": {
+      "r": 0.8910734596318831,
+      "ratio": 1.0749406490423337,
+      "mae": 11.026800000000005
+     },
+     "sum60": {
+      "r": 0.8952756972196183,
+      "ratio": 1.0519587460223248,
+      "mae": 36.217164179104515
+     },
+     "wetDaysHit": 0.83,
+     "falseWet": 0.11009174311926606
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1770.5999999999995,
+     "totalModel": 1992.299999999999,
+     "dailyR": 0.7446054282128872,
+     "dailyMae": 2.4594230769230774,
+     "sum11": {
+      "r": 0.9109971278488139,
+      "ratio": 1.125772081932895,
+      "mae": 10.7822
+     },
+     "sum60": {
+      "r": 0.9273947349986996,
+      "ratio": 1.1043352930188535,
+      "mae": 34.250248756218895
+     },
+     "wetDaysHit": 0.86,
+     "falseWet": 0.10434782608695652
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.1507692307692306,
+     "mae": 0.42230769230769194,
+     "mae7": 0.2297806524184477,
+     "minBias": 0.659615384615385,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": 0.7079230769230775,
+     "mae": 0.8613192307692297,
+     "mae7": 0.7118675478065246,
+     "minBias": 1.6129230769230753,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.3311688311688312,
+    "meanAbsDiff": 2.779220779220779,
+    "p90AbsDiff": 8,
+    "bandChangeShare": 0.12012987012987013
+   }
+  },
+  {
+   "abbr": "LAE",
+   "name": "Lägern",
+   "network": "automatic station",
+   "elevation": 845,
+   "distanceToForestKm": 0.3,
+   "weatherPoint": 73,
+   "pointElevation": 626,
+   "complete": 0,
+   "rain": null,
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": -0.569423076923077,
+     "mae": 0.9440384615384625,
+     "mae7": 0.6476096737907758,
+     "minBias": -1.2948076923076925,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.5117692307692316,
+     "mae": 0.9040769230769234,
+     "mae7": 0.6093624859392575,
+     "minBias": -1.1440769230769239,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": null
+  },
+  {
+   "abbr": "PFA",
+   "name": "Pfäffikon, ZH",
+   "network": "automatic station",
+   "elevation": 537,
+   "distanceToForestKm": 0.7,
+   "weatherPoint": 138,
+   "pointElevation": 536,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1397.1000000000006,
+     "totalModel": 1288.2999999999997,
+     "dailyR": 0.6911946290058125,
+     "dailyMae": 1.8411538461538466,
+     "sum11": {
+      "r": 0.9312698401604561,
+      "ratio": 0.9236354088029667,
+      "mae": 7.253400000000009
+     },
+     "sum60": {
+      "r": 0.9570948433284312,
+      "ratio": 0.9174003445783502,
+      "mae": 21.9992537313433
+     },
+     "wetDaysHit": 0.8681318681318682,
+     "falseWet": 0.11627906976744186
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1397.1000000000006,
+     "totalModel": 1311.3999999999999,
+     "dailyR": 0.6800221001304257,
+     "dailyMae": 1.8640384615384638,
+     "sum11": {
+      "r": 0.9305939962421579,
+      "ratio": 0.9404010897036131,
+      "mae": 7.171399999999998
+     },
+     "sum60": {
+      "r": 0.9661976772276197,
+      "ratio": 0.9403281684899046,
+      "mae": 17.64154228855722
+     },
+     "wetDaysHit": 0.8681318681318682,
+     "falseWet": 0.0963855421686747
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 1.0511538461538465,
+     "mae": 1.0950000000000006,
+     "mae7": 1.058183352080989,
+     "minBias": 2.7715384615384586,
+     "frostMeasured": 1,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": 0.8579230769230768,
+     "mae": 0.9148576923076924,
+     "mae7": 0.8680989876265465,
+     "minBias": 2.4975384615384586,
+     "frostMeasured": 1,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -2.5584415584415585,
+    "meanAbsDiff": 5.259740259740259,
+    "p90AbsDiff": 14,
+    "bandChangeShare": 0.17532467532467533
+   }
+  },
+  {
+   "abbr": "REH",
+   "name": "Zürich / Affoltern",
+   "network": "automatic station",
+   "elevation": 444,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 105,
+   "pointElevation": 493,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1236.3999999999996,
+     "totalModel": 1281.499999999999,
+     "dailyR": 0.7580554189943279,
+     "dailyMae": 1.6759615384615387,
+     "sum11": {
+      "r": 0.9071946566138673,
+      "ratio": 1.0370839819138669,
+      "mae": 7.672600000000005
+     },
+     "sum60": {
+      "r": 0.852194401596653,
+      "ratio": 1.0056958500504154,
+      "mae": 28.944776119402988
+     },
+     "wetDaysHit": 0.8227848101265823,
+     "falseWet": 0.12048192771084337
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1236.3999999999996,
+     "totalModel": 1272.8999999999992,
+     "dailyR": 0.7464830203121231,
+     "dailyMae": 1.660576923076923,
+     "sum11": {
+      "r": 0.8876820140960833,
+      "ratio": 1.030272033207321,
+      "mae": 7.862799999999999
+     },
+     "sum60": {
+      "r": 0.874137196599977,
+      "ratio": 0.9965967783051118,
+      "mae": 26.19502487562189
+     },
+     "wetDaysHit": 0.8354430379746836,
+     "falseWet": 0.0975609756097561
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.4044230769230768,
+     "mae": 0.4986538461538457,
+     "mae7": 0.41906636670416186,
+     "minBias": 1.464807692307692,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.11380769230769194,
+     "mae": 0.37487500000000007,
+     "mae7": 0.19517941507311562,
+     "minBias": 0.895615384615385,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.4188311688311688,
+    "meanAbsDiff": 3.49025974025974,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.1461038961038961
+   }
+  },
+  {
+   "abbr": "SAG",
+   "name": "Sattel, SZ",
+   "network": "automatic station",
+   "elevation": 790,
+   "distanceToForestKm": 0.6,
+   "weatherPoint": 246,
+   "pointElevation": 977,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2047.099999999999,
+     "totalModel": 2432.7,
+     "dailyR": 0.7737179742974496,
+     "dailyMae": 2.7738461538461516,
+     "sum11": {
+      "r": 0.9089845108916872,
+      "ratio": 1.1881951534039008,
+      "mae": 12.919199999999995
+     },
+     "sum60": {
+      "r": 0.9004960624658109,
+      "ratio": 1.168938211752118,
+      "mae": 48.86915422885569
+     },
+     "wetDaysHit": 0.8771929824561403,
+     "falseWet": 0.08870967741935484
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2047.099999999999,
+     "totalModel": 2408.100000000001,
+     "dailyR": 0.8024816364524451,
+     "dailyMae": 2.6146153846153837,
+     "sum11": {
+      "r": 0.9293668774166862,
+      "ratio": 1.1751428366736518,
+      "mae": 11.847000000000003
+     },
+     "sum60": {
+      "r": 0.9188013432469126,
+      "ratio": 1.1590497308897452,
+      "mae": 46.95472636815925
+     },
+     "wetDaysHit": 0.9035087719298246,
+     "falseWet": 0.1111111111111111
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.44384615384615417,
+     "mae": 0.5580769230769226,
+     "mae7": 0.4658605174353202,
+     "minBias": 1.1359615384615387,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": 0.6539615384615379,
+     "mae": 0.7894846153846147,
+     "mae7": 0.6665928008998885,
+     "minBias": 1.4924230769230769,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.5422077922077922,
+    "meanAbsDiff": 4.451298701298701,
+    "p90AbsDiff": 15,
+    "bandChangeShare": 0.19805194805194806
+   }
+  },
+  {
+   "abbr": "SCM",
+   "name": "Schmerikon",
+   "network": "automatic station",
+   "elevation": 408,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 209,
+   "pointElevation": 451,
+   "complete": 0,
+   "rain": null,
+   "temperature": {
+    "station": null,
+    "point": null
+   },
+   "scoreImpact": null
+  },
+  {
+   "abbr": "SHA",
+   "name": "Schaffhausen",
+   "network": "automatic station",
+   "elevation": 438,
+   "distanceToForestKm": 1.5,
+   "weatherPoint": 0,
+   "pointElevation": 500,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1176.7,
+     "totalModel": 1153.9000000000005,
+     "dailyR": 0.6977311596196405,
+     "dailyMae": 1.5626923076923092,
+     "sum11": {
+      "r": 0.9212974455606194,
+      "ratio": 0.9822695312805556,
+      "mae": 6.424599999999992
+     },
+     "sum60": {
+      "r": 0.9482829165489722,
+      "ratio": 0.9575651247127887,
+      "mae": 20.61940298507462
+     },
+     "wetDaysHit": 0.8765432098765432,
+     "falseWet": 0.125
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1176.7,
+     "totalModel": 1146.7000000000003,
+     "dailyR": 0.6818007030465545,
+     "dailyMae": 1.6015384615384618,
+     "sum11": {
+      "r": 0.9277048948312946,
+      "ratio": 0.9773578707795344,
+      "mae": 6.1853999999999925
+     },
+     "sum60": {
+      "r": 0.9657635331489777,
+      "ratio": 0.9641589153724793,
+      "mae": 17.06741293532339
+     },
+     "wetDaysHit": 0.8765432098765432,
+     "falseWet": 0.08695652173913043
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": -0.28019230769230763,
+     "mae": 0.433653846153846,
+     "mae7": 0.3029527559055117,
+     "minBias": -0.11230769230769229,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.19796153846153897,
+     "mae": 0.4194692307692312,
+     "mae7": 0.2895618672665922,
+     "minBias": 0.1491538461538462,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.0292207792207793,
+    "meanAbsDiff": 2.25,
+    "p90AbsDiff": 6,
+    "bandChangeShare": 0.08766233766233766
+   }
+  },
+  {
+   "abbr": "SMA",
+   "name": "Zürich / Fluntern",
+   "network": "automatic station",
+   "elevation": 604,
+   "distanceToForestKm": 0.3,
+   "weatherPoint": 120,
+   "pointElevation": 560,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1363.8999999999992,
+     "totalModel": 1320.9000000000003,
+     "dailyR": 0.6622318186060333,
+     "dailyMae": 1.8646153846153852,
+     "sum11": {
+      "r": 0.9011755238612053,
+      "ratio": 0.9694585465504337,
+      "mae": 7.992799999999994
+     },
+     "sum60": {
+      "r": 0.9107188732392812,
+      "ratio": 0.9603164231766463,
+      "mae": 25.443532338308454
+     },
+     "wetDaysHit": 0.8571428571428571,
+     "falseWet": 0.09411764705882353
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1363.8999999999992,
+     "totalModel": 1293.6999999999998,
+     "dailyR": 0.7024343079500425,
+     "dailyMae": 1.8003846153846172,
+     "sum11": {
+      "r": 0.9062024441244607,
+      "ratio": 0.9510595120109482,
+      "mae": 7.752199999999995
+     },
+     "sum60": {
+      "r": 0.9158852537650692,
+      "ratio": 0.9386711058179231,
+      "mae": 24.562935323383083
+     },
+     "wetDaysHit": 0.8333333333333334,
+     "falseWet": 0.0963855421686747
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": -0.25019230769230766,
+     "mae": 0.43249999999999916,
+     "mae7": 0.27820584926884134,
+     "minBias": 0.2003846153846152,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.5290769230769236,
+     "mae": 0.6416615384615391,
+     "mae7": 0.5168953880764909,
+     "minBias": -0.6069615384615393,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.4512987012987013,
+    "meanAbsDiff": 3.3344155844155843,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.1396103896103896
+   }
+  },
+  {
+   "abbr": "TAE",
+   "name": "Aadorf / Tänikon",
+   "network": "automatic station",
+   "elevation": 539,
+   "distanceToForestKm": 1.2,
+   "weatherPoint": 72,
+   "pointElevation": 594,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1302.2999999999988,
+     "totalModel": 1332.8999999999983,
+     "dailyR": 0.6679687375388937,
+     "dailyMae": 1.866153846153847,
+     "sum11": {
+      "r": 0.875264323557913,
+      "ratio": 1.0256920763349073,
+      "mae": 8.491400000000004
+     },
+     "sum60": {
+      "r": 0.9430321650503968,
+      "ratio": 1.0122550518953521,
+      "mae": 21.43756218905473
+     },
+     "wetDaysHit": 0.8043478260869565,
+     "falseWet": 0.0625
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1302.2999999999988,
+     "totalModel": 1235.4000000000008,
+     "dailyR": 0.6618642040822773,
+     "dailyMae": 1.7798076923076938,
+     "sum11": {
+      "r": 0.9139849451628036,
+      "ratio": 0.9514540486730367,
+      "mae": 7.115600000000001
+     },
+     "sum60": {
+      "r": 0.9584816202008629,
+      "ratio": 0.9392439293338533,
+      "mae": 18.138308457711435
+     },
+     "wetDaysHit": 0.8043478260869565,
+     "falseWet": 0.06172839506172839
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.3224999999999998,
+     "mae": 0.5905769230769232,
+     "mae7": 0.3807930258717658,
+     "minBias": 1.870384615384615,
+     "frostMeasured": 3,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.2894230769230764,
+     "mae": 0.5090480769230771,
+     "mae7": 0.332186445444319,
+     "minBias": 0.41769230769230714,
+     "frostMeasured": 3,
+     "frostModel": 2
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.5876623376623377,
+    "meanAbsDiff": 2.685064935064935,
+    "p90AbsDiff": 8,
+    "bandChangeShare": 0.1331168831168831
+   }
+  },
+  {
+   "abbr": "UEB",
+   "name": "Uetliberg",
+   "network": "automatic station",
+   "elevation": 854,
+   "distanceToForestKm": 0.5,
+   "weatherPoint": 133,
+   "pointElevation": 532,
+   "complete": 0,
+   "rain": null,
+   "temperature": {
+    "station": null,
+    "point": null
+   },
+   "scoreImpact": null
+  },
+  {
+   "abbr": "WAE",
+   "name": "Wädenswil",
+   "network": "automatic station",
+   "elevation": 485,
+   "distanceToForestKm": 0.7,
+   "weatherPoint": 208,
+   "pointElevation": 490,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1740.4999999999993,
+     "totalModel": 1807.4999999999989,
+     "dailyR": 0.7338900485846233,
+     "dailyMae": 2.3903846153846144,
+     "sum11": {
+      "r": 0.9324564793631775,
+      "ratio": 1.0407048476731773,
+      "mae": 8.573600000000004
+     },
+     "sum60": {
+      "r": 0.9681939443844699,
+      "ratio": 1.0306559342353157,
+      "mae": 18.702985074626856
+     },
+     "wetDaysHit": 0.8557692307692307,
+     "falseWet": 0.15454545454545454
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1740.4999999999993,
+     "totalModel": 1830.1999999999987,
+     "dailyR": 0.7420816489518355,
+     "dailyMae": 2.3894230769230758,
+     "sum11": {
+      "r": 0.9369622393729085,
+      "ratio": 1.0543820983032597,
+      "mae": 8.654799999999996
+     },
+     "sum60": {
+      "r": 0.9664888491388547,
+      "ratio": 1.0429685448421548,
+      "mae": 19.157711442786088
+     },
+     "wetDaysHit": 0.8653846153846154,
+     "falseWet": 0.14678899082568808
+    }
+   },
+   "temperature": {
+    "station": {
+     "days": 520,
+     "bias": 0.1975,
+     "mae": 0.37019230769230715,
+     "mae7": 0.23560179977502832,
+     "minBias": 0.7067307692307693,
+     "frostMeasured": 0,
+     "frostModel": 0
+    },
+    "point": {
+     "days": 520,
+     "bias": -0.06750000000000042,
+     "mae": 0.35999999999999993,
+     "mae7": 0.15369516310461206,
+     "minBias": 0.35346153846153794,
+     "frostMeasured": 0,
+     "frostModel": 0
+    }
+   },
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.7142857142857142,
+    "meanAbsDiff": 3.668831168831169,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.16233766233766234
+   }
+  },
+  {
+   "abbr": "AFI",
+   "name": "Andelfingen",
+   "network": "automatic rain gauge",
+   "elevation": 360,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 18,
+   "pointElevation": 391,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1015.8999999999999,
+     "totalModel": 1129.2000000000003,
+     "dailyR": 0.5927141586316506,
+     "dailyMae": 1.6671153846153857,
+     "sum11": {
+      "r": 0.9004637946460223,
+      "ratio": 1.1107131580134433,
+      "mae": 7.3451999999999895
+     },
+     "sum60": {
+      "r": 0.9059707869253123,
+      "ratio": 1.0673701137952483,
+      "mae": 25.073631840795997
+     },
+     "wetDaysHit": 0.7571428571428571,
+     "falseWet": 0.09859154929577464
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1015.8999999999999,
+     "totalModel": 1126.1,
+     "dailyR": 0.6172851026268568,
+     "dailyMae": 1.5953846153846163,
+     "sum11": {
+      "r": 0.9044734206456311,
+      "ratio": 1.1076277685055753,
+      "mae": 6.869200000000005
+     },
+     "sum60": {
+      "r": 0.9058002261766888,
+      "ratio": 1.061424876520471,
+      "mae": 23.78059701492541
+     },
+     "wetDaysHit": 0.7571428571428571,
+     "falseWet": 0.08333333333333333
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.11688311688311688,
+    "meanAbsDiff": 3.4285714285714284,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.17857142857142858
+   }
+  },
+  {
+   "abbr": "BUE",
+   "name": "Bülach",
+   "network": "automatic rain gauge",
+   "elevation": 403,
+   "distanceToForestKm": 0.9,
+   "weatherPoint": 48,
+   "pointElevation": 470,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1061.9000000000005,
+     "totalModel": 1239.2999999999997,
+     "dailyR": 0.7422431206916295,
+     "dailyMae": 1.55576923076923,
+     "sum11": {
+      "r": 0.9265936633771104,
+      "ratio": 1.1693963540720358,
+      "mae": 7.704599999999997
+     },
+     "sum60": {
+      "r": 0.9108287840441587,
+      "ratio": 1.138112227585572,
+      "mae": 25.68980099502491
+     },
+     "wetDaysHit": 0.8552631578947368,
+     "falseWet": 0.07142857142857142
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1061.9000000000005,
+     "totalModel": 1201.8999999999994,
+     "dailyR": 0.7022884016335365,
+     "dailyMae": 1.615769230769231,
+     "sum11": {
+      "r": 0.8998096154102847,
+      "ratio": 1.1349183689360725,
+      "mae": 7.983599999999993
+     },
+     "sum60": {
+      "r": 0.9111423911856348,
+      "ratio": 1.1186001855487717,
+      "mae": 22.242039800995038
+     },
+     "wetDaysHit": 0.8289473684210527,
+     "falseWet": 0.0875
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 2.1201298701298703,
+    "meanAbsDiff": 4.788961038961039,
+    "p90AbsDiff": 15,
+    "bandChangeShare": 0.1590909090909091
+   }
+  },
+  {
+   "abbr": "DIT",
+   "name": "Dietikon",
+   "network": "automatic rain gauge",
+   "elevation": 384,
+   "distanceToForestKm": 0.7,
+   "weatherPoint": 103,
+   "pointElevation": 481,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1168.0000000000002,
+     "totalModel": 1366.9999999999995,
+     "dailyR": 0.7563943527590734,
+     "dailyMae": 1.752307692307693,
+     "sum11": {
+      "r": 0.923553381417281,
+      "ratio": 1.1732217178194073,
+      "mae": 7.949399999999996
+     },
+     "sum60": {
+      "r": 0.9503890453345641,
+      "ratio": 1.1693485969998028,
+      "mae": 26.03830845771146
+     },
+     "wetDaysHit": 0.8414634146341463,
+     "falseWet": 0.10752688172043011
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1168.0000000000002,
+     "totalModel": 1359.2999999999995,
+     "dailyR": 0.7618949628067296,
+     "dailyMae": 1.694423076923077,
+     "sum11": {
+      "r": 0.8963556577529073,
+      "ratio": 1.1667623895580763,
+      "mae": 8.336400000000006
+     },
+     "sum60": {
+      "r": 0.938423285464482,
+      "ratio": 1.1667065379527746,
+      "mae": 25.8781094527363
+     },
+     "wetDaysHit": 0.8414634146341463,
+     "falseWet": 0.10112359550561797
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 2.2045454545454546,
+    "meanAbsDiff": 3.470779220779221,
+    "p90AbsDiff": 14,
+    "bandChangeShare": 0.1461038961038961
+   }
+  },
+  {
+   "abbr": "DOB",
+   "name": "Benken / Doggen",
+   "network": "automatic rain gauge",
+   "elevation": 408,
+   "distanceToForestKm": 2,
+   "weatherPoint": 227,
+   "pointElevation": 599,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1771,
+     "totalModel": 1587.9999999999989,
+     "dailyR": 0.7064779057893853,
+     "dailyMae": 2.4403846153846147,
+     "sum11": {
+      "r": 0.859999768066604,
+      "ratio": 0.8957170715515629,
+      "mae": 11.129799999999992
+     },
+     "sum60": {
+      "r": 0.8828737939909096,
+      "ratio": 0.8816268130102105,
+      "mae": 38.85820895522387
+     },
+     "wetDaysHit": 0.8282828282828283,
+     "falseWet": 0.16666666666666666
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1771,
+     "totalModel": 1890.900000000002,
+     "dailyR": 0.7160325787904749,
+     "dailyMae": 2.5705769230769224,
+     "sum11": {
+      "r": 0.8722375196304998,
+      "ratio": 1.0639897931664013,
+      "mae": 11.754399999999984
+     },
+     "sum60": {
+      "r": 0.9274562637902922,
+      "ratio": 1.0319617457445083,
+      "mae": 33.32587064676615
+     },
+     "wetDaysHit": 0.8585858585858586,
+     "falseWet": 0.17699115044247787
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.17532467532467533,
+    "meanAbsDiff": 2.090909090909091,
+    "p90AbsDiff": 7,
+    "bandChangeShare": 0.08766233766233766
+   }
+  },
+  {
+   "abbr": "HIW",
+   "name": "Hinwil",
+   "network": "automatic rain gauge",
+   "elevation": 539,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 168,
+   "pointElevation": 568,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1534,
+     "totalModel": 1432.2999999999995,
+     "dailyR": 0.6875869577537255,
+     "dailyMae": 2.1048076923076917,
+     "sum11": {
+      "r": 0.9204113688017469,
+      "ratio": 0.9358332286225466,
+      "mae": 7.917599999999988
+     },
+     "sum60": {
+      "r": 0.944185801954015,
+      "ratio": 0.935524877693348,
+      "mae": 24.41368159203977
+     },
+     "wetDaysHit": 0.875,
+     "falseWet": 0.10752688172043011
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1534,
+     "totalModel": 1432.2999999999995,
+     "dailyR": 0.6875869577537255,
+     "dailyMae": 2.1048076923076917,
+     "sum11": {
+      "r": 0.9204113688017469,
+      "ratio": 0.9358332286225466,
+      "mae": 7.917599999999988
+     },
+     "sum60": {
+      "r": 0.944185801954015,
+      "ratio": 0.935524877693348,
+      "mae": 24.41368159203977
+     },
+     "wetDaysHit": 0.875,
+     "falseWet": 0.10752688172043011
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.24675324675324675,
+    "meanAbsDiff": 4.1688311688311686,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.19805194805194806
+   }
+  },
+  {
+   "abbr": "INN",
+   "name": "Innerthal",
+   "network": "automatic rain gauge",
+   "elevation": 903,
+   "distanceToForestKm": 0.5,
+   "weatherPoint": 242,
+   "pointElevation": 1135,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2350.3,
+     "totalModel": 2357.6000000000004,
+     "dailyR": 0.7465965047216885,
+     "dailyMae": 2.8844230769230763,
+     "sum11": {
+      "r": 0.9206242615230312,
+      "ratio": 1.0035212783022753,
+      "mae": 11.661600000000002
+     },
+     "sum60": {
+      "r": 0.9678320104017271,
+      "ratio": 0.9903455898717881,
+      "mae": 29.057213930348258
+     },
+     "wetDaysHit": 0.875,
+     "falseWet": 0.112
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2350.3,
+     "totalModel": 2234.5999999999985,
+     "dailyR": 0.7474635706140329,
+     "dailyMae": 2.877115384615384,
+     "sum11": {
+      "r": 0.9134210441271848,
+      "ratio": 0.9502404250574165,
+      "mae": 12.198799999999995
+     },
+     "sum60": {
+      "r": 0.9663958219703692,
+      "ratio": 0.9475259219494878,
+      "mae": 31.15746268656719
+     },
+     "wetDaysHit": 0.8671875,
+     "falseWet": 0.12403100775193798
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.9285714285714286,
+    "meanAbsDiff": 3.012987012987013,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.1331168831168831
+   }
+  },
+  {
+   "abbr": "KAI",
+   "name": "Kaiserstuhl, AG",
+   "network": "automatic rain gauge",
+   "elevation": 361,
+   "distanceToForestKm": 1.8,
+   "weatherPoint": 44,
+   "pointElevation": 495,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1134.2000000000003,
+     "totalModel": 1227.3999999999994,
+     "dailyR": 0.7554809297483569,
+     "dailyMae": 1.5130769230769245,
+     "sum11": {
+      "r": 0.9353208670418722,
+      "ratio": 1.0852020489470662,
+      "mae": 6.627000000000001
+     },
+     "sum60": {
+      "r": 0.9204495335039848,
+      "ratio": 1.0622291173225582,
+      "mae": 20.663184079602
+     },
+     "wetDaysHit": 0.8875,
+     "falseWet": 0.07228915662650602
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1134.2000000000003,
+     "totalModel": 1224.1999999999994,
+     "dailyR": 0.7569962253000178,
+     "dailyMae": 1.497307692307694,
+     "sum11": {
+      "r": 0.9344480856001015,
+      "ratio": 1.0834214163753144,
+      "mae": 6.769599999999996
+     },
+     "sum60": {
+      "r": 0.9235045771497958,
+      "ratio": 1.0652132983390261,
+      "mae": 20.373383084577082
+     },
+     "wetDaysHit": 0.8875,
+     "falseWet": 0.06329113924050633
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.2824675324675325,
+    "meanAbsDiff": 2.685064935064935,
+    "p90AbsDiff": 10,
+    "bandChangeShare": 0.1396103896103896
+   }
+  },
+  {
+   "abbr": "KUE",
+   "name": "Küsnacht, ZH",
+   "network": "automatic rain gauge",
+   "elevation": 413,
+   "distanceToForestKm": 1.2,
+   "weatherPoint": 162,
+   "pointElevation": 510,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1340.4000000000005,
+     "totalModel": 1463.499999999999,
+     "dailyR": 0.7353072942562445,
+     "dailyMae": 1.8867307692307687,
+     "sum11": {
+      "r": 0.915418033330594,
+      "ratio": 1.093773751566321,
+      "mae": 8.270200000000004
+     },
+     "sum60": {
+      "r": 0.8964613688141339,
+      "ratio": 1.0751160118639411,
+      "mae": 27.93706467661688
+     },
+     "wetDaysHit": 0.8604651162790697,
+     "falseWet": 0.10752688172043011
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1340.4000000000005,
+     "totalModel": 1425.9000000000003,
+     "dailyR": 0.7247508552918874,
+     "dailyMae": 1.8244230769230776,
+     "sum11": {
+      "r": 0.919283823760475,
+      "ratio": 1.0668022431749573,
+      "mae": 7.435200000000006
+     },
+     "sum60": {
+      "r": 0.9247655005770008,
+      "ratio": 1.049348463121141,
+      "mae": 22.46890547263683
+     },
+     "wetDaysHit": 0.8255813953488372,
+     "falseWet": 0.10227272727272728
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.19155844155844157,
+    "meanAbsDiff": 3.3993506493506493,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.15584415584415584
+   }
+  },
+  {
+   "abbr": "LGA",
+   "name": "Langnau am Albis",
+   "network": "automatic rain gauge",
+   "elevation": 535,
+   "distanceToForestKm": 0.6,
+   "weatherPoint": 178,
+   "pointElevation": 568,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1558.0000000000014,
+     "totalModel": 1517.3,
+     "dailyR": 0.7206821793349202,
+     "dailyMae": 2.0624999999999996,
+     "sum11": {
+      "r": 0.8872011204961255,
+      "ratio": 0.9779948355226231,
+      "mae": 8.387599999999997
+     },
+     "sum60": {
+      "r": 0.8547784976586742,
+      "ratio": 0.9537609158944628,
+      "mae": 33.38706467661691
+     },
+     "wetDaysHit": 0.845360824742268,
+     "falseWet": 0.125
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1558.0000000000014,
+     "totalModel": 1608.8999999999987,
+     "dailyR": 0.7251081447512818,
+     "dailyMae": 2.0951923076923054,
+     "sum11": {
+      "r": 0.9046949692962343,
+      "ratio": 1.0369372403727413,
+      "mae": 8.666599999999997
+     },
+     "sum60": {
+      "r": 0.8982422713653803,
+      "ratio": 1.0161885316549777,
+      "mae": 31.162686567164187
+     },
+     "wetDaysHit": 0.8247422680412371,
+     "falseWet": 0.15
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.1396103896103895,
+    "meanAbsDiff": 3.4123376623376624,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.1525974025974026
+   }
+  },
+  {
+   "abbr": "OBI",
+   "name": "Oberiberg",
+   "network": "automatic rain gauge",
+   "elevation": 1075,
+   "distanceToForestKm": 1,
+   "weatherPoint": 280,
+   "pointElevation": 1232,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2231.799999999999,
+     "totalModel": 2822.7,
+     "dailyR": 0.8176565033972372,
+     "dailyMae": 2.887884615384617,
+     "sum11": {
+      "r": 0.9534537009411145,
+      "ratio": 1.263737438089561,
+      "mae": 15.383200000000008
+     },
+     "sum60": {
+      "r": 0.9594153727410416,
+      "ratio": 1.243333468679441,
+      "mae": 68.826368159204
+     },
+     "wetDaysHit": 0.907563025210084,
+     "falseWet": 0.11510791366906475
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2231.799999999999,
+     "totalModel": 2859.900000000001,
+     "dailyR": 0.8200265082670459,
+     "dailyMae": 2.904423076923076,
+     "sum11": {
+      "r": 0.9508272270957101,
+      "ratio": 1.2801866047391008,
+      "mae": 16.371200000000016
+     },
+     "sum60": {
+      "r": 0.9490072598404939,
+      "ratio": 1.2593172553928067,
+      "mae": 73.65820895522381
+     },
+     "wetDaysHit": 0.907563025210084,
+     "falseWet": 0.13286713286713286
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.22727272727272727,
+    "meanAbsDiff": 2.5714285714285716,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.1266233766233766
+   }
+  },
+  {
+   "abbr": "OED",
+   "name": "Ehrendingen",
+   "network": "automatic rain gauge",
+   "elevation": 428,
+   "distanceToForestKm": 1.7,
+   "weatherPoint": 59,
+   "pointElevation": 459,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1151.8999999999999,
+     "totalModel": 1256.9000000000003,
+     "dailyR": 0.7261562279832882,
+     "dailyMae": 1.5576923076923086,
+     "sum11": {
+      "r": 0.8877194942472219,
+      "ratio": 1.08828025477707,
+      "mae": 7.287999999999997
+     },
+     "sum60": {
+      "r": 0.8527369855998677,
+      "ratio": 1.060812542911896,
+      "mae": 25.91915422885568
+     },
+     "wetDaysHit": 0.8823529411764706,
+     "falseWet": 0.06741573033707865
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1151.8999999999999,
+     "totalModel": 1283.999999999999,
+     "dailyR": 0.7685918251765538,
+     "dailyMae": 1.502500000000001,
+     "sum11": {
+      "r": 0.9176238119032437,
+      "ratio": 1.1114092356687904,
+      "mae": 6.874199999999995
+     },
+     "sum60": {
+      "r": 0.8957452922838717,
+      "ratio": 1.085110311582942,
+      "mae": 23.61417910447761
+     },
+     "wetDaysHit": 0.8941176470588236,
+     "falseWet": 0.06818181818181818
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.5064935064935064,
+    "meanAbsDiff": 3.6298701298701297,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.19480519480519481
+   }
+  },
+  {
+   "abbr": "OPF",
+   "name": "Opfikon",
+   "network": "automatic rain gauge",
+   "elevation": 424,
+   "distanceToForestKm": 0.9,
+   "weatherPoint": 97,
+   "pointElevation": 463,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1248.2000000000007,
+     "totalModel": 1319.3000000000006,
+     "dailyR": 0.8187367458269041,
+     "dailyMae": 1.6509615384615386,
+     "sum11": {
+      "r": 0.910802122446717,
+      "ratio": 1.0601363826954333,
+      "mae": 8.055800000000001
+     },
+     "sum60": {
+      "r": 0.8759346060976949,
+      "ratio": 1.03122368023454,
+      "mae": 27.067661691542348
+     },
+     "wetDaysHit": 0.8481012658227848,
+     "falseWet": 0.12941176470588237
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1248.2000000000007,
+     "totalModel": 1366.5000000000005,
+     "dailyR": 0.8173873682553688,
+     "dailyMae": 1.691346153846154,
+     "sum11": {
+      "r": 0.9130338185457915,
+      "ratio": 1.098086669952405,
+      "mae": 8.089599999999999
+     },
+     "sum60": {
+      "r": 0.8937997626037705,
+      "ratio": 1.0729157960382931,
+      "mae": 26.485323383084552
+     },
+     "wetDaysHit": 0.8481012658227848,
+     "falseWet": 0.13953488372093023
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 2.2175324675324677,
+    "meanAbsDiff": 3.8863636363636362,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.18181818181818182
+   }
+  },
+  {
+   "abbr": "REM",
+   "name": "Rempen",
+   "network": "automatic rain gauge",
+   "elevation": 650,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 234,
+   "pointElevation": 817,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2236.9999999999995,
+     "totalModel": 1816.8999999999994,
+     "dailyR": 0.6781460971991237,
+     "dailyMae": 2.928653846153846,
+     "sum11": {
+      "r": 0.850275981367766,
+      "ratio": 0.8111517960983493,
+      "mae": 15.010999999999989
+     },
+     "sum60": {
+      "r": 0.9218850114447928,
+      "ratio": 0.7950654678436855,
+      "mae": 60.26691542288549
+     },
+     "wetDaysHit": 0.8264462809917356,
+     "falseWet": 0.08035714285714286
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2236.9999999999995,
+     "totalModel": 2287.099999999998,
+     "dailyR": 0.6799749422280532,
+     "dailyMae": 3.1182692307692297,
+     "sum11": {
+      "r": 0.8357128222561974,
+      "ratio": 1.02225756473639,
+      "mae": 15.306400000000014
+     },
+     "sum60": {
+      "r": 0.8912328264802264,
+      "ratio": 0.9883774135069394,
+      "mae": 51.21169154228854
+     },
+     "wetDaysHit": 0.8677685950413223,
+     "falseWet": 0.09090909090909091
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.2694805194805194,
+    "meanAbsDiff": 3.7175324675324677,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.19805194805194806
+   }
+  },
+  {
+   "abbr": "ROG",
+   "name": "Rossberg",
+   "network": "automatic rain gauge",
+   "elevation": 1129,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 260,
+   "pointElevation": 795,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2029.9000000000003,
+     "totalModel": 2413.9,
+     "dailyR": 0.7786594248275137,
+     "dailyMae": 2.795384615384614,
+     "sum11": {
+      "r": 0.8676659707908346,
+      "ratio": 1.188411680333414,
+      "mae": 15.651200000000005
+     },
+     "sum60": {
+      "r": 0.8999413205657968,
+      "ratio": 1.1882588401196628,
+      "mae": 54.290547263681646
+     },
+     "wetDaysHit": 0.8818181818181818,
+     "falseWet": 0.11290322580645161
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2029.9000000000003,
+     "totalModel": 2321.7999999999984,
+     "dailyR": 0.7577510445429196,
+     "dailyMae": 2.864038461538462,
+     "sum11": {
+      "r": 0.862796137461916,
+      "ratio": 1.1449802892118388,
+      "mae": 15.668200000000018
+     },
+     "sum60": {
+      "r": 0.9095494024771069,
+      "ratio": 1.1349248945002341,
+      "mae": 46.814925373134244
+     },
+     "wetDaysHit": 0.8818181818181818,
+     "falseWet": 0.1
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.3961038961038961,
+    "meanAbsDiff": 3.461038961038961,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.1590909090909091
+   }
+  },
+  {
+   "abbr": "SIE",
+   "name": "Siebnen",
+   "network": "automatic rain gauge",
+   "elevation": 452,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 228,
+   "pointElevation": 701,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1845.0999999999985,
+     "totalModel": 1789.8999999999994,
+     "dailyR": 0.6861254738993997,
+     "dailyMae": 2.6888461538461526,
+     "sum11": {
+      "r": 0.8382726640307336,
+      "ratio": 0.9707448134227908,
+      "mae": 12.352200000000007
+     },
+     "sum60": {
+      "r": 0.877792439148142,
+      "ratio": 0.9484885872917969,
+      "mae": 39.00223880597015
+     },
+     "wetDaysHit": 0.8137254901960784,
+     "falseWet": 0.16363636363636364
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1845.0999999999985,
+     "totalModel": 1816.8999999999994,
+     "dailyR": 0.6873548370632254,
+     "dailyMae": 2.6707692307692303,
+     "sum11": {
+      "r": 0.8507400606964981,
+      "ratio": 0.9838794899658019,
+      "mae": 11.824799999999977
+     },
+     "sum60": {
+      "r": 0.8904157786309117,
+      "ratio": 0.9621846793261655,
+      "mae": 38.402736318407925
+     },
+     "wetDaysHit": 0.8333333333333334,
+     "falseWet": 0.15178571428571427
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.1136363636363635,
+    "meanAbsDiff": 3.0162337662337664,
+    "p90AbsDiff": 10,
+    "bandChangeShare": 0.12987012987012986
+   }
+  },
+  {
+   "abbr": "SIH",
+   "name": "Sihlbrugg",
+   "network": "automatic rain gauge",
+   "elevation": 549,
+   "distanceToForestKm": 0.2,
+   "weatherPoint": 205,
+   "pointElevation": 619,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1803.9,
+     "totalModel": 1711.6999999999998,
+     "dailyR": 0.6960513256461655,
+     "dailyMae": 2.5126923076923084,
+     "sum11": {
+      "r": 0.9037634927537315,
+      "ratio": 0.952645572715049,
+      "mae": 9.216599999999998
+     },
+     "sum60": {
+      "r": 0.953446265964968,
+      "ratio": 0.9446205008467138,
+      "mae": 22.00522388059704
+     },
+     "wetDaysHit": 0.822429906542056,
+     "falseWet": 0.13333333333333333
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1803.9,
+     "totalModel": 1713.8999999999994,
+     "dailyR": 0.6955853101990345,
+     "dailyMae": 2.5146153846153854,
+     "sum11": {
+      "r": 0.9032948772905292,
+      "ratio": 0.9535827798378229,
+      "mae": 9.261800000000001
+     },
+     "sum60": {
+      "r": 0.9535283929033335,
+      "ratio": 0.9447989289932609,
+      "mae": 21.96467661691545
+     },
+     "wetDaysHit": 0.8317757009345794,
+     "falseWet": 0.13333333333333333
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.6168831168831169,
+    "meanAbsDiff": 3.655844155844156,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.17207792207792208
+   }
+  },
+  {
+   "abbr": "UST",
+   "name": "Uster",
+   "network": "automatic rain gauge",
+   "elevation": 438,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 137,
+   "pointElevation": 468,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1433.4999999999998,
+     "totalModel": 1349.5000000000005,
+     "dailyR": 0.692559969104646,
+     "dailyMae": 1.8873076923076917,
+     "sum11": {
+      "r": 0.9372483717269546,
+      "ratio": 0.9420358454118628,
+      "mae": 7.082399999999995
+     },
+     "sum60": {
+      "r": 0.9625765195108529,
+      "ratio": 0.9299937672463896,
+      "mae": 21.571890547263678
+     },
+     "wetDaysHit": 0.8620689655172413,
+     "falseWet": 0.09523809523809523
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1433.4999999999998,
+     "totalModel": 1349.1000000000008,
+     "dailyR": 0.6924711321783585,
+     "dailyMae": 1.8876923076923071,
+     "sum11": {
+      "r": 0.9372633792469449,
+      "ratio": 0.9419271066535309,
+      "mae": 7.084599999999995
+     },
+     "sum60": {
+      "r": 0.9626088866029108,
+      "ratio": 0.9300439639197439,
+      "mae": 21.562935323383098
+     },
+     "wetDaysHit": 0.8620689655172413,
+     "falseWet": 0.09523809523809523
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.5292207792207793,
+    "meanAbsDiff": 3.918831168831169,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.14285714285714285
+   }
+  },
+  {
+   "abbr": "WAG",
+   "name": "Waldegg",
+   "network": "automatic rain gauge",
+   "elevation": 545,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 132,
+   "pointElevation": 586,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1373.5999999999992,
+     "totalModel": 1398.3999999999983,
+     "dailyR": 0.6787735274410314,
+     "dailyMae": 2.0061538461538464,
+     "sum11": {
+      "r": 0.8905830451522473,
+      "ratio": 1.022155584412107,
+      "mae": 8.297199999999998
+     },
+     "sum60": {
+      "r": 0.8994767425014841,
+      "ratio": 1.009035264535666,
+      "mae": 24.87786069651746
+     },
+     "wetDaysHit": 0.8478260869565217,
+     "falseWet": 0.10638297872340426
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1373.5999999999992,
+     "totalModel": 1399.199999999999,
+     "dailyR": 0.6788398195029179,
+     "dailyMae": 2.006538461538462,
+     "sum11": {
+      "r": 0.8905808897838692,
+      "ratio": 1.022630825044512,
+      "mae": 8.301000000000002
+     },
+     "sum60": {
+      "r": 0.899370634824707,
+      "ratio": 1.0091636440905578,
+      "mae": 24.899502487562234
+     },
+     "wetDaysHit": 0.8478260869565217,
+     "falseWet": 0.10638297872340426
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.6948051948051948,
+    "meanAbsDiff": 3.038961038961039,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.1266233766233766
+   }
+  },
+  {
+   "abbr": "WIN",
+   "name": "Winterthur / Seen",
+   "network": "automatic rain gauge",
+   "elevation": 506,
+   "distanceToForestKm": 0.6,
+   "weatherPoint": 79,
+   "pointElevation": 523,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1355.8999999999999,
+     "totalModel": 1303.8000000000002,
+     "dailyR": 0.6147002164508971,
+     "dailyMae": 1.9155769230769233,
+     "sum11": {
+      "r": 0.8851583721719192,
+      "ratio": 0.966054641099609,
+      "mae": 7.669400000000003
+     },
+     "sum60": {
+      "r": 0.9225518748221939,
+      "ratio": 0.943287374360123,
+      "mae": 23.055970149253735
+     },
+     "wetDaysHit": 0.8160919540229885,
+     "falseWet": 0.07692307692307693
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1355.8999999999999,
+     "totalModel": 1321.1999999999996,
+     "dailyR": 0.6101330969097709,
+     "dailyMae": 1.9801923076923074,
+     "sum11": {
+      "r": 0.8818508862153407,
+      "ratio": 0.9791006278635662,
+      "mae": 8.282599999999997
+     },
+     "sum60": {
+      "r": 0.9371981953237649,
+      "ratio": 0.9621791279004597,
+      "mae": 20.649999999999984
+     },
+     "wetDaysHit": 0.8275862068965517,
+     "falseWet": 0.08433734939759036
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.048701298701298704,
+    "meanAbsDiff": 3.0551948051948052,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.13636363636363635
+   }
+  },
+  {
+   "abbr": "ZWK",
+   "name": "Zwillikon",
+   "network": "automatic rain gauge",
+   "elevation": 461,
+   "distanceToForestKm": 0.7,
+   "weatherPoint": 175,
+   "pointElevation": 493,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1270.9000000000008,
+     "totalModel": 1318.8,
+     "dailyR": 0.7202402592408389,
+     "dailyMae": 1.789423076923077,
+     "sum11": {
+      "r": 0.9039310497756518,
+      "ratio": 1.0392221965584945,
+      "mae": 7.841199999999999
+     },
+     "sum60": {
+      "r": 0.8956297599483797,
+      "ratio": 1.0056661948734609,
+      "mae": 28.325124378109415
+     },
+     "wetDaysHit": 0.8275862068965517,
+     "falseWet": 0.12790697674418605
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1270.9000000000008,
+     "totalModel": 1360.0999999999988,
+     "dailyR": 0.7151228425717582,
+     "dailyMae": 1.780384615384616,
+     "sum11": {
+      "r": 0.9079728124456524,
+      "ratio": 1.0719554798475555,
+      "mae": 8.2746
+     },
+     "sum60": {
+      "r": 0.9181203353528591,
+      "ratio": 1.042589209445012,
+      "mae": 26.65273631840798
+     },
+     "wetDaysHit": 0.8390804597701149,
+     "falseWet": 0.14942528735632185
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.0616883116883118,
+    "meanAbsDiff": 4.1980519480519485,
+    "p90AbsDiff": 14,
+    "bandChangeShare": 0.17857142857142858
+   }
+  },
+  {
+   "abbr": "ALM",
+   "name": "Altmatt",
+   "network": "manual rain gauge",
+   "elevation": 920,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 237,
+   "pointElevation": 1124,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2094.400000000001,
+     "totalModel": 2387.400000000001,
+     "dailyR": 0.7811135187559265,
+     "dailyMae": 2.7376923076923076,
+     "sum11": {
+      "r": 0.9456890204130521,
+      "ratio": 1.1411766769883953,
+      "mae": 9.731199999999998
+     },
+     "sum60": {
+      "r": 0.9694582887544205,
+      "ratio": 1.1317956482960334,
+      "mae": 35.19601990049752
+     },
+     "wetDaysHit": 0.8852459016393442,
+     "falseWet": 0.12598425196850394
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2094.400000000001,
+     "totalModel": 2399.2,
+     "dailyR": 0.7828630530460293,
+     "dailyMae": 2.6857692307692287,
+     "sum11": {
+      "r": 0.9409345006948765,
+      "ratio": 1.145939876665583,
+      "mae": 10.666400000000005
+     },
+     "sum60": {
+      "r": 0.9709135077583476,
+      "ratio": 1.1411239607709291,
+      "mae": 39.32935323383087
+     },
+     "wetDaysHit": 0.8934426229508197,
+     "falseWet": 0.11290322580645161
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.9902597402597403,
+    "meanAbsDiff": 4.237012987012987,
+    "p90AbsDiff": 17,
+    "bandChangeShare": 0.19155844155844157
+   }
+  },
+  {
+   "abbr": "ALW",
+   "name": "Allenwinden, TG",
+   "network": "manual rain gauge",
+   "elevation": 865,
+   "distanceToForestKm": 0.3,
+   "weatherPoint": 129,
+   "pointElevation": 855,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1943.1000000000006,
+     "totalModel": 1481.0999999999997,
+     "dailyR": 0.7151927257037674,
+     "dailyMae": 2.3607692307692307,
+     "sum11": {
+      "r": 0.9052806010860781,
+      "ratio": 0.7696800926963445,
+      "mae": 12.505999999999997
+     },
+     "sum60": {
+      "r": 0.9069506605255483,
+      "ratio": 0.7681399735158868,
+      "mae": 55.27014925373126
+     },
+     "wetDaysHit": 0.8392857142857143,
+     "falseWet": 0.0625
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1943.1000000000006,
+     "totalModel": 1481.0999999999997,
+     "dailyR": 0.7151927257037674,
+     "dailyMae": 2.3607692307692307,
+     "sum11": {
+      "r": 0.9052806010860781,
+      "ratio": 0.7696800926963445,
+      "mae": 12.505999999999997
+     },
+     "sum60": {
+      "r": 0.9069506605255483,
+      "ratio": 0.7681399735158868,
+      "mae": 55.27014925373126
+     },
+     "wetDaysHit": 0.8392857142857143,
+     "falseWet": 0.0625
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -2.6233766233766236,
+    "meanAbsDiff": 3.8376623376623376,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.18181818181818182
+   }
+  },
+  {
+   "abbr": "APT",
+   "name": "Alpthal",
+   "network": "manual rain gauge",
+   "elevation": 1015,
+   "distanceToForestKm": 0.6,
+   "weatherPoint": 264,
+   "pointElevation": 1304,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2741.900000000001,
+     "totalModel": 2693.7999999999997,
+     "dailyR": 0.7793602262248271,
+     "dailyMae": 3.1805769230769214,
+     "sum11": {
+      "r": 0.9534370797569166,
+      "ratio": 0.9821309548132533,
+      "mae": 9.961800000000006
+     },
+     "sum60": {
+      "r": 0.9551233611156906,
+      "ratio": 0.9669454968033461,
+      "mae": 28.14800995024877
+     },
+     "wetDaysHit": 0.8928571428571429,
+     "falseWet": 0.1044776119402985
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2741.900000000001,
+     "totalModel": 2658.599999999999,
+     "dailyR": 0.7609054692995935,
+     "dailyMae": 3.299423076923074,
+     "sum11": {
+      "r": 0.9131553862097526,
+      "ratio": 0.9701568523685256,
+      "mae": 13.074800000000002
+     },
+     "sum60": {
+      "r": 0.9437791385748283,
+      "ratio": 0.9758191309854027,
+      "mae": 36.111194029850765
+     },
+     "wetDaysHit": 0.8857142857142857,
+     "falseWet": 0.11278195488721804
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -2.3181818181818183,
+    "meanAbsDiff": 3.142857142857143,
+    "p90AbsDiff": 12,
+    "bandChangeShare": 0.1525974025974026
+   }
+  },
+  {
+   "abbr": "BAM",
+   "name": "Bauma",
+   "network": "manual rain gauge",
+   "elevation": 667,
+   "distanceToForestKm": 0.6,
+   "weatherPoint": 142,
+   "pointElevation": 769,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1963.1999999999998,
+     "totalModel": 1575.6999999999994,
+     "dailyR": 0.6982324873006722,
+     "dailyMae": 2.394038461538464,
+     "sum11": {
+      "r": 0.9190757797599611,
+      "ratio": 0.8048666223167508,
+      "mae": 11.767200000000022
+     },
+     "sum60": {
+      "r": 0.9265055862030637,
+      "ratio": 0.805485337152105,
+      "mae": 50.09800995024885
+     },
+     "wetDaysHit": 0.8543689320388349,
+     "falseWet": 0.05
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1963.1999999999998,
+     "totalModel": 1582.3999999999999,
+     "dailyR": 0.699278513733059,
+     "dailyMae": 2.3903846153846176,
+     "sum11": {
+      "r": 0.9190509756946892,
+      "ratio": 0.8081460174089017,
+      "mae": 11.637200000000021
+     },
+     "sum60": {
+      "r": 0.9270995162019494,
+      "ratio": 0.8061556980677805,
+      "mae": 49.93731343283592
+     },
+     "wetDaysHit": 0.8543689320388349,
+     "falseWet": 0.05
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1.9188311688311688,
+    "meanAbsDiff": 4.373376623376624,
+    "p90AbsDiff": 14,
+    "bandChangeShare": 0.19805194805194806
+   }
+  },
+  {
+   "abbr": "BIS",
+   "name": "Bisisthal",
+   "network": "manual rain gauge",
+   "elevation": 1083,
+   "distanceToForestKm": 0.5,
+   "weatherPoint": 312,
+   "pointElevation": 1213,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2469.3999999999983,
+     "totalModel": 2931.3999999999965,
+     "dailyR": 0.7823668472061251,
+     "dailyMae": 3.246538461538461,
+     "sum11": {
+      "r": 0.9298521320530688,
+      "ratio": 1.1848327319884524,
+      "mae": 15.433600000000016
+     },
+     "sum60": {
+      "r": 0.9476791218516535,
+      "ratio": 1.1748688524977706,
+      "mae": 62.71616915422885
+     },
+     "wetDaysHit": 0.8992248062015504,
+     "falseWet": 0.14184397163120568
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2469.3999999999983,
+     "totalModel": 2931.3999999999965,
+     "dailyR": 0.7823668472061251,
+     "dailyMae": 3.246538461538461,
+     "sum11": {
+      "r": 0.9298521320530688,
+      "ratio": 1.1848327319884524,
+      "mae": 15.433600000000016
+     },
+     "sum60": {
+      "r": 0.9476791218516535,
+      "ratio": 1.1748688524977706,
+      "mae": 62.71616915422885
+     },
+     "wetDaysHit": 0.8992248062015504,
+     "falseWet": 0.14184397163120568
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.31493506493506496,
+    "meanAbsDiff": 3.581168831168831,
+    "p90AbsDiff": 10,
+    "bandChangeShare": 0.1525974025974026
+   }
+  },
+  {
+   "abbr": "EFF",
+   "name": "Effretikon",
+   "network": "manual rain gauge",
+   "elevation": 478,
+   "distanceToForestKm": 0.5,
+   "weatherPoint": 91,
+   "pointElevation": 525,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1377.1999999999987,
+     "totalModel": 1299.3000000000006,
+     "dailyR": 0.6795528377649904,
+     "dailyMae": 1.8009615384615396,
+     "sum11": {
+      "r": 0.8711350973129142,
+      "ratio": 0.9489364548494987,
+      "mae": 7.692799999999999
+     },
+     "sum60": {
+      "r": 0.9105032636367816,
+      "ratio": 0.9359338099634383,
+      "mae": 21.98830845771142
+     },
+     "wetDaysHit": 0.8913043478260869,
+     "falseWet": 0.07142857142857142
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1377.1999999999987,
+     "totalModel": 1299.3000000000006,
+     "dailyR": 0.6795528377649904,
+     "dailyMae": 1.8009615384615396,
+     "sum11": {
+      "r": 0.8711350973129142,
+      "ratio": 0.9489364548494987,
+      "mae": 7.692799999999999
+     },
+     "sum60": {
+      "r": 0.9105032636367816,
+      "ratio": 0.9359338099634383,
+      "mae": 21.98830845771142
+     },
+     "wetDaysHit": 0.8913043478260869,
+     "falseWet": 0.07142857142857142
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.8896103896103896,
+    "meanAbsDiff": 2.6623376623376624,
+    "p90AbsDiff": 8,
+    "bandChangeShare": 0.12012987012987013
+   }
+  },
+  {
+   "abbr": "EUT",
+   "name": "Euthal",
+   "network": "manual rain gauge",
+   "elevation": 910,
+   "distanceToForestKm": 0.8,
+   "weatherPoint": 250,
+   "pointElevation": 1051,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2257.4999999999977,
+     "totalModel": 2505.2000000000007,
+     "dailyR": 0.7530730998727799,
+     "dailyMae": 2.9136538461538453,
+     "sum11": {
+      "r": 0.8860271966819189,
+      "ratio": 1.1079410114871526,
+      "mae": 13.806199999999997
+     },
+     "sum60": {
+      "r": 0.9269130464052434,
+      "ratio": 1.0711172200830366,
+      "mae": 39.07512437810943
+     },
+     "wetDaysHit": 0.9217391304347826,
+     "falseWet": 0.10606060606060606
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2257.4999999999977,
+     "totalModel": 2405.5999999999985,
+     "dailyR": 0.7512741302238645,
+     "dailyMae": 2.7998076923076938,
+     "sum11": {
+      "r": 0.9047829562622611,
+      "ratio": 1.064020746786771,
+      "mae": 12.16
+     },
+     "sum60": {
+      "r": 0.9393390070268054,
+      "ratio": 1.043961489512663,
+      "mae": 35.83208955223877
+     },
+     "wetDaysHit": 0.9217391304347826,
+     "falseWet": 0.09302325581395349
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.19480519480519481,
+    "meanAbsDiff": 2.8376623376623376,
+    "p90AbsDiff": 10,
+    "bandChangeShare": 0.13636363636363635
+   }
+  },
+  {
+   "abbr": "GIN",
+   "name": "Grüningen",
+   "network": "manual rain gauge",
+   "elevation": 535,
+   "distanceToForestKm": 1.4,
+   "weatherPoint": 194,
+   "pointElevation": 571,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1590.3000000000002,
+     "totalModel": 1525.0000000000002,
+     "dailyR": 0.7118872019058872,
+     "dailyMae": 2.15903846153846,
+     "sum11": {
+      "r": 0.9394842077697805,
+      "ratio": 0.9635300716445885,
+      "mae": 7.748200000000004
+     },
+     "sum60": {
+      "r": 0.9573540232265105,
+      "ratio": 0.955072795296901,
+      "mae": 24.764427860696546
+     },
+     "wetDaysHit": 0.8137254901960784,
+     "falseWet": 0.125
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1590.3000000000002,
+     "totalModel": 1557.0000000000007,
+     "dailyR": 0.7043260467857525,
+     "dailyMae": 2.2209615384615375,
+     "sum11": {
+      "r": 0.9347257202021647,
+      "ratio": 0.9836472241336431,
+      "mae": 7.751200000000015
+     },
+     "sum60": {
+      "r": 0.9662453868382797,
+      "ratio": 0.980865843399173,
+      "mae": 20.755970149253717
+     },
+     "wetDaysHit": 0.8431372549019608,
+     "falseWet": 0.12631578947368421
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.3571428571428572,
+    "meanAbsDiff": 3.5194805194805197,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.1525974025974026
+   }
+  },
+  {
+   "abbr": "GSS",
+   "name": "Gross, SZ",
+   "network": "manual rain gauge",
+   "elevation": 897,
+   "distanceToForestKm": 1.4,
+   "weatherPoint": 249,
+   "pointElevation": 1236,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2116.2000000000007,
+     "totalModel": 2328.199999999999,
+     "dailyR": 0.7244822430807785,
+     "dailyMae": 2.8676923076923053,
+     "sum11": {
+      "r": 0.9341081756812551,
+      "ratio": 1.1015453976858098,
+      "mae": 10.519399999999997
+     },
+     "sum60": {
+      "r": 0.9690560671279668,
+      "ratio": 1.0836879734248743,
+      "mae": 28.096019900497527
+     },
+     "wetDaysHit": 0.8728813559322034,
+     "falseWet": 0.12698412698412698
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2116.2000000000007,
+     "totalModel": 2527.600000000002,
+     "dailyR": 0.7419841094441716,
+     "dailyMae": 2.8934615384615388,
+     "sum11": {
+      "r": 0.9166454707468495,
+      "ratio": 1.1945732999756737,
+      "mae": 13.733799999999983
+     },
+     "sum60": {
+      "r": 0.9541242675675353,
+      "ratio": 1.1692259615962448,
+      "mae": 47.55796019900497
+     },
+     "wetDaysHit": 0.8983050847457628,
+     "falseWet": 0.1386861313868613
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.5909090909090908,
+    "meanAbsDiff": 3.6103896103896105,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.16233766233766234
+   }
+  },
+  {
+   "abbr": "HAU",
+   "name": "Hausen am Albis",
+   "network": "manual rain gauge",
+   "elevation": 624,
+   "distanceToForestKm": 0.5,
+   "weatherPoint": 190,
+   "pointElevation": 652,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1756.5000000000014,
+     "totalModel": 1597.0999999999995,
+     "dailyR": 0.7658534157490889,
+     "dailyMae": 2.1480769230769234,
+     "sum11": {
+      "r": 0.8871810072451606,
+      "ratio": 0.9107802804974283,
+      "mae": 10.96119999999998
+     },
+     "sum60": {
+      "r": 0.8912307103680661,
+      "ratio": 0.8963197365110173,
+      "mae": 42.39577114427862
+     },
+     "wetDaysHit": 0.88,
+     "falseWet": 0.1326530612244898
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1756.5000000000014,
+     "totalModel": 1577.1,
+     "dailyR": 0.8034980840050531,
+     "dailyMae": 2.0630769230769244,
+     "sum11": {
+      "r": 0.9286241089828636,
+      "ratio": 0.8990031520676601,
+      "mae": 9.547800000000011
+     },
+     "sum60": {
+      "r": 0.948769180617001,
+      "ratio": 0.890503118372333,
+      "mae": 30.638557213930405
+     },
+     "wetDaysHit": 0.86,
+     "falseWet": 0.11956521739130435
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -3.1233766233766236,
+    "meanAbsDiff": 5.12987012987013,
+    "p90AbsDiff": 17,
+    "bandChangeShare": 0.22402597402597402
+   }
+  },
+  {
+   "abbr": "HOY",
+   "name": "Hoch-Ybrig",
+   "network": "manual rain gauge",
+   "elevation": 1452,
+   "distanceToForestKm": 0.2,
+   "weatherPoint": 290,
+   "pointElevation": 1469,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2334.5999999999985,
+     "totalModel": 3085.0999999999967,
+     "dailyR": 0.7896264117044045,
+     "dailyMae": 3.5274999999999954,
+     "sum11": {
+      "r": 0.9293528000480722,
+      "ratio": 1.3290163636219858,
+      "mae": 19.754599999999968
+     },
+     "sum60": {
+      "r": 0.9719272185273967,
+      "ratio": 1.3379222374853905,
+      "mae": 98.5211442786071
+     },
+     "wetDaysHit": 0.875968992248062,
+     "falseWet": 0.14189189189189189
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2334.5999999999985,
+     "totalModel": 3079.8999999999974,
+     "dailyR": 0.7891588063891386,
+     "dailyMae": 3.5171153846153813,
+     "sum11": {
+      "r": 0.9288146543202231,
+      "ratio": 1.3269639905408956,
+      "mae": 19.737999999999968
+     },
+     "sum60": {
+      "r": 0.9717977667828671,
+      "ratio": 1.337510131993211,
+      "mae": 98.40099502487575
+     },
+     "wetDaysHit": 0.875968992248062,
+     "falseWet": 0.14189189189189189
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 1.1883116883116882,
+    "meanAbsDiff": 3.0714285714285716,
+    "p90AbsDiff": 8,
+    "bandChangeShare": 0.10064935064935066
+   }
+  },
+  {
+   "abbr": "KAR",
+   "name": "Küssnacht am Rigi",
+   "network": "manual rain gauge",
+   "elevation": 502,
+   "distanceToForestKm": 2.9,
+   "weatherPoint": 257,
+   "pointElevation": 606,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1820.2999999999984,
+     "totalModel": 1940.899999999998,
+     "dailyR": 0.7869953700685517,
+     "dailyMae": 2.345769230769231,
+     "sum11": {
+      "r": 0.9324000168457999,
+      "ratio": 1.0698680717520401,
+      "mae": 8.652399999999998
+     },
+     "sum60": {
+      "r": 0.9681531942705185,
+      "ratio": 1.0713879495768608,
+      "mae": 24.893034825870615
+     },
+     "wetDaysHit": 0.8857142857142857,
+     "falseWet": 0.11320754716981132
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1820.2999999999984,
+     "totalModel": 2002.299999999999,
+     "dailyR": 0.8198254744786295,
+     "dailyMae": 2.2003846153846167,
+     "sum11": {
+      "r": 0.9436746004982142,
+      "ratio": 1.1039457577940412,
+      "mae": 8.844200000000003
+     },
+     "sum60": {
+      "r": 0.9732872347645686,
+      "ratio": 1.1100970189007338,
+      "mae": 30.378855721392974
+     },
+     "wetDaysHit": 0.8952380952380953,
+     "falseWet": 0.13333333333333333
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.7467532467532467,
+    "meanAbsDiff": 2.909090909090909,
+    "p90AbsDiff": 9,
+    "bandChangeShare": 0.1038961038961039
+   }
+  },
+  {
+   "abbr": "NIE",
+   "name": "Niederneunforn",
+   "network": "manual rain gauge",
+   "elevation": 440,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 31,
+   "pointElevation": 402,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1137.300000000001,
+     "totalModel": 1121.0999999999997,
+     "dailyR": 0.6558653472760198,
+     "dailyMae": 1.5700000000000007,
+     "sum11": {
+      "r": 0.8791285238156081,
+      "ratio": 0.9869572582011201,
+      "mae": 7.541799999999989
+     },
+     "sum60": {
+      "r": 0.8963639959345279,
+      "ratio": 0.9458123890611471,
+      "mae": 27.783084577114494
+     },
+     "wetDaysHit": 0.84,
+     "falseWet": 0.08108108108108109
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1137.300000000001,
+     "totalModel": 1104.8,
+     "dailyR": 0.6490865807628955,
+     "dailyMae": 1.5551923076923098,
+     "sum11": {
+      "r": 0.8501419693596491,
+      "ratio": 0.9721883897819767,
+      "mae": 8.1688
+     },
+     "sum60": {
+      "r": 0.8532399169642442,
+      "ratio": 0.9231170976400703,
+      "mae": 32.982587064676615
+     },
+     "wetDaysHit": 0.8266666666666667,
+     "falseWet": 0.09722222222222222
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.7175324675324676,
+    "meanAbsDiff": 4.37987012987013,
+    "p90AbsDiff": 13,
+    "bandChangeShare": 0.14935064935064934
+   }
+  },
+  {
+   "abbr": "OTE",
+   "name": "Otelfingen",
+   "network": "manual rain gauge",
+   "elevation": 435,
+   "distanceToForestKm": 1.1,
+   "weatherPoint": 73,
+   "pointElevation": 626,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1310,
+     "totalModel": 1317.6000000000001,
+     "dailyR": 0.7669939579309955,
+     "dailyMae": 1.6865384615384627,
+     "sum11": {
+      "r": 0.9157811082619071,
+      "ratio": 1.0063154500721974,
+      "mae": 7.398599999999997
+     },
+     "sum60": {
+      "r": 0.8853591557258501,
+      "ratio": 0.9860945133466684,
+      "mae": 22.240049751243742
+     },
+     "wetDaysHit": 0.8522727272727273,
+     "falseWet": 0.10227272727272728
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1310,
+     "totalModel": 1300.4999999999995,
+     "dailyR": 0.7095312103160334,
+     "dailyMae": 1.7836538461538471,
+     "sum11": {
+      "r": 0.865657679867692,
+      "ratio": 0.9910630423506654,
+      "mae": 8.407399999999992
+     },
+     "sum60": {
+      "r": 0.8357915447249094,
+      "ratio": 0.9675481885561092,
+      "mae": 27.285074626865626
+     },
+     "wetDaysHit": 0.8636363636363636,
+     "falseWet": 0.09090909090909091
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": 0.538961038961039,
+    "meanAbsDiff": 3.7532467532467533,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.16883116883116883
+   }
+  },
+  {
+   "abbr": "SCA",
+   "name": "Schänis",
+   "network": "manual rain gauge",
+   "elevation": 415,
+   "distanceToForestKm": 2.7,
+   "weatherPoint": 227,
+   "pointElevation": 599,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2031.1999999999994,
+     "totalModel": 1621.6999999999994,
+     "dailyR": 0.7183984826088501,
+     "dailyMae": 2.6728846153846146,
+     "sum11": {
+      "r": 0.8830867907145858,
+      "ratio": 0.7969144929305533,
+      "mae": 13.176200000000003
+     },
+     "sum60": {
+      "r": 0.944812563783776,
+      "ratio": 0.7813328444786806,
+      "mae": 58.30621890547263
+     },
+     "wetDaysHit": 0.7685185185185185,
+     "falseWet": 0.14705882352941177
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2031.1999999999994,
+     "totalModel": 1890.900000000002,
+     "dailyR": 0.7262170868958154,
+     "dailyMae": 2.767500000000001,
+     "sum11": {
+      "r": 0.8592761933572577,
+      "ratio": 0.927596388184281,
+      "mae": 13.82099999999999
+     },
+     "sum60": {
+      "r": 0.945971309952655,
+      "ratio": 0.8953857376655222,
+      "mae": 38.26865671641786
+     },
+     "wetDaysHit": 0.8055555555555556,
+     "falseWet": 0.1592920353982301
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.7987012987012987,
+    "meanAbsDiff": 2.324675324675325,
+    "p90AbsDiff": 7,
+    "bandChangeShare": 0.09740259740259741
+   }
+  },
+  {
+   "abbr": "SKO",
+   "name": "Stallikon",
+   "network": "manual rain gauge",
+   "elevation": 754,
+   "distanceToForestKm": 0.4,
+   "weatherPoint": 161,
+   "pointElevation": 635,
+   "complete": 0.9980769230769231,
+   "rain": {
+    "station": {
+     "days": 519,
+     "totalMeasured": 1519.0999999999997,
+     "totalModel": 1462.7999999999993,
+     "dailyR": 0.7373073070537751,
+     "dailyMae": 2.0090558766859354,
+     "sum11": {
+      "r": 0.9082340688436906,
+      "ratio": 0.9665702366089116,
+      "mae": 7.362525050100209
+     },
+     "sum60": {
+      "r": 0.9204503576608692,
+      "ratio": 0.9550485527172276,
+      "mae": 20.792269326683293
+     },
+     "wetDaysHit": 0.8775510204081632,
+     "falseWet": 0.1348314606741573
+    },
+    "point": {
+     "days": 519,
+     "totalMeasured": 1519.0999999999997,
+     "totalModel": 1485.9999999999986,
+     "dailyR": 0.7390537855273422,
+     "dailyMae": 2.0271676300578036,
+     "sum11": {
+      "r": 0.9094762010556104,
+      "ratio": 0.9816742288133021,
+      "mae": 7.28396793587174
+     },
+     "sum60": {
+      "r": 0.9243882543618955,
+      "ratio": 0.9680269397840068,
+      "mae": 20.27705735660849
+     },
+     "wetDaysHit": 0.8469387755102041,
+     "falseWet": 0.15053763440860216
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.08766233766233766,
+    "meanAbsDiff": 2.1006493506493507,
+    "p90AbsDiff": 7,
+    "bandChangeShare": 0.10714285714285714
+   }
+  },
+  {
+   "abbr": "SWZ",
+   "name": "Schwyz",
+   "network": "manual rain gauge",
+   "elevation": 479,
+   "distanceToForestKm": 1.9,
+   "weatherPoint": 287,
+   "pointElevation": 691,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 2158.7,
+     "totalModel": 2335.6999999999994,
+     "dailyR": 0.8005038939882552,
+     "dailyMae": 2.6096153846153833,
+     "sum11": {
+      "r": 0.9393986313993613,
+      "ratio": 1.0810181355392945,
+      "mae": 10.150399999999982
+     },
+     "sum60": {
+      "r": 0.9740369189659062,
+      "ratio": 1.086129838785437,
+      "mae": 32.45721393034825
+     },
+     "wetDaysHit": 0.8916666666666667,
+     "falseWet": 0.11538461538461539
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 2158.7,
+     "totalModel": 2434.9999999999995,
+     "dailyR": 0.8014995261981408,
+     "dailyMae": 2.73903846153846,
+     "sum11": {
+      "r": 0.9272725842920305,
+      "ratio": 1.1270760419980905,
+      "mae": 11.67299999999998
+     },
+     "sum60": {
+      "r": 0.9556400368775144,
+      "ratio": 1.1316245384320784,
+      "mae": 43.36094527363181
+     },
+     "wetDaysHit": 0.8666666666666667,
+     "falseWet": 0.12598425196850394
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -0.6233766233766234,
+    "meanAbsDiff": 3.1103896103896105,
+    "p90AbsDiff": 11,
+    "bandChangeShare": 0.12987012987012986
+   }
+  },
+  {
+   "abbr": "WBR",
+   "name": "Wil, ZH",
+   "network": "manual rain gauge",
+   "elevation": 406,
+   "distanceToForestKm": 0.9,
+   "weatherPoint": 15,
+   "pointElevation": 474,
+   "complete": 1,
+   "rain": {
+    "station": {
+     "days": 520,
+     "totalMeasured": 1274.6999999999996,
+     "totalModel": 1207.3999999999994,
+     "dailyR": 0.6469228933910619,
+     "dailyMae": 1.7540384615384617,
+     "sum11": {
+      "r": 0.8708661720039323,
+      "ratio": 0.9501739795844698,
+      "mae": 8.267599999999996
+     },
+     "sum60": {
+      "r": 0.8798439678722079,
+      "ratio": 0.9155700250023018,
+      "mae": 26.6139303482587
+     },
+     "wetDaysHit": 0.8352941176470589,
+     "falseWet": 0.06666666666666667
+    },
+    "point": {
+     "days": 520,
+     "totalMeasured": 1274.6999999999996,
+     "totalModel": 1207.3999999999994,
+     "dailyR": 0.6469228933910619,
+     "dailyMae": 1.7540384615384617,
+     "sum11": {
+      "r": 0.8708661720039323,
+      "ratio": 0.9501739795844698,
+      "mae": 8.267599999999996
+     },
+     "sum60": {
+      "r": 0.8798439678722079,
+      "ratio": 0.9155700250023018,
+      "mae": 26.6139303482587
+     },
+     "wetDaysHit": 0.8352941176470589,
+     "falseWet": 0.06666666666666667
+    }
+   },
+   "temperature": null,
+   "scoreImpact": {
+    "days": 308,
+    "meanDiff": -1,
+    "meanAbsDiff": 4.142857142857143,
+    "p90AbsDiff": 15,
+    "bandChangeShare": 0.16883116883116883
+   }
+  }
+ ]
+}
