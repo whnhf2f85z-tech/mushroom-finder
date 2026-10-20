@@ -5,3 +5,5 @@ package-lock.json
 *.kml
 SPEC.md
 pipeline/test/fixtures
+validation/data
+validation/results

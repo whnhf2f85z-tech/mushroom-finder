@@ -11,3 +11,5 @@ coverage/
 .claude/settings.local.json
 test-results/
 playwright-report/
+validation/.venv/
+validation/cache/
