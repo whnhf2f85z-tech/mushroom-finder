@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import './style.css';
 import L from 'leaflet';
 import {
+  HabitatFileSchema,
   LatestFileSchema,
   ReservesFileSchema,
   RulesFileSchema,
@@ -13,6 +14,7 @@ import {
   bestOf,
   isClosedDay,
   type CantonT,
+  type HabitatFile,
   type LatestFile,
   type Spot,
 } from '@mf/scoring';
@@ -40,6 +42,7 @@ const $ = (id: string): HTMLElement => {
 const state = { species: 'favourites', dayIndex: 13, selected: null as string | null };
 let favourites = loadFavourites(species.map((s) => s.id));
 let latest: LatestFile | null = null;
+let habitat: HabitatFile | null = null;
 
 // --- Map -------------------------------------------------------------------
 
@@ -196,6 +199,7 @@ function select(id: string): void {
     rules,
     today,
     favourites,
+    habitat: habitat?.spots[id] ?? null,
     onClose: () => {
       state.selected = null;
       closeDetail(detail);
@@ -332,5 +336,15 @@ async function loadLatest(): Promise<void> {
   refresh();
 }
 
+async function loadHabitat(): Promise<void> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/static/habitat.json`);
+    if (res.ok) habitat = HabitatFileSchema.parse(await res.json());
+  } catch (e) {
+    console.warn('No habitat data', e);
+  }
+}
+
 refresh();
+void loadHabitat();
 void loadLatest();

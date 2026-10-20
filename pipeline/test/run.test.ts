@@ -147,3 +147,37 @@ describe('daily run', () => {
     expect(await historyFiles()).not.toContain('2026-09-01.json');
   });
 });
+
+describe('daily run with the habitat build', () => {
+  it('uses the habitat file for the weather elevation and the habitat score', async () => {
+    const entry = {
+      lat: 47.03473,
+      lon: 8.791,
+      elevation: 1234,
+      slope: 20,
+      aspect: 10,
+      forest_pct: 80,
+      conifer_pct: 10,
+      site_type_code: '8',
+      site_type_name: 'Waldhirsen-Buchenwald',
+      lithology: null,
+      ph_class: 'calcareous' as const,
+      ph_source: 'site_type' as const,
+      protected: { is: false, name: null, noPicking: false },
+    };
+    await mkdir(join(out, 'static'), { recursive: true });
+    await writeFile(
+      join(out, 'static', 'habitat.json'),
+      JSON.stringify({ schemaVersion: 1, generatedAt: 'x', spots: { 'oberiberg-ybrig': entry } }),
+    );
+    const deps = fakeDeps({ today: TODAY });
+    await run({ today: TODAY, backfill: 0, outDir: out, dataDir: DATA, deps });
+    // Oberiberg is the 2nd spot in data/spots.json.
+    expect(deps.requests[0]!.get('elevation')!.split(',')[1]).toBe('1234');
+    const l = await latest();
+    const withBuild = l.spots['oberiberg-ybrig']!.today.species.chanterelle!.components.H;
+    const withHints = l.spots['ibergeregg-alpthal']!.today.species.chanterelle!.components.H;
+    // Calcareous broadleaf site: worse for acid-loving, conifer-friendly chanterelle than the acidic hint.
+    expect(withBuild).toBeLessThan(withHints);
+  });
+});

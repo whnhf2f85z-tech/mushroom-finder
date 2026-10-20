@@ -2,6 +2,7 @@ import {
   scoreLocation,
   type DailyWeather,
   type Habitat,
+  type HabitatEntry,
   type HistoryFile,
   type LatestFile,
   type LatestSpot,
@@ -12,16 +13,36 @@ import {
 } from '@mf/scoring';
 import type { WeatherLocation } from './openmeteo.js';
 
-/** Weather point for a spot: its pin, at the middle of its elevation band (pins mark areas, not exact spots). */
-export const spotLocation = (spot: Spot): WeatherLocation => ({
+/**
+ * Weather point for a spot. With a habitat entry: the (checked) pin at its terrain-model elevation.
+ * Without one: the pin at the middle of its elevation band (pins mark areas, not exact spots).
+ */
+export const spotLocation = (spot: Spot, h?: HabitatEntry): WeatherLocation => ({
   id: spot.id,
   lat: spot.lat,
   lon: spot.lon,
-  elevation: (spot.elevation_band.min + spot.elevation_band.max) / 2,
+  elevation: h?.elevation ?? (spot.elevation_band.min + spot.elevation_band.max) / 2,
 });
 
-/** Provisional habitat until the habitat build (Milestone 3): band midpoint plus hints from the notes. */
-export const spotHabitat = (spot: Spot): Habitat => {
+/** Habitat from the habitat build; falls back to the band midpoint and the provisional hints from the notes. */
+export const spotHabitat = (spot: Spot, e?: HabitatEntry): Habitat => {
+  if (e) {
+    const h: Habitat = {
+      elevation: e.elevation,
+      forest_pct: e.forest_pct,
+      ph_class: e.ph_class,
+      protected: {
+        is: e.protected.is,
+        noPicking: e.protected.noPicking,
+        ...(e.protected.name ? { name: e.protected.name } : {}),
+      },
+    };
+    if (e.conifer_pct !== null) h.conifer_pct = e.conifer_pct;
+    if (e.site_type_code !== null) h.site_type_code = e.site_type_code;
+    if (e.aspect !== null) h.aspect = e.aspect;
+    if (e.slope !== null) h.slope = e.slope;
+    return h;
+  }
   const h: Habitat = {
     elevation: (spot.elevation_band.min + spot.elevation_band.max) / 2,
     ph_class: spot.habitat_hint?.ph_class ?? 'unknown',
@@ -82,10 +103,11 @@ export function scoreSpotOn(
   weather: DailyWeather[],
   spot: Spot,
   date: string,
+  habitat?: HabitatEntry,
 ): LocationResult | null {
   const upTo = weather.filter((d) => d.date <= date);
   if (upTo.at(-1)?.date !== date) return null;
-  return scoreLocation(species, upTo, spotHabitat(spot));
+  return scoreLocation(species, upTo, spotHabitat(spot, habitat));
 }
 
 /** True if the weather has every day from start to end (inclusive) without gaps. */

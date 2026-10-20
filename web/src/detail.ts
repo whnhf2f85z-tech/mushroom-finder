@@ -1,6 +1,9 @@
 import {
   bandFor,
   bestOf,
+  explain,
+  type Details,
+  type HabitatEntry,
   isClosedDay,
   type LatestFile,
   type RulesFile,
@@ -17,6 +20,7 @@ export interface DetailContext {
   rules: RulesFile;
   today: string;
   favourites: string[];
+  habitat: HabitatEntry | null;
   onClose: () => void;
 }
 
@@ -80,6 +84,16 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
       </div>
       <h3>Species today</h3>
       <ul class="sp-list">${list}</ul>
+      <h3>Why this score</h3>
+      <label class="why-pick">Species
+        <select id="why-species">${rows
+          .map(
+            ({ s }) =>
+              `<option value="${s.id}"${s.id === fav?.id ? ' selected' : ''}>${esc(s.name)}</option>`,
+          )
+          .join('')}</select>
+      </label>
+      <ul class="why" id="why"></ul>
       <h3>Last 14 days and forecast</h3>
       <div class="chips chips-small" id="line-toggles" aria-label="Show species in chart"></div>
       <div class="chart" id="score-chart"></div>
@@ -102,8 +116,11 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     ${closed ? `<p><span class="badge closed">Closed today (${spot.canton} rule)</span></p>` : ''}
     ${data?.stale ? `<p class="badge closed">Weather could not be updated; showing scores from ${shortDate(data.updated)}</p>` : ''}
     ${body}
+    ${ctx.habitat?.protected.noPicking ? `<p class="badge closed">No picking: ${esc(ctx.habitat.protected.name ?? 'protected area')}</p>` : ''}
+    ${ctx.habitat?.protected.is && !ctx.habitat.protected.noPicking ? `<p class="small"><strong>Protected area nearby:</strong> ${esc(ctx.habitat.protected.name ?? '')}. Check the reserve rules before picking.</p>` : ''}
     <h3>About this spot</h3>
     <p>${esc(spot.notes)}</p>
+    ${ctx.habitat ? `<p class="small">Pin at ${ctx.habitat.elevation} m${ctx.habitat.site_type_name ? ` · forest type: ${esc(ctx.habitat.site_type_name)}` : ''}${ctx.habitat.conifer_pct !== null ? ` · ${ctx.habitat.conifer_pct} % conifers` : ''} · tree cover ${ctx.habitat.forest_pct} %.</p>` : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day${r.speciesLimits.map((l) => `, ${esc(name(l.species).toLowerCase())}s max ${l.maxKg} kg`).join('')}.</p>` : ''}
     <div class="actions">
       <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps</a>
@@ -156,6 +173,30 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     data.weather.tmax,
   );
   cleanups.push(sc.destroy, rc.destroy, tc.destroy);
+
+  // Why this score: plain-English reasons for the chosen species.
+  const facts = ctx.habitat ?? {
+    elevation: (spot.elevation_band.min + spot.elevation_band.max) / 2,
+    ph_class: spot.habitat_hint?.ph_class ?? 'unknown',
+    conifer_pct: spot.habitat_hint?.conifer_pct ?? null,
+  };
+  const why = el.querySelector<HTMLElement>('#why')!;
+  const mark = { good: '✓', fair: '~', poor: '✗' };
+  const word = { good: 'Good', fair: 'Fair', poor: 'Poor' };
+  const renderWhy = (id: string) => {
+    const s = ctx.species.find((x) => x.id === id);
+    const d = data.today.species[id];
+    if (!s || !d) return;
+    why.innerHTML = explain(s, d.components, d.details as unknown as Details, facts)
+      .map(
+        (e) =>
+          `<li class="why-item ${e.verdict}"><span class="why-mark" aria-hidden="true">${mark[e.verdict]}</span><div><strong>${e.title}</strong> <span class="visually-hidden">${word[e.verdict]}.</span><span class="small">${word[e.verdict]}</span>${e.lines.map((l) => `<p>${esc(l)}</p>`).join('')}</div></li>`,
+      )
+      .join('');
+  };
+  const pick = el.querySelector<HTMLSelectElement>('#why-species')!;
+  pick.addEventListener('change', () => renderWhy(pick.value));
+  renderWhy(pick.value);
 
   // Table view: every value the charts show, reachable without colour or hover.
   const head = ['Day', ...lines.map((l) => esc(l.label)), 'Rain (mm)', 'Min °C', 'Max °C'];

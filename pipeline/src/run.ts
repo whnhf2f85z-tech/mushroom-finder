@@ -3,11 +3,13 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
+  HabitatFileSchema,
   HistoryFileSchema,
   LatestFileSchema,
   SpeciesFileSchema,
   SpotsFileSchema,
   type DailyWeather,
+  type HabitatEntry,
   type HistoryFile,
   type LocationResult,
 } from '@mf/scoring';
@@ -69,6 +71,15 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
   const readJson = async (f: string) => JSON.parse(await readFile(join(opts.dataDir, f), 'utf8'));
   const spots = SpotsFileSchema.parse(await readJson('spots.json')).spots;
   const species = SpeciesFileSchema.parse(await readJson('species.json')).species;
+  // Habitat build (npm run terrain). Optional: spots without an entry use their provisional hints.
+  let habitat: Record<string, HabitatEntry> = {};
+  try {
+    habitat = HabitatFileSchema.parse(
+      JSON.parse(await readFile(join(outDir, 'static/habitat.json'), 'utf8')),
+    ).spots;
+  } catch {
+    log('No valid static/habitat.json; using the provisional habitat hints');
+  }
 
   // Which past days to score: today, missing days in the chart window, and the forced backfill window.
   const days = dateRange(addDays(today, -(SHOW_DAYS - 1)), today);
@@ -83,7 +94,7 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
 
   // Weather: historical forecast API for the past, forecast API for the last 2 days + forecast (it wins on overlap).
   const start = addDays(toScore[0]!, -WEATHER_LOOKBACK);
-  const locations = spots.map(spotLocation);
+  const locations = spots.map((s) => spotLocation(s, habitat[s.id]));
   log(
     `Run for ${today}: ${spots.length} spots, scoring ${toScore.length} past day(s) + ${forecastDays.length} forecast day(s)`,
   );
@@ -145,7 +156,7 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
     for (const spot of spots) {
       const w = weather.get(spot.id);
       if (!w) continue;
-      const r = scoreSpotOn(species, w, spot, date);
+      const r = scoreSpotOn(species, w, spot, date, habitat[spot.id]);
       if (!r) continue;
       file.spots[spot.id] = toSpotDay(r);
       if (date === today) todayResults.set(spot.id, r);
@@ -167,7 +178,7 @@ export async function run(opts: RunOptions): Promise<RunSummary> {
     const m = new Map<string, LocationResult>();
     for (const spot of spots) {
       const w = weather.get(spot.id);
-      const r = w ? scoreSpotOn(species, w, spot, date) : null;
+      const r = w ? scoreSpotOn(species, w, spot, date, habitat[spot.id]) : null;
       if (r) m.set(spot.id, r);
     }
     forecast.set(date, m);

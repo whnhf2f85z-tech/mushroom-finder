@@ -13,3 +13,10 @@ export { SCORE_BANDS, bandFor, type ScoreBand } from './bands.js';
 export { isClosedDay } from './rules.js';
 export { dayOfYear } from './util.js';
 export { DEFAULT_FAVOURITES, bestOf } from './favourites.js';
+export {
+  explain,
+  doyToText,
+  type Explanation,
+  type HabitatFacts,
+  type Verdict,
+} from './explain.js';

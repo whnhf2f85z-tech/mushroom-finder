@@ -19,7 +19,14 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 - Spot detail (bottom sheet on mobile): metascore, per-species bars, 14-day chart with toggles and forecast shading, rain and temperature charts, and a table view.
 - Golden test on real autumn-2026 weather. **To do after 28 Oct 2026:** run `npm run record:golden`, then `npm test`. This replaces the 21–26 Oct forecast in the fixture with the observed weather; if a check then fails, the model needs a look, not the test. See [docs/SCORING.md](docs/SCORING.md) for the results and the one formula change.
 
-**Next: Milestone 3 (habitat).** Terrain/habitat build for the spots (geology, forest mix, site type, DEM), moving pins into forest inside their band, and the "why this score" panel.
+**Milestone 3 (habitat): done**
+
+- Weather model checked against 6 MeteoSwiss stations: Open-Meteo `best_match` stays (see [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md)).
+- Favourites: "My favourites" (stored on the device; default chanterelle, porcini, winter chanterelle, horn of plenty, hedgehog) drives the map pins and each spot's main score. The detail still shows every species.
+- Habitat build (`npm run terrain`, or the manual GitHub workflow "Build habitat"): tree cover and conifer share (NFI), elevation/slope/aspect (swissALTI3D), Schwyz forest site types → soil pH, geology fallback, reserves. 11 pins moved into forest inside their band, away from no-picking areas (table in [docs/SCORING.md](docs/SCORING.md)).
+- "Why this score" panel: plain-English reasons for each part of the score, for any species.
+
+**Next: Milestone 4 (grid).** 1 km forest grid for ZH + SZ, coarser weather grid, heatmap with the date slider, reserve overlay.
 
 ## Develop
 
@@ -34,6 +41,7 @@ npm run format
 npm run build      # production build in web/dist
 npm run daily      # fetch weather + score now (writes web/public/data); add -- --backfill 14 to recompute
 npm run record:golden   # re-record the golden-test weather
+npm run terrain    # rebuild static/habitat.json (add -- --move-pins to also check and move pins)
 ```
 
 The daily job commits to `main` every morning, so run `git pull` before you start working.

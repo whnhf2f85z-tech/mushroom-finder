@@ -1,0 +1,50 @@
+name: Build habitat (manual)
+
+# Rebuilds web/public/data/static/habitat.json from the federal and cantonal geodata (SPEC §4.2).
+# Run it after changing data/spots.json. It never moves pins: that is done locally with
+#   npm run terrain -- --move-pins
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-scores
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build habitat
+        run: npm run terrain
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/public/data/static
+          if git diff --cached --quiet; then echo "No habitat changes"; exit 0; fi
+          git commit -m "Habitat build $(TZ=Europe/Zurich date +%F)"
+          git pull --rebase
+          git push
+
+  # Commits made with the workflow token don't trigger other workflows, so deploy from here.
+  deploy:
+    needs: build
+    uses: ./.github/workflows/deploy-pages.yml
+    with:
+      ref: main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

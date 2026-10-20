@@ -645,3 +645,66 @@ dialog::backdrop {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* Why this score */
+.why-pick {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+.why-pick select {
+  font: inherit;
+  padding: 0.25rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.why {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.why-item {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+}
+.why-item p {
+  margin: 0.1rem 0 0 !important;
+}
+.why-item .small {
+  margin-left: 0.35rem;
+}
+.why-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-weight: 700;
+  border: 2px solid currentColor;
+}
+.why-item.good .why-mark {
+  color: #1a7837;
+}
+.why-item.fair .why-mark {
+  color: var(--warn-text);
+}
+.why-item.poor .why-mark {
+  color: var(--danger);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .why-item.good .why-mark {
+    color: #7fd18c;
+  }
+}
+:root[data-theme='dark'] .why-item.good .why-mark {
+  color: #7fd18c;
+}

@@ -31,11 +31,29 @@ metascore     = max over (selected) species
 - **Separate start/end elevation shift**, so high-elevation chanterelles stay in season into late October (as the seed notes and golden test expect).
 - **Moisture and temperature multiply (since Milestone 2).** SPEC §5.2 adds them (`0.6 M + 0.4 T`). With real autumn-2026 weather, that gave Ibergeregg ~53 ("medium") before any rain, because a perfect temperature alone earns 40 points. A weighted geometric mean (`M^0.6 × T^0.4`, same weights) makes dry soil pull the score down. When both are good, the result is almost the same. The spec formula is still there: set `combine: 'additive'` in `config.ts`.
 
-## Spots (Milestone 2)
+## Spots and habitat (Milestone 3)
 
-- Spots are scored at the **middle of their elevation band**, not at the pin (pins mark areas). Weather is requested for that elevation.
-- Until the habitat build (Milestone 3), `spots.json` has a provisional `habitat_hint` taken from the notes: flysch → acidic (§5.3); spruce-fir → 85 % conifer, mixed → 60 %, beech → 20 %, beech and mixed → 35 %. Everything else is `unknown`, which lowers confidence.
-- Milestone 3 TODO: once the forest mask and DEM exist, check each pin. If it's not in forest or is outside its band, move it to the nearest forest point inside the band (within ~1 km), update `spots.json`, and list the moves here.
+Habitat comes from `static/habitat.json` (see DATA_SOURCES.md). Spots are scored at their pin's terrain-model elevation; weather is requested for that elevation. Every pin is now inside its band, so this replaces the band midpoint used in Milestone 2. Spots without a habitat entry still fall back to the band midpoint and the `habitat_hint` in `spots.json`.
+
+**Pin check** (`npm run terrain -- --move-pins`): a pin passes if it is in forest (≥ 60 % tree cells within 50 m **and** ≥ 50 % within 150 m, so not a hedge or a forest edge), inside its elevation band, and not in a no-picking area. Otherwise it moves to the nearest 10 m cell within 1 km that passes, at least 20 m inside the band. 11 of 14 pins moved on 2026-10-20:
+
+| Spot                            | Why                                                                            | Old pin       | New pin                     | Moved |
+| ------------------------------- | ------------------------------------------------------------------------------ | ------------- | --------------------------- | ----- |
+| Ibergeregg – Alpthal side       | not in forest (32 % within 50 m); at 1,528 m, band 1,100–1,400 m               | 47.022, 8.708 | 47.01929, 8.70945 (1,377 m) | 320 m |
+| Oberiberg – Ybrig forests       | not in forest (0 %)                                                            | 47.035, 8.790 | 47.035, 8.79127 (1,253 m)   | 100 m |
+| Unteriberg – Studen slopes      | not in forest (48 %); at 1,387 m, band 900–1,200 m                             | 47.058, 8.835 | 47.06201, 8.83474 (1,179 m) | 451 m |
+| Wägital – Innerthal lake slopes | not in forest (0 %); at 890 m, band 900–1,200 m                                | 47.095, 8.925 | 47.09712, 8.93262 (1,021 m) | 622 m |
+| Raten – Biberegg side           | not in forest (36 %); at 965 m, band 1,000–1,100 m                             | 47.115, 8.665 | 47.11407, 8.6636 (1,022 m)  | 141 m |
+| Ibergeregg – upper spruce       | not in forest (40 %)                                                           | 47.015, 8.720 | 47.0154, 8.71962 (1,245 m)  | 50 m  |
+| Hoch-Ybrig – Weglosen           | at 1,010 m, band 1,050–1,300 m; **in the Hoch-Ybrig plant protection reserve** | 47.030, 8.810 | 47.03749, 8.8087 (1,081 m)  | 837 m |
+| Hochstuckli – upper slopes      | at 1,429 m, band 1,200–1,400 m                                                 | 47.072, 8.670 | 47.07197, 8.67133 (1,379 m) | 100 m |
+| Haggenegg – Alpthal side        | not in forest (6 %); **in the Mythengebiet plant protection reserve**          | 47.040, 8.693 | 47.04061, 8.69324 (1,277 m) | 73 m  |
+| Rigi north – above Küssnacht    | forest edge (48 % within 150 m); at 1,015 m, band 600–1,000 m                  | 47.060, 8.455 | 47.06015, 8.45424 (977 m)   | 63 m  |
+| Rigi – above Arth-Goldau        | not in forest (0 %)                                                            | 47.045, 8.525 | 47.04763, 8.52534 (691 m)   | 291 m |
+
+Not moved (already fine): Sattel – Hochstuckli, Morschach, Gersau.
+
+**What the habitat build changed compared with the notes:** the site maps disagree with "acidic flysch" in several places. Ibergeregg – Alpthal (18M Karbonat-Tannen-Buchenwald), Hoch-Ybrig (18M), Unteriberg (60* Buntreitgras-Fichtenwald) and Wägital (18v Buntreitgras-Tannen-Buchenwald) are mapped as calcareous; Oberiberg, Sattel (46 Heidelbeer-Tannen-Fichtenwald) and Raten (19 Waldsimsen-Tannen-Buchenwald) as acidic. Acid-loving species (chanterelle, bay bolete) score lower on the calcareous ones than before. Ibergeregg – upper spruce lies in the cantonal nature reserve "Ibergeregg"; it is not on the Schwyz no-picking list, so it is flagged, not banned.
 
 ## Golden test (real data)
 
