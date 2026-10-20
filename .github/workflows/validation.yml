@@ -1,0 +1,48 @@
+name: Validation (manual)
+
+# Runs a validation script that needs many Open-Meteo calls (see validation/README.md) and commits its result
+# file. Runs on GitHub's machines, so it doesn't use the daily API quota of the owner's computer.
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: 'Script in validation/ to run'
+        required: true
+        default: 'past-seasons.ts'
+        type: choice
+        options:
+          - past-seasons.ts
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-scores
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run validation script
+        run: npx tsx "validation/$SCRIPT"
+        env:
+          SCRIPT: ${{ inputs.script }}
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add validation/results
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Validation results: $SCRIPT"
+          git pull --rebase
+          git push
+        env:
+          SCRIPT: ${{ inputs.script }}

@@ -50,50 +50,67 @@ const addDays = (d: string, n: number) => {
 };
 const weekend = (d: string) => [0, 6].includes(new Date(`${d}T12:00:00Z`).getUTCDay());
 
-// Placebo: tinder fungus, precise records since 2021 in Switzerland.
-async function placebo(): Promise<
-  { date: string; E: number; N: number; elevation: number | null }[]
-> {
-  const path = join(DIR, 'cache', 'gbif-fomes-ch.json');
-  if (!existsSync(path)) {
-    const out: unknown[] = [];
-    for (let offset = 0; ; offset += 300) {
-      const q = new URLSearchParams({
-        taxonKey: '8068867',
-        country: 'CH',
-        coordinateUncertaintyInMeters: '0,1000',
-        year: '2021,2026',
-        occurrenceStatus: 'PRESENT',
-        limit: '300',
-        offset: String(offset),
-      });
-      const page = (await (
-        await fetch(`https://api.gbif.org/v1/occurrence/search?${q}`)
-      ).json()) as { results: unknown[]; endOfRecords: boolean };
-      out.push(...page.results);
-      if (page.endOfRecords) break;
+/**
+ * Placebo: perennial bracket fungi, visible all year, so their record dates only reflect when observers are out:
+ * tinder fungus (Fomes fomentarius), red-belted bracket (Fomitopsis pinicola), artist's bracket (Ganoderma
+ * applanatum). Precise records since 2021 in Switzerland, March–November; a fixed random sample of up to 300
+ * keeps the weather download within the daily API limit.
+ */
+const PLACEBO_TAXA = { fomes: 8068867, fomitopsis: 2542395, ganoderma: 2549834 };
+const PLACEBO_MAX = 300;
+async function placebo(): Promise<{ date: string; E: number; N: number; taxon: string }[]> {
+  const out: { date: string; E: number; N: number; taxon: string }[] = [];
+  for (const [taxon, key] of Object.entries(PLACEBO_TAXA)) {
+    const path = join(DIR, 'cache', `gbif-placebo-${taxon}-ch.json`);
+    if (!existsSync(path)) {
+      const all: unknown[] = [];
+      for (let offset = 0; ; offset += 300) {
+        const q = new URLSearchParams({
+          taxonKey: String(key),
+          country: 'CH',
+          coordinateUncertaintyInMeters: '0,1000',
+          year: '2021,2026',
+          occurrenceStatus: 'PRESENT',
+          limit: '300',
+          offset: String(offset),
+        });
+        const page = (await (
+          await fetch(`https://api.gbif.org/v1/occurrence/search?${q}`)
+        ).json()) as {
+          results: unknown[];
+          endOfRecords: boolean;
+        };
+        all.push(...page.results);
+        if (page.endOfRecords) break;
+      }
+      writeFileSync(path, JSON.stringify(all));
     }
-    writeFileSync(path, JSON.stringify(out));
-  }
-  const raw = JSON.parse(readFileSync(path, 'utf8')) as {
-    year?: number;
-    month?: number;
-    day?: number;
-    decimalLatitude: number;
-    decimalLongitude: number;
-    elevation?: number;
-  }[];
-  return raw
-    .filter((r) => r.year && r.month && r.day)
-    .map((r) => {
+    const raw = JSON.parse(readFileSync(path, 'utf8')) as {
+      year?: number;
+      month?: number;
+      day?: number;
+      decimalLatitude: number;
+      decimalLongitude: number;
+    }[];
+    for (const r of raw) {
+      if (!r.year || !r.month || !r.day || r.month < 3 || r.month > 11) continue;
       const { E, N } = wgs84ToLv95(r.decimalLatitude, r.decimalLongitude);
-      return {
+      out.push({
         date: `${r.year}-${String(r.month).padStart(2, '0')}-${String(r.day).padStart(2, '0')}`,
         E: Math.round(E),
         N: Math.round(N),
-        elevation: null,
-      };
-    });
+        taxon,
+      });
+    }
+  }
+  // Fixed-seed shuffle, then the first PLACEBO_MAX: the same sample on every run.
+  let seed = 42;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31;
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [out[i], out[j]] = [out[j]!, out[i]!];
+  }
+  return out.slice(0, PLACEBO_MAX);
 }
 
 interface Case {
@@ -110,7 +127,7 @@ const cases: Case[] = occ.ch
   .map((o) => ({ ...o, elevation: o.elevation!, placebo: false }));
 // Placebo records are scored with every species' model, within each species' months.
 const fomes = await placebo();
-// Fomes records have no elevation in GBIF: use the mean elevation of the target records in the same block, or 600 m.
+// Placebo records: elevation from the target records in the same block, or 600 m (GBIF has none for most of them).
 const blockOf = (E: number, N: number) => `${Math.floor(E / BLOCK_M)}_${Math.floor(N / BLOCK_M)}`;
 const blockElev = new Map<string, number[]>();
 for (const c of cases)
