@@ -14,7 +14,7 @@ Weather input is a list of days, oldest first, ending on the day being scored (6
 | **H** habitat        | 0–1     | Weighted geometric mean of host trees (conifer share vs preferred range), pH class, elevation range and forest cover (weights 0.35/0.25/0.25/0.15, per-species overrides). Unknown conifer share counts as 0.7; unknown forest cover is skipped. North-facing slopes (≥ 5°) get up to +0.1 when D is low. Protected areas are flagged, not zeroed.                                                                                                                                                                      |
 
 ```
-dynamic       = S^0.5 × (0.6 M + 0.4 T)
+dynamic       = S^0.5 × M^0.6 × T^0.4      (config: combine = 'geometric')
 species_score = round(100 × H × dynamic × F × D)
 metascore     = max over (selected) species
 ```
@@ -29,3 +29,24 @@ metascore     = max over (selected) species
 - **Single storm cap (20 mm/day):** this is how "a single rainy day must not produce a high M" is enforced.
 - **Soil moisture uses the rain lag**, not just today's value. Otherwise M jumps the day it rains, before mushrooms can respond.
 - **Separate start/end elevation shift**, so high-elevation chanterelles stay in season into late October (as the seed notes and golden test expect).
+- **Moisture and temperature multiply (since Milestone 2).** SPEC §5.2 adds them (`0.6 M + 0.4 T`). With real autumn-2026 weather, that gave Ibergeregg ~53 ("medium") before any rain, because a perfect temperature alone earns 40 points. A weighted geometric mean (`M^0.6 × T^0.4`, same weights) makes dry soil pull the score down. When both are good, the result is almost the same. The spec formula is still there: set `combine: 'additive'` in `config.ts`.
+
+## Spots (Milestone 2)
+
+- Spots are scored at the **middle of their elevation band**, not at the pin (pins mark areas). Weather is requested for that elevation.
+- Until the habitat build (Milestone 3), `spots.json` has a provisional `habitat_hint` taken from the notes: flysch → acidic (§5.3); spruce-fir → 85 % conifer, mixed → 60 %, beech → 20 %, beech and mixed → 35 %. Everything else is `unknown`, which lowers confidence.
+- Milestone 3 TODO: once the forest mask and DEM exist, check each pin. If it's not in forest or is outside its band, move it to the nearest forest point inside the band (within ~1 km), update `spots.json`, and list the moves here.
+
+## Golden test (real data)
+
+`pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`). 21–26 Oct was still a forecast then. The weather: dry from late September, ~36 mm on 8 Oct and ~10 mm on 10 Oct at Ibergeregg.
+
+| Ibergeregg (1,250 m)            | 10 Oct | 14 Oct | 17 Oct | 20 Oct | 22 Oct | 24 Oct | 26 Oct |
+| ------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| Chanterelle                     | 39     | 48     | 70     | 55     | 55     | 32     | 23     |
+| Winter chanterelle              | 39     | 57     | 79     | 65     | 74     | 60     | 56     |
+| _Weinland (420 m), chanterelle_ | 35     | 45     | 50     | 40     | 45     | 37     | 33     |
+
+What the test checks: low (< 40) before the rain counts, good (≥ 60) in the flush, a delay instead of a jump on the day of the rain, winter chanterelle lasting into late October while chanterelle fades, and the dry, low Weinland staying lower during the flush (14–22 Oct).
+
+**Difference from SPEC §8:** the spec expects the rise "between ~20 and 26 Oct". With the real weather and the species' 7–14-day rain delay, the rise comes **12–18 Oct** (one to two weeks after the 8 Oct rain). From 23 Oct, the forecast cools Ibergeregg to 3–5 °C and the chanterelle season ends, so chanterelle falls while winter chanterelle stays good. The forecast rain on 21 Oct (~30 mm) would only count from ~28 Oct.

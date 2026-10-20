@@ -18,41 +18,54 @@
     <header class="topbar">
       <div>
         <h1>Mushroom Finder</h1>
-        <p class="sub">Zürich &amp; Schwyz · early preview</p>
+        <p class="sub">Zürich &amp; Schwyz · <span id="updated">loading scores…</span></p>
       </div>
       <div id="rules-today" class="rules-today" aria-live="polite"></div>
     </header>
-    <p class="notice" role="note">
-      Scores arrive with the daily weather update (next milestone). For now the map shows the seed
-      spots and canton rules.
-    </p>
+    <p id="status" class="notice" role="status" hidden></p>
+    <div class="controls">
+      <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
+      <div class="day-control">
+        <label for="day" id="day-label">Today</label>
+        <input id="day" type="range" min="0" max="16" step="1" value="13" />
+      </div>
+    </div>
     <main class="layout">
       <div id="map" class="map" aria-label="Map of spots"></div>
       <aside class="panel">
-        <section aria-labelledby="spots-h">
-          <h2 id="spots-h">Spots</h2>
-          <ul id="spot-list" class="spot-list"></ul>
-        </section>
-        <section aria-labelledby="legend-h">
-          <h2 id="legend-h">Score legend</h2>
-          <ul id="legend" class="legend"></ul>
-        </section>
-        <section aria-labelledby="rules-h">
-          <h2 id="rules-h">Canton rules</h2>
-          <div id="rules"></div>
-        </section>
-        <section class="disclaimer" aria-labelledby="about-h">
-          <h2 id="about-h">About</h2>
-          <p>
-            <strong>This app does not identify mushrooms.</strong> Check every find at an official
-            mushroom control (Pilzkontrolle). Scores are estimates, not a promise.
-          </p>
-          <p class="small">
-            Base map and canton borders © <a href="https://www.swisstopo.admin.ch">swisstopo</a>.
-            Map library <a href="https://leafletjs.com">Leaflet</a>. Source on
-            <a href="https://github.com/whnhf2f85z-tech/mushroom-finder">GitHub</a>.
-          </p>
-        </section>
+        <section id="detail" class="detail" hidden aria-live="polite"></section>
+        <div id="overview" class="overview">
+          <section aria-labelledby="spots-h">
+            <h2 id="spots-h">Spots</h2>
+            <ul id="spot-list" class="spot-list"></ul>
+          </section>
+          <section aria-labelledby="legend-h">
+            <h2 id="legend-h">Score legend</h2>
+            <ul id="legend" class="legend"></ul>
+            <p class="small">
+              0–100: how likely you are to find the species right now, from weather, season and
+              habitat. Estimates, not a promise.
+            </p>
+          </section>
+          <section aria-labelledby="rules-h">
+            <h2 id="rules-h">Canton rules</h2>
+            <div id="rules"></div>
+          </section>
+          <section class="disclaimer" aria-labelledby="about-h">
+            <h2 id="about-h">About</h2>
+            <p>
+              <strong>This app does not identify mushrooms.</strong> Check every find at an official
+              mushroom control (Pilzkontrolle).
+            </p>
+            <p class="small">
+              Weather: <a href="https://open-meteo.com">Open-Meteo</a> (CC BY 4.0). Base map and
+              canton borders © <a href="https://www.swisstopo.admin.ch">swisstopo</a>. Map library
+              <a href="https://leafletjs.com">Leaflet</a>, charts
+              <a href="https://github.com/leeoniya/uPlot">uPlot</a>. Source on
+              <a href="https://github.com/whnhf2f85z-tech/mushroom-finder">GitHub</a>.
+            </p>
+          </section>
+        </div>
       </aside>
     </main>
     <script type="module" src="/src/main.ts"></script>

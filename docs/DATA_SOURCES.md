@@ -14,9 +14,29 @@ Findings from checking each source. Status: ✅ verified and used · 🔜 to ver
 | Kanton Zürich         | Picking rules                    | [zh.ch – Pilze sicher geniessen (2025)](https://www.zh.ch/de/news-uebersicht/mitteilungen/2025/gesundheit/lebensmittel/pilze-sicher-geniessen.html)                                                                     | No picking 1st–10th of each month; max 1 kg per person per day. Group-picking rule and legal basis not stated there → open question.                      |
 | Kanton Schwyz         | Picking rules                    | [sz.ch – Pilz- und Beerensammeln](https://www.sz.ch/umweltdepartement/amt-fuer-wald-und-natur/natur-und-landschaft/artenschutz/pilz-und-beerensammeln.html/8756-8758-8802-9447-9454-9459-10665-10668)                   | 2 kg/person/day, morels 1 kg; no closed days since 2010; organised events banned; list of no-picking reserves (stored in `data/rules.json`).              |
 
+## Weather (Milestone 2, verified 2026-10-20)
+
+| What                                   | Endpoint                                                                                  | Notes                                                                                                                                                                                                                                                                        |
+| -------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recent past + forecast                 | `https://api.open-meteo.com/v1/forecast` with `past_days=2&forecast_days=4`               | Used for the last 2 days, today and 3 forecast days. Asking for `past_days=92` returns only ~67 days of real values (the rest is `null`), so it can't cover the 60-day lookback plus 14 history days.                                                                        |
+| Older past (backfill, 60-day lookback) | `https://historical-forecast-api.open-meteo.com/v1/forecast` with `start_date`/`end_date` | Same models as the forecast API, complete daily and hourly data (incl. soil) up to today. Chosen over the ERA5 archive (`archive-api.open-meteo.com/v1/archive`) so past and recent days come from the same model chain. The archive also had data up to today when checked. |
+| Requests                               | `POST`, form-encoded, comma-separated `latitude`, `longitude`, `elevation`                | Multiple locations per request work (14 and 100 tested). ~1,000 locations × 96 days in one request hit the per-minute limit (HTTP 429). The pipeline uses batches of 50.                                                                                                     |
+| Elevation                              | `elevation=` per location                                                                 | Open-Meteo downscales temperature to this elevation. Spots use the middle of their elevation band.                                                                                                                                                                           |
+| Time zone                              | `timezone=Europe/Zurich`                                                                  | Daily values and hourly timestamps are local days.                                                                                                                                                                                                                           |
+
+**Model: `best_match`.** Open-Meteo exposes MeteoSwiss ICON-CH (`meteoswiss_icon_ch1`, 33 h forecast; `meteoswiss_icon_ch2`, 5 days), but **neither returns soil moisture or soil temperature**, which the moisture score and the morel temperature need. `best_match` returns all variables. Its rain is close to `icon_seamless`/`icon_d2`. It can differ a lot from ICON-CH2: on 8 Oct 2026 at Ibergeregg, 36 mm (best_match) vs 17 mm (ICON-CH2). → Open question: check against MeteoSwiss station data (optional later step in SPEC §4.1).
+
+**Variables**
+
+- Daily: `precipitation_sum`, `temperature_2m_min`, `temperature_2m_max`, `temperature_2m_mean`, `relative_humidity_2m_mean`, `et0_fao_evapotranspiration`.
+- Hourly → daily mean (needs ≥ 20 of 24 hours): `soil_moisture_0_to_7cm`, `soil_moisture_7_to_28cm`, `soil_temperature_0_to_7cm`. These names work with `best_match`. The ICON layer names (`soil_moisture_9_to_27cm`, `soil_temperature_6cm`) also exist but aren't used.
+
+**Limits (free, non-commercial):** 600 calls/min, 5,000/hour, 10,000/day, 300,000/month ([open-meteo.com/en/pricing](https://open-meteo.com/en/pricing)). Calls are weighted: ×(variables / 10) and ×(days / 14) per location. The daily run for 14 spots ≈ **87 weighted calls**, ~15–25 s. The pipeline logs the estimate on every run. The API answered "503 service overloaded" twice on 2026-10-20; the retries handled it.
+
+**Licence:** Open-Meteo data is CC BY 4.0. Attribution is on the map and in the About section.
+
 ## To verify (later milestones)
 
-- 🔜 Open-Meteo forecast (`past_days`), archive API, ICON-CH model availability, batch limits (M2).
 - 🔜 BAFU forest mix `ch.bafu.landesforstinventar-waldmischungsgrad`, forest mask, swissALTI3D (M3–M4).
 - 🔜 ZH Waldvegetationskarte WMS/WFS, SZ forest site layer on `wfs.geo.sz.ch`, GeoCover geology (M3).
 - 🔜 Protected-area layers: federal moor inventories, SZ and ZH nature reserves (M4).

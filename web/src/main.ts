@@ -2,33 +2,30 @@ import 'leaflet/dist/leaflet.css';
 import './style.css';
 import L from 'leaflet';
 import {
+  LatestFileSchema,
   ReservesFileSchema,
   RulesFileSchema,
   SCORE_BANDS,
   SpeciesFileSchema,
   SpotsFileSchema,
+  bandFor,
   isClosedDay,
   type CantonT,
+  type LatestFile,
   type Spot,
 } from '@mf/scoring';
 import reservesJson from '../../data/reserves.json';
 import rulesJson from '../../data/rules.json';
 import speciesJson from '../../data/species.json';
 import spotsJson from '../../data/spots.json';
+import { closeDetail, renderDetail } from './detail.js';
+import { dateTime, esc, shortDate } from './format.js';
 
 const spots = SpotsFileSchema.parse(spotsJson).spots;
 const species = SpeciesFileSchema.parse(speciesJson).species;
 const reserves = ReservesFileSchema.parse(reservesJson).reserves;
 const rules = RulesFileSchema.parse(rulesJson);
-
-const speciesName = new Map(species.map((s) => [s.id, `${s.name} (${s.german})`]));
 const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date());
-
-const esc = (s: string): string =>
-  s.replace(
-    /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!,
-  );
 
 const $ = (id: string): HTMLElement => {
   const el = document.getElementById(id);
@@ -36,15 +33,20 @@ const $ = (id: string): HTMLElement => {
   return el;
 };
 
+/** What the map shows: all species (best score) or one species, on one day of the 17-day window. */
+const state = { species: 'all', dayIndex: 13, selected: null as string | null };
+let latest: LatestFile | null = null;
+
 // --- Map -------------------------------------------------------------------
 
-const map = L.map('map', { zoomControl: true }).setView([47.2, 8.65], 10);
+const map = L.map('map', { zoomControl: true });
 
 L.tileLayer(
   'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg',
   {
     maxZoom: 18,
-    attribution: '© <a href="https://www.swisstopo.admin.ch">swisstopo</a>',
+    attribution:
+      '© <a href="https://www.swisstopo.admin.ch">swisstopo</a> · weather <a href="https://open-meteo.com">Open-Meteo</a>',
   },
 ).addTo(map);
 
@@ -68,45 +70,14 @@ const reserveLayer = L.layerGroup(
   ),
 ).addTo(map);
 
-const cantonalMapUrl = (c: CantonT): string =>
-  rules.cantons[c]?.cantonalMapUrl ?? 'https://map.geo.admin.ch';
-
-function spotPopup(spot: Spot): string {
-  const r = rules.cantons[spot.canton];
-  const closed = isClosedDay(rules, spot.canton, today);
-  const hints = spot.species_hint.map((id) => esc(speciesName.get(id) ?? id)).join(', ');
-  const gmaps = `https://www.google.com/maps/search/?api=1&query=${spot.lat},${spot.lon}`;
-  return `<div class="popup">
-    <h3>${esc(spot.name)}</h3>
-    <p>${spot.canton} · ${spot.elevation_band.min}–${spot.elevation_band.max} m</p>
-    ${closed ? `<p><span class="badge closed">Closed today (${spot.canton} rule)</span></p>` : ''}
-    ${hints ? `<p><strong>Known for:</strong> ${hints}</p>` : ''}
-    <p>${esc(spot.notes)}</p>
-    ${r ? `<p class="small">Limit: ${r.maxKgPerPersonPerDay} kg per person per day.</p>` : ''}
-    <p class="small">Score: not available yet.</p>
-    <div class="actions">
-      <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps</a>
-      <a href="${cantonalMapUrl(spot.canton)}" target="_blank" rel="noopener">Open cantonal map</a>
-    </div>
-  </div>`;
+const markers = new Map<string, L.Marker>();
+const spotLayer = L.layerGroup().addTo(map);
+for (const spot of spots) {
+  const m = L.marker([spot.lat, spot.lon], { keyboard: true, title: spot.name, riseOnHover: true });
+  m.on('click', () => select(spot.id));
+  markers.set(spot.id, m);
+  spotLayer.addLayer(m);
 }
-
-const markers = new Map<string, L.CircleMarker>();
-const spotLayer = L.layerGroup(
-  spots.map((spot) => {
-    const m = L.circleMarker([spot.lat, spot.lon], {
-      radius: 9,
-      color: '#ffffff',
-      weight: 2,
-      fillColor: '#4a5a4e',
-      fillOpacity: 0.95,
-    })
-      .bindTooltip(spot.name)
-      .bindPopup(spotPopup(spot), { maxWidth: 300 });
-    markers.set(spot.id, m);
-    return m;
-  }),
-).addTo(map);
 
 L.control
   .layers(
@@ -125,22 +96,135 @@ const frame = (): void => {
 frame();
 if (document.readyState !== 'complete') window.addEventListener('load', frame, { once: true });
 
-// --- Panel -----------------------------------------------------------------
+// --- Scores ----------------------------------------------------------------
 
-$('spot-list').innerHTML = spots
+const allDates = (): string[] => (latest ? [...latest.days, ...latest.forecastDays] : [today]);
+const selectedDate = (): string => allDates()[state.dayIndex] ?? today;
+
+interface Shown {
+  score: number | null;
+  outOfSeason: boolean;
+}
+
+function shownScore(spot: Spot): Shown {
+  const d = latest?.spots[spot.id];
+  if (!d) return { score: null, outOfSeason: false };
+  if (state.species === 'all')
+    return { score: d.metaSeries[state.dayIndex] ?? null, outOfSeason: false };
+  const outOfSeason = d.today.species[state.species]?.outOfSeason ?? false;
+  return { score: d.series[state.species]?.[state.dayIndex] ?? null, outOfSeason };
+}
+
+function markerHtml(spot: Spot, s: Shown, closed: boolean): string {
+  if (s.outOfSeason) return `<span class="pin pin-off" aria-hidden="true">–</span>`;
+  if (s.score === null) return `<span class="pin pin-none" aria-hidden="true">?</span>`;
+  const b = bandFor(s.score);
+  return `<span class="pin${closed ? ' pin-closed' : ''}${state.selected === spot.id ? ' pin-selected' : ''}" style="background:${b.color};color:${b.text}" aria-hidden="true">${s.score}</span>`;
+}
+
+function describe(spot: Spot, s: Shown, closed: boolean): string {
+  const what =
+    state.species === 'all' ? 'best species' : species.find((x) => x.id === state.species)?.name;
+  const score = s.outOfSeason
+    ? 'out of season'
+    : s.score === null
+      ? 'no score'
+      : `${s.score} (${bandFor(s.score).label})`;
+  return `${spot.name}: ${score} for ${what}${closed ? ', closed today' : ''}`;
+}
+
+function refresh(): void {
+  const date = selectedDate();
+  for (const spot of spots) {
+    const s = shownScore(spot);
+    const closed = isClosedDay(rules, spot.canton, date);
+    const m = markers.get(spot.id)!;
+    m.setIcon(
+      L.divIcon({
+        className: 'pin-wrap',
+        html: markerHtml(spot, s, closed),
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+      }),
+    );
+    m.getElement()?.setAttribute('aria-label', describe(spot, s, closed));
+    m.setZIndexOffset(s.score ?? 0);
+  }
+
+  // Spot list, best first.
+  const rows = spots
+    .map((spot) => ({ spot, s: shownScore(spot) }))
+    .sort((a, b) => (b.s.score ?? -1) - (a.s.score ?? -1));
+  $('spot-list').innerHTML = rows
+    .map(({ spot, s }) => {
+      const b = s.score !== null && !s.outOfSeason ? bandFor(s.score) : null;
+      const val = s.outOfSeason ? '–' : (s.score ?? '?');
+      return `<li><button type="button" data-id="${spot.id}"><span class="score" style="${b ? `background:${b.color};color:${b.text}` : ''}">${val}</span><span>${esc(spot.name)}<span class="meta">${spot.canton} · ${spot.elevation_band.min}–${spot.elevation_band.max} m</span></span></button></li>`;
+    })
+    .join('');
+
+  const isForecast = latest !== null && state.dayIndex >= latest.days.length;
+  $('day-label').textContent =
+    date === today
+      ? `Today, ${shortDate(date)}`
+      : `${isForecast ? 'Forecast: ' : ''}${shortDate(date)}`;
+  $('day-label').classList.toggle('forecast', isForecast);
+}
+
+function select(id: string): void {
+  const spot = spots.find((s) => s.id === id);
+  if (!spot) return;
+  state.selected = id;
+  const detail = $('detail');
+  renderDetail(detail, spot, {
+    latest,
+    species,
+    rules,
+    today,
+    onClose: () => {
+      state.selected = null;
+      closeDetail(detail);
+      $('overview').hidden = false;
+      refresh();
+      markers.get(id)?.getElement()?.focus();
+    },
+  });
+  $('overview').hidden = true;
+  map.panTo([spot.lat, spot.lon]);
+  refresh();
+  detail.querySelector<HTMLElement>('.close')?.focus({ preventScroll: true });
+}
+
+// --- Controls --------------------------------------------------------------
+
+$('species-chips').innerHTML = [{ id: 'all', name: 'All species' }, ...species]
   .map(
     (s) =>
-      `<li><button type="button" data-id="${s.id}">${esc(s.name)}<span class="meta">${s.canton} · ${s.elevation_band.min}–${s.elevation_band.max} m</span></button></li>`,
+      `<button type="button" class="chip" role="radio" aria-checked="${s.id === state.species}" data-id="${s.id}">${esc(s.name)}</button>`,
   )
   .join('');
+$('species-chips').addEventListener('click', (e) => {
+  const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-id]');
+  if (!b) return;
+  state.species = b.dataset.id!;
+  for (const c of $('species-chips').querySelectorAll('button'))
+    c.setAttribute('aria-checked', String(c === b));
+  refresh();
+});
+
+const slider = $('day') as HTMLInputElement;
+slider.addEventListener('input', () => {
+  state.dayIndex = Number(slider.value);
+  refresh();
+});
+
 $('spot-list').addEventListener('click', (e) => {
   const id = (e.target as HTMLElement).closest('button')?.dataset.id;
-  const spot = spots.find((s) => s.id === id);
-  const marker = id ? markers.get(id) : undefined;
-  if (!spot || !marker) return;
-  map.setView([spot.lat, spot.lon], Math.max(map.getZoom(), 13));
-  marker.openPopup();
-  document.getElementById('map')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (id) select(id);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && state.selected)
+    $('detail').querySelector<HTMLButtonElement>('.close')?.click();
 });
 
 $('legend').innerHTML = SCORE_BANDS.map(
@@ -163,3 +247,37 @@ $('rules-today').innerHTML = (Object.keys(rules.cantons) as CantonT[])
       : `<span class="badge">${c}: open today · max ${rules.cantons[c]!.maxKgPerPersonPerDay} kg</span>`,
   )
   .join('');
+
+// --- Data ------------------------------------------------------------------
+
+async function loadLatest(): Promise<void> {
+  const status = $('status');
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/latest.json`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    latest = LatestFileSchema.parse(await res.json());
+  } catch (e) {
+    console.error('Could not load scores', e);
+    status.textContent = 'Scores could not be loaded. The map shows the spots only.';
+    status.hidden = false;
+    $('updated').textContent = 'no scores';
+    refresh();
+    return;
+  }
+  slider.max = String(latest.days.length + latest.forecastDays.length - 1);
+  state.dayIndex = latest.days.length - 1;
+  slider.value = String(state.dayIndex);
+  $('updated').textContent = `updated ${dateTime(latest.generatedAt)}`;
+
+  const ageHours = (Date.now() - Date.parse(latest.generatedAt)) / 3_600_000;
+  const notes: string[] = [];
+  if (ageHours > 36)
+    notes.push(`Scores are ${Math.round(ageHours / 24)} days old: the daily update hasn't run.`);
+  if (latest.stale) notes.push('Some spots could not be updated and show older scores.');
+  status.textContent = notes.join(' ');
+  status.hidden = notes.length === 0;
+  refresh();
+}
+
+refresh();
+void loadLatest();

@@ -1,0 +1,70 @@
+name: Daily scores
+
+on:
+  # 03:30 UTC = 05:30 in summer / 04:30 in winter (Zurich). GitHub may start scheduled runs late.
+  schedule:
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Recompute the last N days (0 = only today and any missing days; max 30)'
+        required: false
+        default: '0'
+
+permissions:
+  contents: write
+  # To re-enable this workflow on every run (keepalive, see below).
+  actions: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-scores
+  cancel-in-progress: false
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Fetch weather and compute scores
+        run: npm run daily -- --backfill "$BACKFILL"
+        env:
+          BACKFILL: ${{ inputs.backfill || '0' }}
+
+      - name: Check the generated files
+        run: npx vitest run pipeline/test/published-data.test.ts
+
+      - name: Commit new data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/public/data
+          if git diff --cached --quiet; then echo "No data changes"; exit 0; fi
+          git commit -m "Daily scores $(TZ=Europe/Zurich date +%F)"
+          git pull --rebase
+          git push
+
+      # GitHub disables schedules in public repos after 60 days without activity. Re-enabling the
+      # workflow through the API on each run keeps it alive, whether or not bot commits count as activity.
+      - name: Keep the schedule alive
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/daily-scores.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  deploy:
+    needs: score
+    uses: ./.github/workflows/deploy-pages.yml
+    with:
+      ref: main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

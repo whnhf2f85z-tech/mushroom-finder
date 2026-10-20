@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@mf/scoring": "*",
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "uplot": "^1.6.32"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.22",
