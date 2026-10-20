@@ -62,7 +62,15 @@
           "danger": "inedible"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/chanterelle.jpg",
+        "shows": "Cantharellus cibarius",
+        "author": "Strobilomyces",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "source": "https://commons.wikimedia.org/wiki/File:Chanterelle_Cantharellus_cibarius.jpg"
+      }
     },
     {
       "id": "porcini",
@@ -125,7 +133,15 @@
           "danger": "inedible"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/porcini.jpg",
+        "shows": "Boletus edulis",
+        "author": "Holger Krisp",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:(Gemeine_Steinpilz)_Boletus_edulis.jpg"
+      }
     },
     {
       "id": "winter_chanterelle",
@@ -188,7 +204,15 @@
           "danger": "poisonous"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/winter_chanterelle.jpg",
+        "shows": "Craterellus tubaeformis",
+        "author": "Jerzy Opioła",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Cantharellus_tubaeformis_G28.JPG"
+      }
     },
     {
       "id": "horn_of_plenty",
@@ -246,7 +270,15 @@
           "danger": "inedible"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/horn_of_plenty.jpg",
+        "shows": "Craterellus cornucopioides",
+        "author": "Jean-Pol GRANDMONT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Craterellus_cornucopioides_JPG1.jpg"
+      }
     },
     {
       "id": "bay_bolete",
@@ -309,7 +341,15 @@
           "danger": "inedible"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/bay_bolete.jpg",
+        "shows": "Imleria badia",
+        "author": "Jean-Pol GRANDMONT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Boletus_badius_JPG1.jpg"
+      }
     },
     {
       "id": "hedgehog",
@@ -367,7 +407,15 @@
           "danger": "inedible"
         }
       ],
-      "safety": ""
+      "safety": "",
+      "photo": {
+        "file": "species/hedgehog.jpg",
+        "shows": "Hydnum repandum",
+        "author": "D J Kelly",
+        "license": "Public domain",
+        "licenseUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Hedgehog_fungi2.jpg"
+      }
     },
     {
       "id": "honey_fungus",
@@ -433,7 +481,15 @@
           "danger": "poisonous"
         }
       ],
-      "safety": "Honey fungus must always be cooked thoroughly: raw or undercooked it causes poisoning, and some people react even to well-cooked honey fungus."
+      "safety": "Honey fungus must always be cooked thoroughly: raw or undercooked it causes poisoning, and some people react even to well-cooked honey fungus.",
+      "photo": {
+        "file": "species/honey_fungus.jpg",
+        "shows": "Armillaria mellea",
+        "author": "tomasz przechlewski from Sopot, Poland",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Armillaria_mellea_(1).jpg"
+      }
     },
     {
       "id": "parasol",
@@ -510,7 +566,15 @@
           "danger": "poisonous"
         }
       ],
-      "safety": "Some of its look-alikes are deadly."
+      "safety": "Some of its look-alikes are deadly.",
+      "photo": {
+        "file": "species/parasol.jpg",
+        "shows": "Macrolepiota procera",
+        "author": "Chrumps",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Macrolepiota-procera.jpg"
+      }
     },
     {
       "id": "morel",
@@ -568,7 +632,15 @@
           "danger": "deadly"
         }
       ],
-      "safety": "Morels must be cooked thoroughly: raw or undercooked they are poisonous."
+      "safety": "Morels must be cooked thoroughly: raw or undercooked they are poisonous.",
+      "photo": {
+        "file": "species/morel.jpg",
+        "shows": "Morchella esculenta",
+        "author": "Bernd Haynold",
+        "license": "CC BY-SA 2.5",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+        "source": "https://commons.wikimedia.org/wiki/File:Morchella_esculenta_300405.jpg"
+      }
     }
   ]
 }

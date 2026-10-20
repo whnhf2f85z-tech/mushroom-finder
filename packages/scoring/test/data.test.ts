@@ -77,3 +77,22 @@ describe('species safety data', () => {
         );
   });
 });
+
+describe('species photos', () => {
+  it('has one openly licensed, credited photo of each edible species (never of a look-alike)', async () => {
+    const { existsSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    for (const s of species) {
+      expect(s.photo, s.id).toBeDefined();
+      const p = s.photo!;
+      expect(existsSync(join(import.meta.dirname, '../../../web/public', p.file)), p.file).toBe(
+        true,
+      );
+      expect(p.license, s.id).toMatch(/^(CC BY(-SA)? [0-9.]+|CC0|Public domain)$/);
+      expect(p.author.length, s.id).toBeGreaterThan(1);
+      // The photo shows the species itself (for genera: one of its species), not a look-alike.
+      expect(p.shows.split(' ')[0], s.id).toBe(s.latin.split(' ')[0]);
+      for (const l of s.lookalikes) expect(l.latin.includes(p.shows), s.id).toBe(false);
+    }
+  });
+});

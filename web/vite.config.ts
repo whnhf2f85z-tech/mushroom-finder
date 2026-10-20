@@ -34,8 +34,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // The app itself (HTML, JS, CSS, icons) is stored on install.
-        globPatterns: ['**/*.{js,css,html,png}'],
+        // The app itself (HTML, JS, CSS, icons, species photos) is stored on install.
+        globPatterns: ['**/*.{js,css,html,png,jpg}'],
         navigateFallback: 'index.html',
         runtimeCaching: [
           {

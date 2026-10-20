@@ -1002,3 +1002,24 @@ dialog::backdrop {
   display: grid;
   gap: 0.35rem;
 }
+
+.species-photo {
+  margin: -0.8rem -1rem 0.6rem;
+}
+.species-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+.species-photo figcaption {
+  padding: 0.35rem 1rem 0;
+  font-size: 0.8rem;
+}
+.species-photo .credit {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+}

@@ -62,6 +62,18 @@ export const SpeciesSchema = z.object({
     .min(1),
   /** Extra safety note (e.g. must be cooked thoroughly); empty if none. */
   safety: z.string(),
+  /** One openly licensed photo of the edible species (never of look-alikes), with its credit. */
+  photo: z
+    .object({
+      file: z.string(),
+      /** Taxon shown (for genera: the species in the photo). */
+      shows: z.string(),
+      author: z.string().min(1),
+      license: z.string().min(1),
+      licenseUrl: z.string(),
+      source: z.string().url(),
+    })
+    .optional(),
 });
 
 export const SpeciesFileSchema = z.object({
