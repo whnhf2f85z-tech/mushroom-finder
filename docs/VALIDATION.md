@@ -358,3 +358,23 @@ Habitat maps, current vs host trees: [chanterelle](validation/habitat-hosts-chan
 - **Spots:** most spots change by less than 0.05; the largest changes are horn of plenty (+0.13 to +0.33 at the 7 conifer-rich spots in the Ybrig, Sattel and Alpthal areas) and morel (−0.10 to +0.30).
 
 **Recommendation:** adopt the host-tree version as the better-founded model (Swiss partner data instead of a guessed conifer range, and the "why" panel can then name the host trees), but **with low confidence that it improves predictions**: the available tests can't tell the two apart. Its main weakness is the estimated tree mix (no open map of current tree species exists). **Applied on 2026-10-21** (approved): species.json has per-species host preferences instead of `conifer_pct`; the tree mix is computed from the site type and conifer share already in grid.json/habitat.json (details in SCORING.md).
+
+## Vegetation height model as a habitat input (test, 2026-10-21)
+
+`validation/vhm.ts`. Vegetation height model NFI (BAFU; 1 m, read at its 8 m overview), newest flight year per square (2025: 555 squares, 2024: 67, 2022: 945; mean coverage 99.6 %). Per forest square: **tall forest** = share of trees (≥ 3 m) that are ≥ 25 m (median 25 %); **gaps and edges** = share of the square that is open (< 3 m) within 16 m of trees (median 18 %); mean tree height (median 18 m). Tested like Part A: record squares vs all forest squares (precise records in ZH/SZ), and SwissFungi 5 km squares.
+
+| Species            | Record squares | Tall forest: AUC / SwissFungi 5 km | Gaps and edges  | Mean height |
+| ------------------ | -------------- | ---------------------------------- | --------------- | ----------- |
+| Chanterelle        | 0              | – / 0.46                           | – / 0.47        | – / 0.49    |
+| Porcini            | 4              | 0.48 / 0.51                        | 0.48 / 0.52     | 0.43 / 0.51 |
+| Winter chanterelle | 6              | 0.52 / 0.50                        | 0.58 / 0.50     | 0.50 / 0.49 |
+| Horn of plenty     | 4              | 0.57 / 0.57                        | 0.30 / 0.38     | 0.68 / 0.60 |
+| Bay bolete         | 8              | 0.53 / 0.49                        | 0.51 / 0.49     | 0.54 / 0.50 |
+| Hedgehog           | 2              | 0.75 / 0.49                        | 0.40 / 0.51     | 0.69 / 0.49 |
+| Honey fungus       | 32             | 0.50 / 0.45                        | 0.48 / 0.55     | 0.51 / 0.46 |
+| **Parasol**        | **19**         | **0.59 / 0.58**                    | **0.34 / 0.45** | 0.61 / 0.59 |
+| Morel              | 5              | 0.42 / 0.55                        | 0.68 / 0.51     | 0.43 / 0.56 |
+
+- **Parasol, the species this was meant for:** the opposite of the idea. Its record squares have _fewer_ gaps and edges than other forest squares (0.34; 5 km: 0.45) and somewhat more tall forest (0.59 / 0.58). At 1 km, "gaps and edges" mostly measures how much open land a square has (correlation with tree cover −0.56), and parasol records are in well-wooded squares (tree cover AUC 0.71, as in Part A). After adjusting for tree cover, gaps and edges show nothing (0.51) and tall forest only a trace (0.55).
+- **Other species:** nothing consistent on both tests; the samples are 2–8 squares except honey fungus (32: no signal) and parasol.
+- **Proposal: no change.** The vegetation height model doesn't add usable information at 1 km. Forest edges and clearings matter at the scale of tens of metres, which the 1 km squares (and the location accuracy of most records) can't resolve. It could become useful for pins, read at the pin itself, once the find log gives data to test it.
