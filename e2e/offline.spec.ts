@@ -32,6 +32,7 @@ test('works offline on a phone: scores, squares, past days, pages and visit logg
       async () => [
         await cacheSize(page, 'mf-latest'),
         await cacheSize(page, 'mf-static'),
+        await cacheSize(page, 'mf-reserves'),
         await cacheSize(page, 'mf-grid-days'),
       ],
       {
@@ -39,7 +40,7 @@ test('works offline on a phone: scores, squares, past days, pages and visit logg
         intervals: [1000],
       },
     )
-    .toEqual([1, 3, 17]); // latest.json · grid.json, reserves.geojson, habitat.json · 14 days + 3 forecast
+    .toEqual([1, 2, 1, 17]); // latest.json · grid.json, habitat.json · reserves.geojson · 14 days + 3 forecast
   await expect.poll(() => cacheSize(page, 'mf-tiles'), { timeout: 30_000 }).toBeGreaterThan(5);
 
   // 2. Offline, new session (no in-memory or session data): reload.
