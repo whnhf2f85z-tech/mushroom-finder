@@ -346,6 +346,7 @@ function select(id: string): void {
     species,
     rules,
     today,
+    date: selectedDate(),
     favourites,
     habitat: habitat?.spots[id] ?? null,
     onLogVisit: () =>
@@ -490,6 +491,7 @@ mine = setupMine({
   reserves: () => reserveFeatures,
   favourites: () => favourites,
   view: () => ({ species: state.species, dayIndex: state.dayIndex }),
+  selectedDate,
   closeOthers: () => {
     const detail = $('detail');
     if (state.selected) closeDetail(detail);

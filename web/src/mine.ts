@@ -47,6 +47,8 @@ export interface MineHooks {
   grid: () => GridFile | null;
   reserves: () => Parameters<typeof reserveAt>[0];
   favourites: () => string[];
+  /** The day shown on the map (YYYY-MM-DD). */
+  selectedDate: () => string;
   /** Selected species ('favourites' or an id) and day index of the slider. */
   view: () => { species: string; dayIndex: number };
   /** Close any open spot/square detail before a pin detail opens. */
@@ -263,6 +265,7 @@ export function setupMine(h: MineHooks) {
         species: h.species,
         rules: h.rules,
         today: h.today,
+        date: h.selectedDate(),
         favourites: h.favourites(),
         habitat: s.entry,
         onClose: closePin,

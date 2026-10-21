@@ -8,6 +8,8 @@ import {
   type GridFile,
   type RulesFile,
   type Species,
+  mainTrees,
+  treeMixOf,
 } from '@mf/scoring';
 import { scoreChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
@@ -15,6 +17,7 @@ import { badge } from './detail.js';
 import { dayMonth, esc, shortDate } from './format.js';
 import { cellCenter, cellScore, loadGridDay } from './gridlayer.js';
 import { scorePlaceLive } from './live.js';
+import { fillPlaceInfo, placeInfoSection } from './placeinfo.js';
 import { whyHtml } from './why.js';
 
 export interface CellContext {
@@ -84,7 +87,7 @@ export async function renderCellDetail(
     <div id="cell-body"><p class="small">Loading scores…</p></div>
     <h3>About this square</h3>
     <p class="small">
-      Trees: ${c.conifer[i] === null ? 'mix not known' : `${c.conifer[i]} % conifers`}.
+      Trees: ${treesText(site?.code ?? null, c.conifer[i] ?? null)}.
       Soil: ${PH[c.ph[i]!]}${site ? ` (forest type: ${esc(site.code)} ${esc(site.name)})` : c.phSource[i] === 'geology' ? ' (from the geology map)' : ''}.
       ${c.aspect[i] !== null && c.slope[i]! >= 5 ? `Mostly ${DIRS[Math.round(c.aspect[i]! / 45) % 8]}-facing slopes (${Math.round(c.slope[i]!)}°).` : ''}
     </p>
@@ -96,6 +99,7 @@ export async function renderCellDetail(
     </p>
     ${dz > 200 ? '<p class="small warn-note"><strong>Rain may be underestimated here:</strong> this square is more than 200 m higher than its weather point, and higher ground usually gets more rain.</p>' : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day.</p>` : ''}
+    ${placeInfoSection()}
     <div class="actions">
       <button type="button" class="action-button" data-act="log">Log a visit</button>
       <a href="https://www.google.com/maps/search/?api=1&query=${center.lat.toFixed(5)},${center.lon.toFixed(5)}" target="_blank" rel="noopener">Open in Google Maps</a>
@@ -105,6 +109,12 @@ export async function renderCellDetail(
   el.querySelector<HTMLButtonElement>('.close')!.addEventListener('click', ctx.onClose);
   el.querySelector('[data-act="log"]')?.addEventListener('click', ctx.onLogVisit);
   el.scrollTop = 0;
+  void fillPlaceInfo(
+    el,
+    { E: (c.e[i]! + 0.5) * 1000, N: (c.n[i]! + 0.5) * 1000, half: 500 },
+    date,
+    ctx.today,
+  );
 
   const days = await Promise.all(ctx.dates.map((d) => loadGridDay(d, g.count)));
   const body = el.querySelector<HTMLElement>('#cell-body');
@@ -265,4 +275,14 @@ export function closeCellDetail(el: HTMLElement): void {
   cleanup = null;
   el.hidden = true;
   el.innerHTML = '';
+}
+
+/** "beech 45 %, spruce 40 % (estimated), 40 % conifers" for the square's facts. */
+function treesText(code: string | null, conifer: number | null): string {
+  const mix = treeMixOf({ site_type_code: code, conifer_pct: conifer });
+  if (!mix) return 'mix not known';
+  const main = mainTrees(mix)
+    .map(([t, v]) => `${t} ${Math.round(v * 100)} %`)
+    .join(', ');
+  return `${main} (estimated)${conifer !== null ? `, ${conifer} % conifers measured` : ''}`;
 }

@@ -7,10 +7,12 @@ import {
   type RulesFile,
   type Species,
   type Spot,
+  wgs84ToLv95,
 } from '@mf/scoring';
 import { rainChart, scoreChart, tempChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
 import { dayMonth, esc, shortDate } from './format.js';
+import { fillPlaceInfo, placeInfoSection } from './placeinfo.js';
 import { whyHtml } from './why.js';
 
 export interface DetailContext {
@@ -18,6 +20,8 @@ export interface DetailContext {
   species: Species[];
   rules: RulesFile;
   today: string;
+  /** Day shown on the map (for the firing notices); today if missing. */
+  date?: string;
   favourites: string[];
   habitat: HabitatEntry | null;
   onClose: () => void;
@@ -128,6 +132,7 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     ${ctx.pin ? `<p class="small">${ctx.pin.cellKm === null ? 'No forest square within 1.5 km: tree mix and soil are unknown, so confidence is lower.' : `Tree mix, soil and slope come from the nearest forest square (${ctx.pin.cellKm.toFixed(1)} km away); elevation is the pin's own.`}</p>` : ''}
     ${ctx.habitat && !ctx.pin ? `<p class="small">Pin at ${ctx.habitat.elevation} m${ctx.habitat.site_type_name ? ` · forest type: ${esc(ctx.habitat.site_type_name)}` : ''}${ctx.habitat.conifer_pct !== null ? ` · ${ctx.habitat.conifer_pct} % conifers` : ''} · tree cover ${ctx.habitat.forest_pct} %.</p>` : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day${r.speciesLimits.map((l) => `, ${esc(name(l.species).toLowerCase())}s max ${l.maxKg} kg`).join('')}.</p>` : ''}
+    ${placeInfoSection()}
     <div class="actions">
       ${ctx.onLogVisit ? '<button type="button" class="action-button" data-act="log">Log a visit</button>' : ''}
       <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps</a>
@@ -135,6 +140,10 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     </div>
     ${ctx.pin ? '<div class="actions"><button type="button" class="action-button secondary" data-act="rename">Rename</button><button type="button" class="action-button secondary" data-act="delete">Delete pin</button></div>' : ''}`;
   el.hidden = false;
+  {
+    const { E, N } = wgs84ToLv95(spot.lat, spot.lon);
+    void fillPlaceInfo(el, { E, N, half: 0 }, ctx.date ?? ctx.today, ctx.today);
+  }
   el.querySelector<HTMLButtonElement>('.close')!.addEventListener('click', ctx.onClose);
   el.querySelector('[data-act="log"]')?.addEventListener('click', () => ctx.onLogVisit?.());
   el.querySelector('[data-act="rename"]')?.addEventListener('click', () => ctx.pin?.onRename());

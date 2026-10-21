@@ -64,6 +64,7 @@ export function renderAbout(
       <li>Forest mix rate (NFI) and federal moor inventories: <a href="https://www.bafu.admin.ch">BAFU / FOEN</a>.</li>
       <li>Forest site types and reserves: <a href="https://map.geo.sz.ch">Kanton Schwyz</a>; forest vegetation map and protection zones: <a href="https://maps.zh.ch">Kanton Zürich</a> (open government data).</li>
       <li>Host trees of each species: derived from aggregated partner-tree counts of <a href="https://www.wsl.ch/map_fungi">SwissFungi</a> (Swiss National Fungi Databank, WSL), divided by the tree shares of the Swiss National Forest Inventory. No explicit terms of use were found for these counts.</li>
+      <li>Public transport stops: <a href="https://www.bav.admin.ch">BAV / FOT</a>; hiking trails: swisstopo (swissTLM3D); military firing notices: <a href="https://www.armee.ch/schiessanzeigen">VBS / DDPS</a>, via <a href="https://map.geo.admin.ch">map.geo.admin.ch</a> (open data). Firing warnings only cover published bulletins: always follow the signs on site.</li>
       <li>Picking rules: zh.ch and sz.ch. Software: Leaflet, uPlot, zod, Vite.</li>
       <li>Source code: <a href="${REPO}">GitHub</a> · version ${opts.built}.</li>
     </ul>`;
