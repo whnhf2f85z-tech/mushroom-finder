@@ -7,8 +7,20 @@ export const VAPKO_URL = 'https://www.vapko.ch';
 export const CONTROL_NOTE =
   'This app does not identify mushrooms. Check every find at an official mushroom control (Pilzkontrolle).';
 
-/** One card per species: season, habitat, look-alikes (names and danger only) and safety notes. */
-export function renderSpeciesPage(el: HTMLElement, species: Species[]): void {
+/** The favourite button of a species card. */
+export const favButton = (id: string, name: string, on: boolean): string =>
+  `<button type="button" class="chip fav-toggle" data-fav-toggle="${id}" aria-pressed="${on}" aria-label="${on ? `Remove ${esc(name)} from favourites` : `Add ${esc(name)} to favourites`}">${on ? '★ Favourite' : '☆ Add to favourites'}</button>`;
+
+/**
+ * One card per species: season, habitat, look-alikes (names and danger only) and safety notes, with a favourite
+ * toggle. `onToggle` is called with the species id; the caller saves and re-renders.
+ */
+export function renderSpeciesPage(
+  el: HTMLElement,
+  species: Species[],
+  favourites: string[] = [],
+  onToggle?: (id: string) => void,
+): void {
   el.innerHTML = species
     .map((s) => {
       const [a, b, c, d] = shiftedSeason(s, 1000);
@@ -23,7 +35,10 @@ export function renderSpeciesPage(el: HTMLElement, species: Species[]): void {
         : '';
       return `<article class="species-card" aria-labelledby="sp-${s.id}">
         ${photo}
-        <h3 id="sp-${s.id}">${esc(s.name)} <span class="small">· ${esc(s.german)} · <i>${esc(s.latin)}</i></span></h3>
+        <div class="species-head">
+          <h3 id="sp-${s.id}">${esc(s.name)} <span class="small">· ${esc(s.german)} · <i>${esc(s.latin)}</i></span></h3>
+          ${onToggle ? favButton(s.id, s.name, favourites.includes(s.id)) : ''}
+        </div>
         <p class="small"><strong>Season</strong> at about 1,000 m: ${doyToText(a)} – ${doyToText(d)}, best ${doyToText(b)} – ${doyToText(c)}. Earlier higher up for autumn species; later higher up for morels.</p>
         <p class="small"><strong>Habitat:</strong> ${esc(s.notes)} Grows with: ${esc(s.hosts.join(', '))}. ${s.elevation.min}–${s.elevation.max} m.</p>
         <div class="lookalikes">
@@ -40,4 +55,16 @@ export function renderSpeciesPage(el: HTMLElement, species: Species[]): void {
       </article>`;
     })
     .join('');
+  el.onclick = (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-fav-toggle]');
+    if (b && onToggle) onToggle(b.dataset.favToggle!);
+  };
+}
+
+/** Update the favourite buttons in place (no re-render, so photos and the scroll position stay). */
+export function updateFavButtons(el: HTMLElement, species: Species[], favourites: string[]): void {
+  for (const b of el.querySelectorAll<HTMLButtonElement>('[data-fav-toggle]')) {
+    const s = species.find((x) => x.id === b.dataset.favToggle);
+    if (s) b.outerHTML = favButton(s.id, s.name, favourites.includes(s.id));
+  }
 }

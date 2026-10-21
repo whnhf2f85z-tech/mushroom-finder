@@ -19,7 +19,7 @@ A mobile-first web app that estimates how likely you are to find some edible mus
 ### Read the scores
 
 - Every place gets a score from **0 to 100**: 0–19 very low, 20–39 low, 40–59 medium, 60–79 good, 80–100 very good. The number is always shown; colour is only a help.
-- **My favourites** (the default chip) shows the best score among your favourite species. Tap a species chip to see just that one, or **Edit favourites** to change the list.
+- **My favourites** (the default chip) shows the best score among your favourite species. Tap a species chip to see just that one (favourites are starred ★). To change the list, tap **★ Choose favourites** above the map (with quick All / None / Default), or **☆ Add to favourites** on a card in the Species tab.
 - The **day slider** goes from 13 days ago to 3 days ahead ("Forecast").
 - **Squares** are 1 × 1 km of forest; **spots** are the named places; **pins** are yours. Tap any of them for the details: all species, the 14-day chart, the weather and **Why this score**.
 - **Hatched red:** no picking. **Dashed orange:** protected area, check the rules. **Grey:** closed that day (Zürich: 1st–10th of every month).

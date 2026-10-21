@@ -39,7 +39,9 @@
       <div class="controls">
         <div class="species-control">
           <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
-          <button type="button" id="edit-favourites" class="link-button">Edit favourites</button>
+          <button type="button" id="edit-favourites" class="chip fav-edit">
+            ★ Choose favourites
+          </button>
         </div>
         <div class="view-control" role="radiogroup" aria-label="Show on the map">
           <button type="button" class="chip" role="radio" aria-checked="false" data-view="grid">
@@ -213,15 +215,19 @@
       <form method="dialog">
         <h2 id="fav-h">My favourites</h2>
         <p class="small">
-          The map and each spot's main score use the best of these species. The spot details still
-          show every species.
+          Tap the species you look for. The map and each spot's main score use the best of these
+          species; the details still show every species.
         </p>
+        <div class="button-row fav-quick">
+          <button type="button" class="link-button" data-fav="all">All</button>
+          <button type="button" class="link-button" data-fav="none">None</button>
+          <button type="button" class="link-button" data-fav="default">Default</button>
+        </div>
         <fieldset id="fav-list" class="fav-list">
           <legend class="visually-hidden">Favourite species</legend>
         </fieldset>
         <p id="fav-error" class="fav-error" role="alert" hidden>Pick at least one species.</p>
         <div class="dialog-actions">
-          <button type="button" id="fav-reset" class="link-button">Reset to default</button>
           <button value="cancel" formnovalidate class="button-secondary">Cancel</button>
           <button value="save" id="fav-save" class="button-primary">Save</button>
         </div>

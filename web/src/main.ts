@@ -27,7 +27,7 @@ import { closeCellDetail, renderCellDetail, scoreCellLive } from './celldetail.j
 import { renderAbout } from './about.js';
 import { setupMine, type Place, type ScoreCapture } from './mine.js';
 import { setupPages } from './pages.js';
-import { renderSpeciesPage } from './speciespage.js';
+import { renderSpeciesPage, updateFavButtons } from './speciespage.js';
 import { closeDetail, renderDetail, resetChartLines, updateDetailDay } from './detail.js';
 import {
   GridLayer,
@@ -373,12 +373,16 @@ function select(id: string): void {
 
 // --- Controls --------------------------------------------------------------
 
-$('species-chips').innerHTML = [{ id: 'favourites', name: 'My favourites' }, ...species]
-  .map(
-    (s) =>
-      `<button type="button" class="chip" role="radio" aria-checked="${s.id === state.species}" data-id="${s.id}">${esc(s.name)}</button>`,
-  )
-  .join('');
+/** Species chips; favourites are starred. */
+function renderChips(): void {
+  $('species-chips').innerHTML = [{ id: 'favourites', name: 'My favourites' }, ...species]
+    .map(
+      (s) =>
+        `<button type="button" class="chip" role="radio" aria-checked="${s.id === state.species}" data-id="${s.id}">${s.id !== 'favourites' && favourites.includes(s.id) ? '<span class="fav-star" aria-label="Favourite">★</span> ' : ''}${esc(s.name)}</button>`,
+    )
+    .join('');
+}
+renderChips();
 $('species-chips').addEventListener('click', (e) => {
   const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-id]');
   if (!b) return;
@@ -387,6 +391,28 @@ $('species-chips').addEventListener('click', (e) => {
     c.setAttribute('aria-checked', String(c === b));
   refresh();
 });
+
+// Favourites: one place that saves and updates the map, the chips and the species page.
+function setFavourites(ids: string[]): void {
+  favourites = ids;
+  saveFavourites(ids);
+  renderChips();
+  updateFavButtons($('species-list'), species, ids);
+  resetChartLines();
+  refresh();
+  if (state.selected) select(state.selected);
+}
+
+/** Species page: one tap adds or removes a favourite; the last one can't be removed. */
+function toggleFavourite(id: string): void {
+  if (favourites.includes(id)) {
+    if (favourites.length === 1) {
+      showStatus('Keep at least one favourite: add another species first.');
+      return;
+    }
+    setFavourites(favourites.filter((x) => x !== id));
+  } else setFavourites(species.map((s) => s.id).filter((x) => x === id || favourites.includes(x)));
+}
 
 // Favourites dialog
 const dialog = $('fav-dialog') as HTMLDialogElement;
@@ -408,7 +434,12 @@ $('edit-favourites').addEventListener('click', () => {
   $('fav-error').hidden = true;
   dialog.showModal();
 });
-$('fav-reset').addEventListener('click', () => renderFavList(DEFAULT_FAVOURITES));
+dialog.querySelector('.fav-quick')!.addEventListener('click', (e) => {
+  const which = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-fav]')?.dataset.fav;
+  if (which === 'all') renderFavList(species.map((s) => s.id));
+  else if (which === 'none') renderFavList([]);
+  else if (which === 'default') renderFavList(DEFAULT_FAVOURITES);
+});
 // Save updates the map directly instead of waiting for the dialog's close event, which isn't reliable.
 $('fav-save').addEventListener('click', (e) => {
   e.preventDefault();
@@ -417,12 +448,8 @@ $('fav-save').addEventListener('click', (e) => {
     $('fav-error').hidden = false;
     return;
   }
-  favourites = ids;
-  saveFavourites(ids);
   dialog.close('save');
-  resetChartLines();
-  refresh();
-  if (state.selected) select(state.selected);
+  setFavourites(ids);
 });
 
 const slider = $('day') as HTMLInputElement;
@@ -575,7 +602,7 @@ document.addEventListener('mf:visit-saved', () => {
 
 // --- Pages, offline ----------------------------------------------------------
 
-renderSpeciesPage($('species-list'), species);
+renderSpeciesPage($('species-list'), species, favourites, toggleFavourite);
 renderAbout($('about'), {
   onFavourites: () => $('edit-favourites').click(),
   built: import.meta.env.VITE_BUILD ?? 'dev',

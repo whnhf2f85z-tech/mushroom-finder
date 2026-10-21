@@ -603,6 +603,34 @@ dialog::backdrop {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  min-height: 44px; /* easy to tap on a phone */
+  padding: 0 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.fav-list label:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.fav-quick {
+  gap: 1rem;
+}
+.fav-edit {
+  font-weight: 600;
+}
+.species-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.species-head h3 {
+  margin-right: auto;
+}
+.fav-toggle {
+  min-height: 40px;
+  white-space: nowrap;
 }
 .fav-list input {
   width: 1.1rem;

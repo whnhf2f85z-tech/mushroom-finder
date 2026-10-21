@@ -24,7 +24,7 @@ export function renderAbout(
     <h3>How to read the scores</h3>
     <ul class="legend">${SCORE_BANDS.map((b) => `<li><span class="swatch" style="background:${b.color};color:${b.text}">${b.min}–${b.max}</span>${b.label}</li>`).join('')}</ul>
     <ul class="small plain">
-      <li><strong>My favourites</strong> (default): each place shows the best score among your favourite species. Pick one species with the chips above the map, or change your favourites in Settings below.</li>
+      <li><strong>My favourites</strong> (default): each place shows the best score among your favourite species. Pick one species with the chips above the map (favourites have a ★). To change your favourites, tap <em>★ Choose favourites</em> above the map, or <em>☆ Add to favourites</em> on a species card.</li>
       <li><strong>Day slider:</strong> the last 13 days, today and 3 forecast days (marked "Forecast").</li>
       <li><strong>Squares vs spots:</strong> squares use weather from a point up to ~2 km away; spots and pins use their own.</li>
       <li>Squares mainly reflect weather and season. For most species the habitat data barely distinguishes between forests, so use local knowledge for where to look.</li>
@@ -47,7 +47,7 @@ export function renderAbout(
 
     <h3>Settings</h3>
     <div class="button-row">
-      <button type="button" class="action-button secondary" id="about-favourites">Edit favourites</button>
+      <button type="button" class="action-button secondary" id="about-favourites">★ Choose favourites</button>
     </div>
     <p class="small">Units: °C, mm of rain, metres, grams, kilometres.</p>
 
