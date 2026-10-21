@@ -9,6 +9,8 @@ import {
   type GridFile,
 } from '@mf/scoring';
 
+import { savedJson } from './saved.js';
+
 const base = import.meta.env.BASE_URL;
 
 export async function loadGrid(): Promise<GridFile | null> {
@@ -29,22 +31,54 @@ export interface GridDay {
 
 const dayCache = new Map<string, Promise<GridDay | null>>();
 
-/** One day of grid scores (cached). */
+/** Days that are still a forecast in the scores shown (their saved copy may be a forecast version). */
+let forecastDays = new Set<string>();
+/** A newer run replaced the saved scores this session: saved forecast copies are out of date. */
+let runChanged = false;
+
+/**
+ * Tell the grid which days are forecasts. If the scores shown were replaced by a newer run (`newRun`), the days
+ * loaded so far are dropped so they're fetched again.
+ */
+export function setGridDays(forecast: string[], newRun: boolean): void {
+  forecastDays = new Set(forecast);
+  if (newRun) {
+    runChanged = true;
+    dayCache.clear();
+  }
+}
+
+function parseDay(date: string, count: number, raw: unknown): GridDay | null {
+  const f = GridDayFileSchema.safeParse(raw);
+  if (!f.success || f.data.count !== count) return null;
+  return {
+    date,
+    source: f.data.source,
+    scores: Object.fromEntries(
+      Object.entries(f.data.species).map(([k, v]) => [k, decodeScores(v)]),
+    ),
+  };
+}
+
+/**
+ * One day of grid scores (kept for the session). The saved offline copy is used at once when it fits: a day's
+ * real scores always; a forecast copy only for a day that is still a forecast and only if no newer run came in.
+ * Otherwise it's fetched.
+ */
 export function loadGridDay(date: string, count: number): Promise<GridDay | null> {
   let p = dayCache.get(date);
   if (!p) {
-    p = fetch(`${base}data/grid/${date}.json`, { cache: 'no-cache' })
-      .then(async (res) => {
-        if (!res.ok) return null;
-        const f = GridDayFileSchema.parse(await res.json());
-        if (f.count !== count) return null;
-        return {
-          date,
-          source: f.source,
-          scores: Object.fromEntries(
-            Object.entries(f.species).map(([k, v]) => [k, decodeScores(v)]),
-          ),
-        };
+    const url = `${base}data/grid/${date}.json`;
+    p = savedJson(url)
+      .then((raw) => {
+        const saved = raw ? parseDay(date, count, raw) : null;
+        const fits =
+          saved !== null &&
+          (saved.source !== 'forecast' || (forecastDays.has(date) && !runChanged));
+        if (fits) return saved;
+        return fetch(url, { cache: 'no-cache' }).then(async (res) =>
+          res.ok ? parseDay(date, count, await res.json()) : null,
+        );
       })
       .catch(() => null);
     dayCache.set(date, p);

@@ -28,6 +28,7 @@ import { renderAbout } from './about.js';
 import { setupMine, type Place, type ScoreCapture } from './mine.js';
 import { setupPages } from './pages.js';
 import { renderSpeciesPage, updateFavButtons } from './speciespage.js';
+import { savedJson } from './saved.js';
 import { closeDetail, renderDetail, resetChartLines, updateDetailDay } from './detail.js';
 import {
   GridLayer,
@@ -35,6 +36,7 @@ import {
   cellScore,
   loadGrid,
   loadGridDay,
+  setGridDays,
   type CellStyle,
   type GridDay,
 } from './gridlayer.js';
@@ -645,42 +647,70 @@ function warmOfflineCache(): void {
   for (const img of document.querySelectorAll<HTMLImageElement>('img.leaflet-tile'))
     void fetch(img.src, { mode: 'no-cors' }).catch(() => undefined);
 }
+/** All days of the slider, in the background: saved copies where they fit, the network only for the rest. */
 function prefetchGridDays(): void {
-  if (grid && latest && navigator.onLine)
+  if (grid && latest)
     for (const d of [...latest.days, ...latest.forecastDays]) void loadGridDay(d, grid.count);
-  warmOfflineCache();
 }
+// Only when the offline worker is new (first visit, app update): store what was loaded before it took over.
 navigator.serviceWorker?.addEventListener('controllerchange', warmOfflineCache);
 
 // --- Data ------------------------------------------------------------------
 
-async function loadLatest(): Promise<void> {
-  const status = $('status');
-  try {
-    const res = await fetch(`${import.meta.env.BASE_URL}data/latest.json`, { cache: 'no-cache' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    latest = LatestFileSchema.parse(await res.json());
-  } catch (e) {
-    console.error('Could not load scores', e);
-    status.textContent = 'Scores could not be loaded. The map shows the spots only.';
-    status.hidden = false;
-    $('updated').textContent = 'no scores';
-    refresh();
-    return;
+/** Show a set of scores (saved or fresh) everywhere. */
+function applyLatest(l: LatestFile, checking: boolean): void {
+  const sameDays = latest !== null && allDates().join() === [...l.days, ...l.forecastDays].join();
+  const newRun = latest !== null && latest.generatedAt !== l.generatedAt;
+  latest = l;
+  setGridDays(l.forecastDays, newRun);
+  slider.max = String(l.days.length + l.forecastDays.length - 1);
+  if (!sameDays) {
+    state.dayIndex = l.days.length - 1;
+    slider.value = String(state.dayIndex);
   }
-  slider.max = String(latest.days.length + latest.forecastDays.length - 1);
-  state.dayIndex = latest.days.length - 1;
-  slider.value = String(state.dayIndex);
-  $('updated').textContent = `updated ${dateTime(latest.generatedAt)}`;
+  $('updated').textContent =
+    `updated ${dateTime(l.generatedAt)}${checking ? ' · checking for newer scores…' : ''}`;
 
-  const ageHours = (Date.now() - Date.parse(latest.generatedAt)) / 3_600_000;
+  const status = $('status');
+  const ageHours = (Date.now() - Date.parse(l.generatedAt)) / 3_600_000;
   const notes: string[] = [];
-  if (ageHours > 36)
+  if (ageHours > 36 && !checking)
     notes.push(`Scores are ${Math.round(ageHours / 24)} days old: the daily update hasn't run.`);
-  if (latest.stale) notes.push('Some spots could not be updated and show older scores.');
+  if (l.stale) notes.push('Some spots could not be updated and show older scores.');
   status.textContent = notes.join(' ');
   status.hidden = notes.length === 0;
   refresh();
+  if (newRun && state.selected) select(state.selected);
+}
+
+/**
+ * Scores: the saved copy first (instant, also with poor reception), then the network. If the network has a newer
+ * run, the map and any open detail switch to it.
+ */
+async function loadLatest(): Promise<void> {
+  const url = `${import.meta.env.BASE_URL}data/latest.json`;
+  const saved = LatestFileSchema.safeParse(await savedJson(url));
+  if (saved.success) applyLatest(saved.data, navigator.onLine);
+  const fresh = fetch(url, { cache: 'no-cache' })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      applyLatest(LatestFileSchema.parse(await res.json()), false);
+    })
+    .catch((e) => {
+      console.error('Could not load scores', e);
+      if (latest) {
+        // Keep the saved scores; just drop the "checking" note.
+        $('updated').textContent = `updated ${dateTime(latest.generatedAt)}`;
+        return;
+      }
+      const status = $('status');
+      status.textContent = 'Scores could not be loaded. The map shows the spots only.';
+      status.hidden = false;
+      $('updated').textContent = 'no scores';
+      refresh();
+    });
+  // With a saved copy the map goes on at once; without one it waits for the network.
+  if (!saved.success) await fresh;
 }
 
 async function loadHabitat(): Promise<void> {

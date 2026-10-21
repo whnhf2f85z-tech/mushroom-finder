@@ -59,7 +59,16 @@ export default defineConfig({
             },
           },
           {
-            // grid.json, reserves.geojson, habitat.json: rarely change; show the saved copy, update in the background.
+            // The reserve outlines (the largest file, ~280 KB): rarely change, so re-check at most once a day.
+            urlPattern: ({ url }) => url.pathname.endsWith('/data/static/reserves.geojson'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'mf-reserves',
+              expiration: { maxEntries: 1, maxAgeSeconds: DAY },
+            },
+          },
+          {
+            // grid.json, habitat.json: rarely change; show the saved copy, update in the background.
             urlPattern: ({ url }) => url.pathname.includes('/data/static/'),
             handler: 'StaleWhileRevalidate',
             options: { cacheName: 'mf-static', expiration: { maxEntries: 10 } },
