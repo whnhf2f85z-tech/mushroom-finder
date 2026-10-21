@@ -70,7 +70,7 @@ describe('scoreSpecies', () => {
     expect(r.confidenceIssues).toEqual(
       expect.arrayContaining([
         'ph_unknown',
-        'conifer_unknown',
+        'trees_unknown',
         'no_soil_moisture',
         'short_weather_history',
         'weather_far',

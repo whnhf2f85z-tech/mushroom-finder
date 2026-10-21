@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SITE_GROUPS, currentTreeMix, naturalTrees } from '../terrain/trees.js';
+import { SITE_GROUPS, currentTreeMix, naturalTrees } from '../src/trees.js';
 
 describe('site type → main trees', () => {
   it('every group sums to 1 and groups do not overlap', () => {

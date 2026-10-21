@@ -1,5 +1,6 @@
 import type { Species } from './schemas.js';
 import { shiftedSeason } from './season.js';
+import { mainTrees, treeMixOf, type Tree } from './trees.js';
 import type { Components, Details } from './types.js';
 
 export type Verdict = 'good' | 'fair' | 'poor';
@@ -20,6 +21,8 @@ export interface HabitatFacts {
   ph_class: string;
   ph_source?: 'site_type' | 'geology' | 'none';
   site_type_name?: string | null;
+  /** Site type code (e.g. "7a"): with the conifer share it gives the estimated tree mix. */
+  site_type_code?: string | null;
   aspect?: number | null;
   slope?: number | null;
 }
@@ -125,11 +128,7 @@ export function explain(
 
   // Habitat
   const hl: string[] = [];
-  if (h.conifer_pct !== null && h.conifer_pct !== undefined)
-    hl.push(
-      `Trees: ${n0(h.conifer_pct)} % conifers (this species likes ${species.conifer_pct.min}–${species.conifer_pct.max} %).`,
-    );
-  else hl.push('Tree mix not known.');
+  hl.push(...treeLines(species, h));
   const phFrom =
     h.ph_source === 'site_type' && h.site_type_name
       ? ` (forest type: ${h.site_type_name})`
@@ -160,4 +159,33 @@ export function explain(
   out.push({ key: 'H', title: 'Habitat', value: c.H, verdict: verdict(c.H), lines: hl });
 
   return out;
+}
+
+/** Good host: found with the tree clearly more often than the tree occurs; weak: clearly less. */
+const GOOD_HOST = 1.3;
+const WEAK_HOST = 0.8;
+const list = (xs: string[]) =>
+  xs.length <= 1 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`;
+
+/** Habitat lines about the trees: the estimated main trees and which of them suit the species. */
+export function treeLines(species: Species, h: HabitatFacts): string[] {
+  const mix = treeMixOf(h);
+  if (!mix) return ['Tree mix not known.'];
+  const main = mainTrees(mix);
+  const lines = [
+    `Main trees here (estimated): ${main.map(([t, v]) => `${t} ${Math.round(v * 100)} %`).join(', ')}.`,
+  ];
+  const pref = species.hostPreference;
+  if (!pref) {
+    lines.push(`${species.name} isn't tied to particular trees.`);
+    return lines;
+  }
+  const good = main.filter(([t]) => (pref[t as Tree] ?? 1) >= GOOD_HOST).map(([t]) => t);
+  const weak = main.filter(([t]) => (pref[t as Tree] ?? 1) < WEAK_HOST).map(([t]) => t);
+  if (good.length)
+    lines.push(`Good host trees for ${species.name.toLowerCase()} here: ${list(good)}.`);
+  if (weak.length) lines.push(`Weaker hosts for ${species.name.toLowerCase()}: ${list(weak)}.`);
+  if (!good.length && !weak.length)
+    lines.push(`The trees here are average hosts for ${species.name.toLowerCase()}.`);
+  return lines;
 }

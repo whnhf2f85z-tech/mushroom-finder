@@ -8,6 +8,7 @@ export { temperatureScore, coolingTrigger } from './temperature.js';
 export { frostFactor } from './frost.js';
 export { droughtFactor } from './drought.js';
 export { habitatScore } from './habitat.js';
+export * from './trees.js';
 export { scoreSpecies, scoreLocation } from './score.js';
 export { SCORE_BANDS, bandFor, type ScoreBand } from './bands.js';
 export { isClosedDay } from './rules.js';

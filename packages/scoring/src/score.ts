@@ -47,7 +47,7 @@ export function scoreSpecies(
 
   const issues: string[] = [];
   if (habitat.ph_class === 'unknown') issues.push('ph_unknown');
-  if (habitat.conifer_pct === undefined) issues.push('conifer_unknown');
+  if (species.hostPreference && hab.treeMix === null) issues.push('trees_unknown');
   if (moisture.soilScore === null) issues.push('no_soil_moisture');
   if (temp.soilFallback) issues.push('no_soil_temperature');
   if (drought.days < cfg.drought.days) issues.push('short_weather_history');

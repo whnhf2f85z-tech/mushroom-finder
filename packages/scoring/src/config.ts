@@ -65,9 +65,14 @@ export const DEFAULT_CONFIG = {
 
   habitat: {
     weights: { host: 0.35, ph: 0.25, elevation: 0.25, forest: 0.15 },
-    /** Score used when the conifer share is unknown. */
+    /** Host part used when neither the site type nor the conifer share is known. */
     unknownHost: 0.7,
-    /** Percentage points beyond the preferred range at which the host/forest score bottoms out. */
+    /**
+     * Host part = Σ (tree share × the species' host preference), capped at 1: an average Swiss forest scores 1,
+     * a stand of poor hosts less, down to this floor. Species without host preference score 1.
+     */
+    hostFloor: 0.2,
+    /** Percentage points beyond the preferred range at which the tree-cover score bottoms out. */
     pctTail: 30,
     pctFloor: 0.2,
     /** Metres beyond the elevation range at which the elevation score bottoms out. */

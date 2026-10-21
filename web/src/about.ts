@@ -28,6 +28,7 @@ export function renderAbout(
       <li><strong>Day slider:</strong> the last 13 days, today and 3 forecast days (marked "Forecast").</li>
       <li><strong>Squares vs spots:</strong> squares use weather from a point up to ~2 km away; spots and pins use their own.</li>
       <li>Squares mainly reflect weather and season. For most species the habitat data barely distinguishes between forests, so use local knowledge for where to look.</li>
+      <li>Tree-mix data is estimated from forest site maps and the conifer share; it may differ from the trees actually present.</li>
       <li><strong>Why this score:</strong> open a spot, square or pin to see the reasons (season, rain, temperature, frost, dry spell, habitat) and the 14-day chart.</li>
       <li><strong>Hatched red</strong> areas: no picking. <strong>Dashed orange</strong>: protected, check the rules. <strong>Grey</strong>: closed that day (Zürich: no picking on the 1st–10th).</li>
     </ul>
@@ -62,6 +63,7 @@ export function renderAbout(
       <li>Base map, canton borders, terrain model swissALTI3D, geology GeoCover: © <a href="https://www.swisstopo.admin.ch">swisstopo</a>.</li>
       <li>Forest mix rate (NFI) and federal moor inventories: <a href="https://www.bafu.admin.ch">BAFU / FOEN</a>.</li>
       <li>Forest site types and reserves: <a href="https://map.geo.sz.ch">Kanton Schwyz</a>; forest vegetation map and protection zones: <a href="https://maps.zh.ch">Kanton Zürich</a> (open government data).</li>
+      <li>Host trees of each species: derived from aggregated partner-tree counts of <a href="https://www.wsl.ch/map_fungi">SwissFungi</a> (Swiss National Fungi Databank, WSL), divided by the tree shares of the Swiss National Forest Inventory. No explicit terms of use were found for these counts.</li>
       <li>Picking rules: zh.ch and sz.ch. Software: Leaflet, uPlot, zod, Vite.</li>
       <li>Source code: <a href="${REPO}">GitHub</a> · version ${opts.built}.</li>
     </ul>`;

@@ -93,7 +93,9 @@ for (const s of species) {
     habitat: {
       elevation: s.elevationShift.referenceElevation,
       forest_pct: midOf(s.forest_pct),
-      conifer_pct: midOf(s.conifer_pct),
+      // A beech site with 40 % conifers (planted spruce): a common lowland mixed forest.
+      conifer_pct: 40,
+      site_type_code: '7a',
       ph_class: bestPh(s),
     },
   };
@@ -117,15 +119,8 @@ for (const s of species) {
       '300 m above its range': tw({ habitat: { ...h, elevation: s.elevation.max + 300 } }),
       'Worst pH class': tw({ habitat: { ...h, ph_class: worstPh(s) } }),
       'pH unknown': tw({ habitat: { ...h, ph_class: 'unknown' } }),
-      'Conifer share −40 points outside range': tw({
-        habitat: {
-          ...h,
-          conifer_pct:
-            s.conifer_pct.min >= 40
-              ? s.conifer_pct.min - 40
-              : Math.min(100, s.conifer_pct.max + 40),
-        },
-      }),
+      'Pure spruce stand': tw({ habitat: { ...h, conifer_pct: 100 } }),
+      'Pure beech stand': tw({ habitat: { ...h, conifer_pct: 0 } }),
     },
   };
 }

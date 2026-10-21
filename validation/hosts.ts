@@ -1,5 +1,6 @@
 /**
- * Host trees instead of conifer share (proposal, not applied): compares the current habitat score with one whose
+ * Host trees instead of conifer share. Ran on 2026-10-21 before the change was applied; since then the engine
+ * itself uses host trees, so "current" in a new run equals the host-tree version. Compares the current habitat score with one whose
  * host part uses specific host trees.
  *   - Tree mix of a place: site type (SZ Waldstandorte / ZH Waldvegetationskarte) → natural main trees
  *     (pipeline/terrain/trees.ts), with the measured NFI conifer share split among them.
@@ -24,13 +25,7 @@ import {
   type Habitat,
   type Species,
 } from '@mf/scoring';
-import {
-  TREES,
-  currentTreeMix,
-  naturalTrees,
-  type Tree,
-  type TreeMix,
-} from '../pipeline/terrain/trees.js';
+import { TREES, currentTreeMix, naturalTrees, type Tree, type TreeMix } from '@mf/scoring';
 
 const DIR = import.meta.dirname;
 const ROOT = join(DIR, '..');

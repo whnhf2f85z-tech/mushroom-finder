@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fromUrl } from 'geotiff';
 import { GridFileSchema, type PhClassT } from '@mf/scoring';
-import { naturalTrees, CONIFERS } from '../pipeline/terrain/trees.js';
+import { naturalTrees, CONIFERS } from '@mf/scoring';
 import { majority, phFromLithology, phFromSiteType } from '../pipeline/terrain/ph.js';
 import { FOREST_MIX_URL, geology, szSiteType, zhSiteType } from '../pipeline/terrain/sources.js';
 

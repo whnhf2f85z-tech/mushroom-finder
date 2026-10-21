@@ -17,11 +17,23 @@
         "startDaysPer100m": -2,
         "endDaysPer100m": -1
       },
-      "hosts": ["spruce", "fir", "beech", "oak"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 100
+      "hosts": ["beech", "spruce", "fir"],
+      "hostPreference": {
+        "spruce": 0.73,
+        "fir": 1.73,
+        "pine": 0.67,
+        "larch": 0.4,
+        "beech": 2.18,
+        "oak": 2.15,
+        "ash": 0.1,
+        "maple": 0.23,
+        "hornbeam": 2.24,
+        "lime": 0.26,
+        "birch": 0.56,
+        "alder": 0.48,
+        "other": 0.2
       },
+      "hostSource": "SwissFungi partner trees (2,229 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 40,
         "max": 100
@@ -89,10 +101,22 @@
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "beech", "fir"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 100
+      "hostPreference": {
+        "spruce": 1.12,
+        "fir": 1.47,
+        "pine": 1.1,
+        "larch": 0.37,
+        "beech": 1.35,
+        "oak": 2.83,
+        "ash": 0.04,
+        "maple": 0.29,
+        "hornbeam": 0.78,
+        "lime": 0.28,
+        "birch": 0.9,
+        "alder": 0.29,
+        "other": 0.32
       },
+      "hostSource": "SwissFungi partner trees (2,063 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 40,
         "max": 100
@@ -160,10 +184,22 @@
         "endDaysPer100m": -2
       },
       "hosts": ["spruce", "fir"],
-      "conifer_pct": {
-        "min": 50,
-        "max": 100
+      "hostPreference": {
+        "spruce": 1.5,
+        "fir": 1.5,
+        "pine": 1,
+        "larch": 1,
+        "beech": 0.5,
+        "oak": 0.3,
+        "ash": 0.3,
+        "maple": 0.3,
+        "hornbeam": 0.3,
+        "lime": 0.3,
+        "birch": 0.3,
+        "alder": 0.3,
+        "other": 0.3
       },
+      "hostSource": "Literature: mainly spruce and fir, occasionally broadleaves (Krieglsteiner 2000); SwissFungi has too few partner records",
       "forest_pct": {
         "min": 50,
         "max": 100
@@ -230,11 +266,23 @@
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
-      "hosts": ["beech", "oak"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 40
+      "hosts": ["beech", "fir", "spruce"],
+      "hostPreference": {
+        "spruce": 0.32,
+        "fir": 1.98,
+        "pine": 0.75,
+        "larch": 0.05,
+        "beech": 2.73,
+        "oak": 5.01,
+        "ash": 0.17,
+        "maple": 0.26,
+        "hornbeam": 3.05,
+        "lime": 0.65,
+        "birch": 0.32,
+        "alder": 0.01,
+        "other": 0.18
       },
+      "hostSource": "SwissFungi partner trees (1,109 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 50,
         "max": 100
@@ -296,11 +344,23 @@
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
-      "hosts": ["spruce", "pine"],
-      "conifer_pct": {
-        "min": 20,
-        "max": 100
+      "hosts": ["spruce", "beech", "fir"],
+      "hostPreference": {
+        "spruce": 1.25,
+        "fir": 1.52,
+        "pine": 2.22,
+        "larch": 0.18,
+        "beech": 1.06,
+        "oak": 1.28,
+        "ash": 0.07,
+        "maple": 0.27,
+        "hornbeam": 0.27,
+        "lime": 0.1,
+        "birch": 0.93,
+        "alder": 0.14,
+        "other": 0.22
       },
+      "hostSource": "SwissFungi partner trees (1,505 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 40,
         "max": 100
@@ -367,11 +427,23 @@
         "startDaysPer100m": -4,
         "endDaysPer100m": -2
       },
-      "hosts": ["beech", "spruce"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 100
+      "hosts": ["beech", "spruce", "fir"],
+      "hostPreference": {
+        "spruce": 0.72,
+        "fir": 1.77,
+        "pine": 1.7,
+        "larch": 0.27,
+        "beech": 1.97,
+        "oak": 2.87,
+        "ash": 0.05,
+        "maple": 0.36,
+        "hornbeam": 1.36,
+        "lime": 0.09,
+        "birch": 0.47,
+        "alder": 0.17,
+        "other": 0.19
       },
+      "hostSource": "SwissFungi partner trees (1,618 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 40,
         "max": 100
@@ -434,10 +506,6 @@
         "endDaysPer100m": -2
       },
       "hosts": ["stumps", "all forest types"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 100
-      },
       "forest_pct": {
         "min": 20,
         "max": 100
@@ -508,10 +576,6 @@
         "endDaysPer100m": -2
       },
       "hosts": ["forest edges", "clearings", "meadows"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 100
-      },
       "forest_pct": {
         "min": 20,
         "max": 100
@@ -592,11 +656,23 @@
         "startDaysPer100m": 3,
         "endDaysPer100m": 3
       },
-      "hosts": ["ash", "elm", "riparian forest", "gravel"],
-      "conifer_pct": {
-        "min": 0,
-        "max": 30
+      "hosts": ["ash", "fir", "spruce", "beech", "riparian forest"],
+      "hostPreference": {
+        "spruce": 0.51,
+        "fir": 1.95,
+        "pine": 0.82,
+        "larch": 0.12,
+        "beech": 0.67,
+        "oak": 0.94,
+        "ash": 5.46,
+        "maple": 1,
+        "hornbeam": 1.86,
+        "lime": 0.67,
+        "birch": 0.63,
+        "alder": 1.45,
+        "other": 1.18
       },
+      "hostSource": "SwissFungi partner trees (642 Swiss records) ÷ share of the Swiss forest (NFI 4)",
       "forest_pct": {
         "min": 20,
         "max": 100

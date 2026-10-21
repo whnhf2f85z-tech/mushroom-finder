@@ -39,6 +39,7 @@ const HABITAT: Record<string, Habitat> = {
     ph_class: ib.ph_class,
     forest_pct: ib.forest_pct,
     ...(ib.conifer_pct !== null ? { conifer_pct: ib.conifer_pct } : {}),
+    ...(ib.site_type_code !== null ? { site_type_code: ib.site_type_code } : {}),
     ...(ib.aspect !== null ? { aspect: ib.aspect } : {}),
     ...(ib.slope !== null ? { slope: ib.slope } : {}),
   },
@@ -70,6 +71,19 @@ const range = (a: number, b: number): number[] =>
   Array.from({ length: b - a + 1 }, (_, i) => a + i);
 const peak = (loc: string, id: string) =>
   Math.max(...range(14, 24).map((d) => score(loc, id, oct(d))));
+
+// npm run test -- golden with GOLDEN_TABLE=1 prints the table for docs/SCORING.md.
+if (process.env.GOLDEN_TABLE)
+  for (const [loc, ids] of [
+    ['ibergeregg', ['chanterelle', 'winter_chanterelle', 'hedgehog']],
+    ['weinland', ['winter_chanterelle']],
+  ] as const)
+    for (const id of ids)
+      console.log(
+        loc,
+        id,
+        [10, 14, 17, 20, 22, 24, 26].map((d) => score(loc, id, oct(d))).join(' | '),
+      );
 
 describe('golden: real autumn 2026', () => {
   it('has the expected weather story and habitat', () => {

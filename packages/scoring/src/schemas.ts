@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TREES } from './trees.js';
 
 /** Versioned schemas for the hand-edited files in /data. Bump schemaVersion on breaking changes. */
 export const SCHEMA_VERSION = 1;
@@ -27,7 +28,13 @@ export const SpeciesSchema = z.object({
     endDaysPer100m: z.number(),
   }),
   hosts: z.array(z.string()),
-  conifer_pct: range,
+  /**
+   * Host-tree preference: 1 = found with that tree as often as the tree occurs in the Swiss forest, > 1 preferred.
+   * Missing = not tied to particular trees (decomposers, parasites). Sources: docs/DATA_SOURCES.md.
+   */
+  hostPreference: z.record(z.enum(TREES), z.number().min(0)).optional(),
+  /** Where the host preference comes from (shown in the docs). */
+  hostSource: z.string().optional(),
   forest_pct: range,
   ph: z.object({ acidic: unit, neutral: unit, calcareous: unit, unknown: unit }),
   elevation: range,

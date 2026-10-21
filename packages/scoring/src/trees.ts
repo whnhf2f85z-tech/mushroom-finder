@@ -147,6 +147,7 @@ export function naturalTrees(
  */
 export function currentTreeMix(site: TreeMix | null, coniferPct: number | null): TreeMix {
   const coniferShare = (coniferPct ?? 40) / 100;
+  // (Without a measured conifer share use treeMixOf, which falls back to the natural mix.)
   const nat = site ?? {};
   const split = (keys: readonly Tree[], fallback: TreeMix): TreeMix => {
     const part = Object.fromEntries(
@@ -175,3 +176,22 @@ export function currentTreeMix(site: TreeMix | null, coniferPct: number | null):
     mix[t as Tree] = (mix[t as Tree] ?? 0) + v * (1 - coniferShare);
   return mix;
 }
+
+/**
+ * Tree mix of a place from its site type code and measured conifer share; the natural mix if the conifer share is
+ * unknown; null if neither is known.
+ */
+export function treeMixOf(p: {
+  site_type_code?: string | null;
+  conifer_pct?: number | null;
+}): TreeMix | null {
+  const site = naturalTrees(p.site_type_code);
+  if (p.conifer_pct === undefined || p.conifer_pct === null) return site;
+  return currentTreeMix(site, p.conifer_pct);
+}
+
+/** Trees of a mix with at least `min` share, largest first. */
+export const mainTrees = (mix: TreeMix, min = 0.1): [Tree, number][] =>
+  (Object.entries(mix) as [Tree, number][])
+    .filter(([t, v]) => v >= min && t !== 'other')
+    .sort((a, b) => b[1] - a[1]);

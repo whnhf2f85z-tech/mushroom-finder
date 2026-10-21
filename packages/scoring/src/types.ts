@@ -25,7 +25,9 @@ export interface DailyWeather {
 export interface Habitat {
   elevation: number;
   forest_pct?: number;
+  /** Current conifer share of the trees, % (NFI forest mix). With the site type it gives the tree mix. */
   conifer_pct?: number;
+  /** Forest site type code (SZ Waldstandorte / ZH Waldvegetationskarte), e.g. "7a". */
   site_type_code?: string;
   ph_class: PhClassT;
   /** Degrees clockwise from north (0 = north-facing). */

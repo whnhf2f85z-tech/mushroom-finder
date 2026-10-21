@@ -114,11 +114,11 @@ All of these allow cross-origin requests (`Access-Control-Allow-Origin: *`), che
 - geo.admin `rest/services/height?easting=…&northing=…&sr=2056`: pin elevation (swissALTI3D).
 - geo.admin `identify` on `ch.swisstopo.swissboundaries3d-kanton-flaeche.fill`: canton of a pin.
 
-## Tree species and host trees (proposal, 2026-10-21; not used by the app yet)
+## Tree species and host trees (2026-10-21, used since the host-tree change)
 
-### Current tree species: WSL tree species map — not openly available
+### Current tree species: no open source
 
-**Tree species map of Switzerland** (Koch, Hobi, Morsdorf & Waser 2024, WSL), [EnviDat, DOI 10.16904/envidat.506](https://www.envidat.ch/dataset/tree-species-map-of-switzerland): dominant tree species of the forest, 10 m, from Sentinel-2 (2020), NFI plots and the DEM; 15 species (fir, sycamore, black and grey alder, birch, chestnut, beech, ash, spruce, stone pine, mountain pine, Scots pine, sessile and pedunculate oak, rowan); raster (.tif) or vector (.gpkg), EPSG 3035. **Licence CC BY-SA, but "Access will be granted upon request"**: only a preview image is public. If WSL grants access, it becomes the preferred source for the current tree mix, with the site types below as fallback. Share-alike: data derived from it (our grid file) would also have to be CC BY-SA.
+Only openly available data are used. A known, **non-open** source is the WSL "Tree species map of Switzerland" (Koch, Hobi, Morsdorf & Waser 2024, [EnviDat, DOI 10.16904/envidat.506](https://www.envidat.ch/dataset/tree-species-map-of-switzerland); 10 m, 15 dominant species): access only on request, so it is not used. The tree mix is estimated from the open site-type maps and the NFI conifer share instead (below).
 
 ### Site type → natural main trees
 
@@ -154,7 +154,7 @@ Sources: H. Ellenberg & F. Klötzli (1972), _Waldgesellschaften und Waldstandort
 
 ### Host trees per mushroom species
 
-- **SwissFungi** (WSL, Swiss National Fungi Databank), [distribution map](https://www.wsl.ch/map_fungi): for each species, the number of Swiss records per mycorrhizal partner tree (`rest/diagram/observations/byMykoPartner/<taxonId>`; also `byHostPlant`, `bySubstrateCoarse`). Fetched 2026-10-21 by `validation/fetch-swissfungi-hosts.ts` into `validation/data/swissfungi-hosts.json` (counts only). Credit: "SwissFungi, WSL". The map page states no terms of use; worth confirming with WSL together with the tree map request.
+- **SwissFungi** (WSL, Swiss National Fungi Databank), [distribution map](https://www.wsl.ch/map_fungi): for each species, the number of Swiss records per mycorrhizal partner tree (`rest/diagram/observations/byMykoPartner/<taxonId>`; also `byHostPlant`, `bySubstrateCoarse`). Fetched 2026-10-21 by `validation/fetch-swissfungi-hosts.ts` into `validation/data/swissfungi-hosts.json`. **Only these aggregated counts are used, never individual records from that service.** Credit: "SwissFungi – Swiss National Fungi Databank, WSL" (here and on the About page). **No explicit terms of use were found** on the map page or the service.
 - **Swiss forest composition:** share of stems per tree species, NFI 4 (2009–2017), via [waldwissen.net, "Die häufigsten Waldbäume der Schweiz"](https://www.waldwissen.net/de/lebensraum-wald/baeume-und-waldpflanzen/haeufigste-waldbaeume-schweiz): spruce 37 %, beech 18 %, fir 11 %, larch 6 %, maple 5 %, ash 4 %, pines ~4 %, birch 2 %, oaks 1.5 %, …
 - **Preference** of a tree = its share among the species' partner records ÷ its share of the forest's stems (smoothed with 10 pseudo-records spread like the forest). 1 = found with that tree as often as the tree occurs; > 1 preferred.
 

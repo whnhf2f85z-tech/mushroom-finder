@@ -227,6 +227,7 @@ async function renderCellWhy(
     ph_class: c.ph[i]!,
     ph_source: c.phSource[i]!,
     site_type_name: site?.name ?? null,
+    site_type_code: site?.code ?? null,
     aspect: c.aspect[i] ?? null,
     slope: c.slope[i] ?? null,
   };

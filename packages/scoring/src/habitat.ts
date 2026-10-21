@@ -1,14 +1,31 @@
 import type { ScoringConfig } from './config.js';
 import type { Species } from './schemas.js';
 import type { Habitat } from './types.js';
+import { treeMixOf, type Tree, type TreeMix } from './trees.js';
 import { linearRange } from './util.js';
 
 export interface HabitatResult {
   H: number;
   hostScore: number | null;
+  /** Estimated tree mix used for the host part (null if unknown). */
+  treeMix: TreeMix | null;
   phScore: number;
   elevationScore: number;
   forestScore: number | null;
+}
+
+/** Host part from a tree mix and the species' host preference (missing trees count as neutral, 1). */
+export function hostFromMix(
+  mix: TreeMix,
+  pref: Partial<Record<Tree, number>>,
+  floor: number,
+): number {
+  const sum = (Object.entries(mix) as [Tree, number][]).reduce(
+    (a, [t, v]) => a + v * (pref[t] ?? 1),
+    0,
+  );
+  // Rounded so a mix summing to 0.9999999 isn't below 1 for a neutral tree.
+  return Math.min(1, Math.max(floor, Math.round(sum * 1e6) / 1e6));
 }
 
 /**
@@ -24,10 +41,12 @@ export function habitatScore(
 ): HabitatResult {
   const h = cfg.habitat;
   const w = { ...h.weights, ...species.habitatWeights };
-  const hostScore =
-    habitat.conifer_pct === undefined
+  const treeMix = treeMixOf(habitat);
+  const hostScore = !species.hostPreference
+    ? 1
+    : treeMix === null
       ? null
-      : linearRange(habitat.conifer_pct, species.conifer_pct, h.pctTail, h.pctFloor);
+      : hostFromMix(treeMix, species.hostPreference, h.hostFloor);
   const phScore = species.ph[habitat.ph_class];
   const elevationScore = linearRange(
     habitat.elevation,
@@ -56,5 +75,5 @@ export function habitatScore(
     const dryness = (1 - D) / (1 - cfg.drought.min);
     H = Math.min(1, H + h.northBonus * northness * dryness);
   }
-  return { H, hostScore, phScore, elevationScore, forestScore };
+  return { H, hostScore, treeMix, phScore, elevationScore, forestScore };
 }

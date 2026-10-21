@@ -11,7 +11,7 @@ Weather input is a list of days, oldest first, ending on the day being scored (6
 | **T** temperature    | 0–1     | 7-day mean (air; soil 0–7 cm for morels) against the species band, cosine tail to 0 at `tail` °C outside. Plus `coolingBonus` (porcini 0.15) if the last 3 days are ≥ 3 °C cooler than a 3-day period 5–10 days ago that was ≥ 12 °C.                                                                                                                                                                                                                                                                                   |
 | **F** frost          | 0–1 ×   | Last 7 nights: each Tmin < −1 °C and each < −3 °C multiplies by a tolerance-dependent factor (low: ×0.75 / ×0.25; high: ×0.95 / ×0.8).                                                                                                                                                                                                                                                                                                                                                                                  |
 | **D** drought memory | 0.6–1 × | 60-day rain vs a fixed regional normal (annual ≈ 900 mm + 0.6 mm per metre of elevation). Ratio ≥ 0.8 → 1, ≤ 0.3 → 0.6, linear between.                                                                                                                                                                                                                                                                                                                                                                                 |
-| **H** habitat        | 0–1     | Weighted geometric mean of host trees (conifer share vs preferred range), pH class, elevation range and forest cover (weights 0.35/0.25/0.25/0.15, per-species overrides). Unknown conifer share counts as 0.7; unknown forest cover is skipped. North-facing slopes (≥ 5°) get up to +0.1 when D is low. Protected areas are flagged, not zeroed.                                                                                                                                                                      |
+| **H** habitat        | 0–1     | Weighted geometric mean of host trees (estimated tree mix × the species' host preference, see below), pH class, elevation range and forest cover (weights 0.35/0.25/0.25/0.15, per-species overrides). Unknown tree mix counts as 0.7; unknown forest cover is skipped. North-facing slopes (≥ 5°) get up to +0.1 when D is low. Protected areas are flagged, not zeroed.                                                                                                                                               |
 
 ```
 dynamic       = S^0.5 × M^0.6 × T^0.4      (config: combine = 'geometric')
@@ -19,7 +19,7 @@ species_score = round(100 × H × dynamic × F × D)
 metascore     = max over (selected) species
 ```
 
-**Confidence:** one issue each for unknown pH, unknown conifer share, missing soil moisture, missing soil temperature (morels), under 60 days of weather, weather point > 3 km away. 0 → high, 1–2 → medium, 3+ → low.
+**Confidence:** one issue each for unknown pH, unknown tree mix, missing soil moisture, missing soil temperature (morels), under 60 days of weather, weather point > 3 km away. 0 → high, 1–2 → medium, 3+ → low.
 
 **Colours:** 0–19 very low, 20–39 low, 40–59 medium, 60–79 good, 80–100 very good. Red→green as specified. Red/green alone isn't colour-blind safe, so the bands also differ in lightness and the number and label are always shown.
 
@@ -97,6 +97,18 @@ Approved by the owner after [VALIDATION.md, Part C](VALIDATION.md#part-c--varian
 
 Not changed after Part C: the moisture and temperature model (120-day soil range, wet-after-dry and the two temperature variants gave no clear improvement), and no cooling-trigger requirement for honey fungus. Honey fungus is not in the golden test; the golden numbers below are unchanged.
 
+## Host trees instead of conifer share (2026-10-21)
+
+Approved by the owner after the [host-tree comparison](VALIDATION.md#habitat-with-host-trees-proposal-2026-10-21).
+
+- **Before:** the host part of H compared a square's conifer share with a preferred range per species (e.g. horn of plenty 0–40 %).
+- **Now:** `host = Σ (tree share × host preference)`, capped at 1, floor `hostFloor` 0.2 (config.ts). Preference 1 = the species is found with that tree as often as the tree occurs in the Swiss forest; an average Swiss forest scores 1. Species without `hostPreference` (honey fungus, parasol) score 1. Unknown tree mix (no site type and no conifer share): `unknownHost` 0.7, confidence issue `trees_unknown`.
+- **Tree mix** (`packages/scoring/src/trees.ts`, `treeMixOf`): the site type's natural main trees, with the measured NFI conifer share split among its conifers (or taken as planted spruce on sites with < 30 % natural conifers) and the rest among its broadleaves. Without a conifer share: the natural mix. It's computed from fields the data files already have (site type code, conifer share), so grid.json and habitat.json are unchanged.
+- **Preferences** in `species.json` (`hostPreference`, `hostSource`): SwissFungi partner-tree counts ÷ NFI stem shares, smoothed; winter chanterelle from the literature. `hosts` (shown on the species page) = trees with ≥ 10 % of the Swiss partner records. Table and sources: [DATA_SOURCES.md](DATA_SOURCES.md#host-trees-per-mushroom-species).
+- **"Why this score"** names the estimated main trees (≥ 10 %) and which of them are good (preference ≥ 1.3) or weaker (< 0.8) hosts for the species.
+- **Evidence:** the habitat test can't tell the two versions apart (record squares +0.02 to +0.04 for 5 of 6 species, SwissFungi 5 km squares within ±0.03). Adopted because it is better founded, with low confidence that it predicts better.
+- **Golden test:** still passes; only winter chanterelle changes (+1 to +5 points; Ibergeregg peak 46 instead of 43, Weinland 26 instead of 21), because spruce and fir now count fully as hosts. The test habitat now includes the spot's site type, as the app does.
+
 ## Golden test (real data)
 
 `pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`) at the checked Ibergeregg – Alpthal pin (47.01929, 8.70945, 1,377 m). 21–26 Oct was still a forecast then. The weather: dry from late September, ~38 mm on 8 Oct and ~9 mm on 10 Oct.
@@ -106,9 +118,9 @@ Not changed after Part C: the moisture and temperature model (120-day soil range
 | Ibergeregg – Alpthal (1,377 m, limestone)         | 10 Oct | 14 Oct | 17 Oct | 20 Oct | 22 Oct | 24 Oct | 26 Oct |
 | ------------------------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | Chanterelle                                       | 22     | 32     | 50     | 40     | 37     | 19     | 10     |
-| Winter chanterelle                                | 17     | 31     | 43     | 35     | 40     | 33     | 30     |
+| Winter chanterelle                                | 18     | 34     | 46     | 38     | 43     | 35     | 33     |
 | Hedgehog (pH-tolerant)                            | 29     | 54     | 74     | 60     | 68     | 56     | 50     |
-| _Weinland (grid cell, 356 m), winter chanterelle_ | 15     | 19     | 21     | 17     | 18     | 15     | 14     |
+| _Weinland (grid cell, 356 m), winter chanterelle_ | 18     | 24     | 26     | 21     | 23     | 19     | 17     |
 
 **Expectations, and what changed (Milestone 4 prep):**
 
@@ -116,7 +128,7 @@ Not changed after Part C: the moisture and temperature model (120-day soil range
 - New check: **hedgehog**, which doesn't mind the soil, still goes from low to good (≥ 60) at the same spot. This shows the weather signal is intact.
 - The delay check now applies to hedgehog too.
 - Winter chanterelle outlasts chanterelle: on 26 Oct it's more than twice chanterelle's score, and chanterelle has fallen 30+ points from its peak.
-- The "Weinland stays lower" check covers winter chanterelle and hedgehog, **not chanterelle**. Since Milestone 4, Weinland uses the habitat of its nearest forest grid cell (1.2 km away): a neutral ash forest (29(7) Zweiblatt-Eschenmischwald) at 356 m with 24 % conifers. Chanterelle peaks about equal at both (Weinland 48, Ibergeregg 50), because Ibergeregg's limestone holds it back about as much as Weinland's dryness. Winter chanterelle (peak 21 vs 44) and hedgehog (54 vs 75) stay clearly lower in the lowland.
+- The "Weinland stays lower" check covers winter chanterelle and hedgehog, **not chanterelle**. Since Milestone 4, Weinland uses the habitat of its nearest forest grid cell (1.2 km away): a neutral ash forest (29(7) Zweiblatt-Eschenmischwald) at 356 m with 24 % conifers. Chanterelle peaks about equal at both (Weinland 48, Ibergeregg 50), because Ibergeregg's limestone holds it back about as much as Weinland's dryness. Winter chanterelle (peak 26 vs 46 since the host-tree change) and hedgehog (54 vs 75) stay clearly lower in the lowland.
 - The spec's "rise between ~20 and 26 Oct" still comes earlier with the real weather (14–18 Oct; see Milestone 2).
 
 ## User pins (Milestone 5)

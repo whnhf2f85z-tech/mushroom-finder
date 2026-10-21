@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_CONFIG } from '../src/config.js';
-import { habitatScore } from '../src/habitat.js';
+import { habitatScore, hostFromMix } from '../src/habitat.js';
+import type { Tree } from '../src/trees.js';
 import { scoreSpecies } from '../src/score.js';
 import { seasonScore } from '../src/season.js';
 import type { Species } from '../src/schemas.js';
@@ -27,7 +28,7 @@ const bestPh = (s: Species) =>
 const habitat = (s: Species): Habitat => ({
   elevation: s.elevationShift.referenceElevation,
   forest_pct: midOf(s.forest_pct),
-  conifer_pct: midOf(s.conifer_pct),
+  conifer_pct: 40,
   ph_class: bestPh(s),
   protected: { is: false },
 });
@@ -135,20 +136,34 @@ describe.each(SPECIES.map((s) => [s.id, s] as const))('sanity: %s', (_id, s) => 
     expect(nonIncreasing(down)).toBe(true);
   });
 
-  it('habitat: moving the conifer share or tree cover away from the preferred range never helps', () => {
+  it('habitat: moving tree cover away from the preferred range never helps', () => {
     const h = habitat(s);
-    const away = (key: 'conifer_pct' | 'forest_pct') => {
-      const r = s[key];
-      const below = [r.min, r.min - 10, r.min - 20, r.min - 40]
-        .filter((x) => x >= 0)
-        .map((x) => habitatScore({ ...h, [key]: x }, s, 1, DEFAULT_CONFIG).H);
-      const above = [r.max, r.max + 10, r.max + 20, r.max + 40]
-        .filter((x) => x <= 100)
-        .map((x) => habitatScore({ ...h, [key]: x }, s, 1, DEFAULT_CONFIG).H);
-      return nonIncreasing(below) && nonIncreasing(above);
-    };
-    expect(away('conifer_pct')).toBe(true);
-    expect(away('forest_pct')).toBe(true);
+    const r = s.forest_pct;
+    const below = [r.min, r.min - 10, r.min - 20, r.min - 40]
+      .filter((x) => x >= 0)
+      .map((x) => habitatScore({ ...h, forest_pct: x }, s, 1, DEFAULT_CONFIG).H);
+    const above = [r.max, r.max + 10, r.max + 20, r.max + 40]
+      .filter((x) => x <= 100)
+      .map((x) => habitatScore({ ...h, forest_pct: x }, s, 1, DEFAULT_CONFIG).H);
+    expect(nonIncreasing(below)).toBe(true);
+    expect(nonIncreasing(above)).toBe(true);
+  });
+
+  it('habitat: replacing good host trees by poor ones never helps', () => {
+    const pref = s.hostPreference;
+    if (!pref) {
+      // Not tied to trees: the host part is always 1.
+      expect(hostFromMix({ spruce: 1 }, {}, 0.2)).toBe(1);
+      return;
+    }
+    const ranked = (Object.entries(pref) as [Tree, number][]).sort((a, b) => b[1] - a[1]);
+    const best = ranked[0]![0];
+    const worst = ranked.at(-1)![0];
+    const scores = [0, 0.25, 0.5, 0.75, 1].map((f) =>
+      hostFromMix({ [best]: 1 - f, [worst]: f }, pref, DEFAULT_CONFIG.habitat.hostFloor),
+    );
+    expect(nonIncreasing(scores)).toBe(true);
+    expect(scores[0]).toBeGreaterThan(scores.at(-1)!);
   });
 
   it('habitat: a better pH class never lowers H', () => {

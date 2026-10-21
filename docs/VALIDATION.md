@@ -32,7 +32,7 @@ The non-commercial (NC) licences are fine for this non-commercial project. For a
 | Parasol            | 271                | 97            | 0           | 153             | 1                              | **20**            | 4                         |
 | Morel              | 370                | 62            | 0           | 298             | 0                              | **10**            | 2                         |
 
-**The main limitation:** almost all records are SwissFungi, and SwissFungi publishes on GBIF "generalized to 5 km grid squares" (accuracy 3,535 m = half the diagonal). Its note says the elevation is the raw value, but the elevation field is empty in all 3,143 records. Only **115 precise records** remain in ZH + SZ, mostly iNaturalist. Precise SwissFungi data can be requested from WSL under a data agreement; that would make this validation much stronger.
+**The main limitation:** almost all records are SwissFungi, and SwissFungi publishes on GBIF "generalized to 5 km grid squares" (accuracy 3,535 m = half the diagonal). Its note says the elevation is the raw value, but the elevation field is empty in all 3,143 records. Only **115 precise records** remain in ZH + SZ, mostly iNaturalist.
 
 So that the tests have some power, two supplements are used, always labelled:
 
@@ -129,7 +129,7 @@ _Placebo updated on 2026-10-20 with three bracket fungi instead of tinder fungus
 | 6   | Bay bolete         | Conifer preference 50–100 % → 20–100 %                                                                                           | Habitat host part AUC 0.35 (n = 8)          | Low        |
 | 7   | Honey fungus       | No change yet: look at it in Part B (longer rain lag, e.g. 10–20 days, or the cooling trigger)                                   | Weather test: no signal                     | –          |
 
-**Data improvements:** request precise SwissFungi records from WSL (the larger placebo group is now in place).
+**Data improvements:** the larger placebo group is now in place. Only open data are used, so the coarse SwissFungi positions remain a limit.
 
 ## Part B – Past seasons (2026-10-20)
 
@@ -259,7 +259,7 @@ Period AUC on the 30 sample squares (2021–24): 0.710 current, 0.709–0.728 fo
 
 **Score spread across the 1,567 squares** (7–23 Oct 2026, the last 3 days forecast): all species rise together after the rain of 8–10 October (median from 13–25 to 41–75), and the 10–90 % band stays 25–35 points wide, so the map keeps its contrast. Morel is 0 everywhere (out of season, correct). On 20 October honey fungus has the most squares ≥ 60 (42 %), porcini the fewest (1 %), which fits the end of the porcini season.
 
-**Habitat maps**, one per species (H, the habitat part only, no weather):
+**Habitat maps**, one per species (H, the habitat part only, no weather). _The map images were redrawn on 2026-10-21 with the host-tree model; the table shows the values before that change (current values: the host-tree section below)._
 
 | Species            | H, 10–90 % of squares | Squares with H ≥ 0.7 | Map                                                  |
 | ------------------ | --------------------- | -------------------- | ---------------------------------------------------- |
@@ -330,9 +330,9 @@ Scripts: `validation/variants.ts` (no API calls; needs the weather caches from `
 
 ## Habitat with host trees (proposal, 2026-10-21)
 
-Requested after Part C: replace each species' preference for a conifer share by specific host trees. Sources and tables: [DATA_SOURCES.md, "Tree species and host trees"](DATA_SOURCES.md#tree-species-and-host-trees-proposal-2026-10-21-not-used-by-the-app-yet).
+Requested after Part C: replace each species' preference for a conifer share by specific host trees. Sources and tables: [DATA_SOURCES.md, "Tree species and host trees"](DATA_SOURCES.md#tree-species-and-host-trees-2026-10-21-used-since-the-host-tree-change).
 
-- **Tree mix of each square:** the cantonal site type gives the natural main trees; the NFI conifer share (current stand) is split among them; conifers on beech sites count as planted spruce. The WSL tree species map would give the current species directly, but it is only available on request.
+- **Tree mix of each square:** the cantonal site type gives the natural main trees; the NFI conifer share (current stand) is split among them; conifers on beech sites count as planted spruce. (Measured tree species maps exist but are not open data, so they aren't used.)
 - **Host preference per species:** SwissFungi's Swiss records per mycorrhizal partner tree, divided by each tree's share of the forest (NFI); literature for winter chanterelle; none for honey fungus and parasol (not mycorrhizal).
 - **Host score** = Σ tree share × preference, capped at 1 (an average Swiss forest = 1; a square of poor hosts lower; floor 0.2). It replaces the conifer-share part of H; weights, pH, elevation and tree cover are unchanged. `validation/hosts.ts`.
 
@@ -357,4 +357,4 @@ Habitat maps, current vs host trees: [chanterelle](validation/habitat-hosts-chan
 - **What changes on the map:** horn of plenty and morel gain in fir-rich mountain squares (horn of plenty under conifers: 0.41 → 0.71 at Oberiberg; fir is a good partner in the SwissFungi data, while the current model only allows up to 40 % conifers); chanterelle loses a little in spruce-dominated squares (spruce 0.7); winter chanterelle gains in conifer squares.
 - **Spots:** most spots change by less than 0.05; the largest changes are horn of plenty (+0.13 to +0.33 at the 7 conifer-rich spots in the Ybrig, Sattel and Alpthal areas) and morel (−0.10 to +0.30).
 
-**Recommendation (not applied):** adopt the host-tree version as the better-founded model (Swiss partner data instead of a guessed conifer range, and the "why" panel can then name the host trees), but **with low confidence that it improves predictions**: the available tests can't tell the two apart. Its main weakness is the estimated tree mix; ask WSL for the tree species map, which would replace the estimate by measured species. If adopted: species.json gets per-species host preferences (table in DATA_SOURCES.md) instead of `conifer_pct`, and grid.json/habitat.json get each place's tree mix.
+**Recommendation:** adopt the host-tree version as the better-founded model (Swiss partner data instead of a guessed conifer range, and the "why" panel can then name the host trees), but **with low confidence that it improves predictions**: the available tests can't tell the two apart. Its main weakness is the estimated tree mix (no open map of current tree species exists). **Applied on 2026-10-21** (approved): species.json has per-species host preferences instead of `conifer_pct`; the tree mix is computed from the site type and conifer share already in grid.json/habitat.json (details in SCORING.md).
