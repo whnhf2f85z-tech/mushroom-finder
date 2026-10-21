@@ -12,7 +12,7 @@ import {
 import { rainChart, scoreChart, tempChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
 import { dayMonth, esc, shortDate } from './format.js';
-import { fillPlaceInfo, placeInfoSection } from './placeinfo.js';
+import { fillPlaceInfo, placeInfoSection, updatePlaceInfoDay } from './placeinfo.js';
 import { whyHtml } from './why.js';
 
 export interface DetailContext {
@@ -53,7 +53,6 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
   cleanups = [];
   const data = ctx.latest?.spots[spot.id];
   const r = ctx.rules.cantons[spot.canton];
-  const closed = isClosedDay(ctx.rules, spot.canton, ctx.today);
   const gmaps = `https://www.google.com/maps/search/?api=1&query=${spot.lat},${spot.lon}`;
   const name = (id: string) => ctx.species.find((s) => s.id === id)?.name ?? id;
   const star = (id: string) =>
@@ -122,7 +121,7 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
       </div>
       <button type="button" class="close" aria-label="Close">×</button>
     </div>
-    ${closed ? `<p><span class="badge closed">Closed today (${spot.canton} rule)</span></p>` : ''}
+    <div id="closed-day" data-spot-detail="${esc(spot.canton)}" data-today="${ctx.today}">${closedBadge(ctx.rules, spot.canton, ctx.date ?? ctx.today, ctx.today)}</div>
     ${data?.stale ? `<p class="badge closed">Weather could not be updated; showing scores from ${shortDate(data.updated)}</p>` : ''}
     ${body}
     ${ctx.habitat?.protected.noPicking ? `<p class="badge closed">No picking: ${esc(ctx.habitat.protected.name ?? 'protected area')}</p>` : ''}
@@ -239,4 +238,31 @@ export function closeDetail(el: HTMLElement): void {
   cleanups = [];
   el.hidden = true;
   el.innerHTML = '';
+}
+
+/** "Closed today / on Thu 23 Oct (ZH rule)" badge, or nothing. */
+export function closedBadge(
+  rules: RulesFile,
+  canton: Spot['canton'],
+  date: string,
+  today: string,
+): string {
+  if (!isClosedDay(rules, canton, date)) return '';
+  return `<p><span class="badge closed">Closed ${date === today ? 'today' : `on ${shortDate(date)}`} (${esc(canton)} rule)</span></p>`;
+}
+
+/**
+ * The day slider moved while a spot or pin detail is open: update what depends on the day (closed-day badge,
+ * firing notices). The scores, chart and "why" are for today and don't change.
+ */
+export function updateDetailDay(el: HTMLElement, date: string, rules: RulesFile): void {
+  const box = el.querySelector<HTMLElement>('#closed-day[data-spot-detail]');
+  if (!box) return; // no spot/pin detail open
+  box.innerHTML = closedBadge(
+    rules,
+    box.dataset.spotDetail as Spot['canton'],
+    date,
+    box.dataset.today ?? date,
+  );
+  void updatePlaceInfoDay(el, date);
 }

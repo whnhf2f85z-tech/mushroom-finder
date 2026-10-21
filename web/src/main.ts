@@ -28,7 +28,7 @@ import { renderAbout } from './about.js';
 import { setupMine, type Place, type ScoreCapture } from './mine.js';
 import { setupPages } from './pages.js';
 import { renderSpeciesPage } from './speciespage.js';
-import { closeDetail, renderDetail, resetChartLines } from './detail.js';
+import { closeDetail, renderDetail, resetChartLines, updateDetailDay } from './detail.js';
 import {
   GridLayer,
   cellCenter,
@@ -233,6 +233,8 @@ function refresh(): void {
   $('day-label').classList.toggle('forecast', isForecast);
   void refreshGrid();
   mine?.refresh();
+  // An open spot or pin detail follows the day (closed-day badge, firing notices); squares re-render in refreshGrid.
+  updateDetailDay($('detail'), date, rules);
 }
 
 // --- Grid ------------------------------------------------------------------

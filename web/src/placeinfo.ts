@@ -191,16 +191,26 @@ export const placeInfoSection = () => `
   <p class="warn-note small" id="firing" hidden></p>
   <ul class="small plain" id="place-info"><li>Loading from map.geo.admin.ch…</li></ul>`;
 
-/** Fill the section rendered by placeInfoSection(); `date` is the day shown on the map. */
+/** The place and the latest request per detail panel, so a day change can redo the date-dependent part. */
+const shown = new WeakMap<HTMLElement, { p: Place; today: string; token: number }>();
+
+/**
+ * Fill the section rendered by placeInfoSection(); `date` is the day shown on the map. Called again (or via
+ * updatePlaceInfoDay) when the day changes; results of an older call are dropped.
+ */
 export async function fillPlaceInfo(
   el: HTMLElement,
   p: Place,
   date: string,
   today: string,
 ): Promise<void> {
+  const token = (shown.get(el)?.token ?? 0) + 1;
+  shown.set(el, { p, today, token });
   const list = el.querySelector<HTMLElement>('#place-info');
   const firing = el.querySelector<HTMLElement>('#firing');
   if (!list || !firing) return;
+  firing.hidden = true;
+  firing.innerHTML = '';
   if (!navigator.onLine) {
     list.innerHTML =
       '<li>Public transport, hiking trails and firing notices need a connection.</li>';
@@ -211,6 +221,7 @@ export async function fillPlaceInfo(
     hikingTrail(p),
     firingNotice(p, date),
   ]);
+  if (shown.get(el)?.token !== token) return; // the day changed meanwhile
   const text = (r: PromiseSettledResult<string | null>, what: string) =>
     r.status === 'fulfilled' ? r.value : `${what}: could not be loaded right now.`;
   list.innerHTML = [
@@ -229,4 +240,10 @@ export async function fillPlaceInfo(
     firing.innerHTML = `⚠ ${fire.value}`;
     firing.hidden = false;
   }
+}
+
+/** Redo the section for another day, for the place it was last filled with (no-op if never filled). */
+export function updatePlaceInfoDay(el: HTMLElement, date: string): Promise<void> {
+  const s = shown.get(el);
+  return s ? fillPlaceInfo(el, s.p, date, s.today) : Promise.resolve();
 }
