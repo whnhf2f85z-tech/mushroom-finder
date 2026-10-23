@@ -39,8 +39,14 @@
       <div class="controls">
         <div class="species-control">
           <div id="species-chips" class="chips" role="radiogroup" aria-label="Species"></div>
-          <button type="button" id="edit-favourites" class="chip fav-edit">
-            ★ Choose favourites
+          <button
+            type="button"
+            id="edit-favourites"
+            class="chip fav-edit"
+            aria-label="Choose favourites"
+          >
+            ★ <span class="fav-edit-long">Choose favourites</span
+            ><span class="fav-edit-short">Edit</span>
           </button>
         </div>
         <div class="view-control" role="radiogroup" aria-label="Show on the map">
