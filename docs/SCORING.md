@@ -109,6 +109,10 @@ Approved by the owner after the [host-tree comparison](VALIDATION.md#habitat-wit
 - **Evidence:** the habitat test can't tell the two versions apart (record squares +0.02 to +0.04 for 5 of 6 species, SwissFungi 5 km squares within ±0.03). Adopted because it is better founded, with low confidence that it predicts better.
 - **Golden test:** still passes; only winter chanterelle changes (+1 to +5 points; Ibergeregg peak 46 instead of 43, Weinland 26 instead of 21), because spruce and fir now count fully as hosts. The test habitat now includes the spot's site type, as the app does.
 
+## Species considered and not added
+
+- **Shaggy ink cap** (Schopf-Tintling, _Coprinus comatus_), decided 2026-10-23: not added. It grows mostly outside forest (lawns, meadows, roadsides, disturbed nutrient-rich soil), so the forest squares and spots would point to the wrong places. Specimens from roadsides and built-up land can carry heavy metals, which a score there would encourage picking. Its look-alike, the common ink cap (_Coprinopsis atramentaria_), is poisonous together with alcohol. A weather-and-season-only version for user pins was considered and also declined.
+
 ## Golden test (real data)
 
 `pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`) at the checked Ibergeregg – Alpthal pin (47.01929, 8.70945, 1,377 m). 21–26 Oct was still a forecast then. The weather: dry from late September, ~38 mm on 8 Oct and ~9 mm on 10 Oct.
