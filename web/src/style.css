@@ -1164,7 +1164,7 @@ dialog::backdrop {
 
   /* The map fills the screen between the controls and the tab bar; the lists follow below. */
   .map {
-    height: calc(100dvh - var(--tabbar) - 11.5rem);
+    height: calc(100dvh - var(--tabbar) - 14rem); /* header + controls ≈ 14rem */
     min-height: 300px;
   }
 
