@@ -84,6 +84,7 @@ export async function renderCellDetail(
     ${closed ? `<p><span class="badge closed">Closed on ${shortDate(date)} (${canton} rule)</span></p>` : ''}
     ${c.protected[i] === 2 ? `<p class="badge closed">No picking in part of this square: ${esc(protName ?? 'reserve')}</p>` : ''}
     ${c.protected[i] === 1 ? `<p class="small"><strong>Protected area in this square:</strong> ${esc(protName ?? '')}. Check its rules before picking.</p>` : ''}
+    <div class="actions actions-top"><button type="button" class="action-button" data-act="log">Log a visit</button></div>
     <div id="cell-body"><p class="small">Loading scores…</p></div>
     <h3>About this square</h3>
     <p class="small">
@@ -101,7 +102,6 @@ export async function renderCellDetail(
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day.</p>` : ''}
     ${placeInfoSection()}
     <div class="actions">
-      <button type="button" class="action-button" data-act="log">Log a visit</button>
       <a href="https://www.google.com/maps/search/?api=1&query=${center.lat.toFixed(5)},${center.lon.toFixed(5)}" target="_blank" rel="noopener">Open in Google Maps</a>
       <a href="${r?.cantonalMapUrl ?? 'https://map.geo.admin.ch'}" target="_blank" rel="noopener">Open cantonal map</a>
     </div>`;

@@ -8,6 +8,7 @@ import {
   type Species,
   type Spot,
   wgs84ToLv95,
+  type ParkingPlace,
 } from '@mf/scoring';
 import { rainChart, scoreChart, tempChart, type LineSeries, type VisitMarker } from './charts.js';
 import { speciesStyle } from './colors.js';
@@ -27,6 +28,8 @@ export interface DetailContext {
   onClose: () => void;
   /** Opens the "Log a visit" dialog for this place. */
   onLogVisit?: () => void;
+  /** Parking near the spot (OpenStreetMap), nearest first; official spots only. */
+  parking?: ParkingPlace[];
   /** Find-log visits at this place, shown on the chart. */
   visits?: VisitMarker[];
   /** Set for the viewer's own pins. */
@@ -123,6 +126,7 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     </div>
     <div id="closed-day" data-spot-detail="${esc(spot.canton)}" data-today="${ctx.today}">${closedBadge(ctx.rules, spot.canton, ctx.date ?? ctx.today, ctx.today)}</div>
     ${data?.stale ? `<p class="badge closed">Weather could not be updated; showing scores from ${shortDate(data.updated)}</p>` : ''}
+    ${ctx.onLogVisit ? '<div class="actions actions-top"><button type="button" class="action-button" data-act="log">Log a visit</button></div>' : ''}
     ${body}
     ${ctx.habitat?.protected.noPicking ? `<p class="badge closed">No picking: ${esc(ctx.habitat.protected.name ?? 'protected area')}</p>` : ''}
     ${ctx.habitat?.protected.is && !ctx.habitat.protected.noPicking ? `<p class="small"><strong>Protected area nearby:</strong> ${esc(ctx.habitat.protected.name ?? '')}. Check the reserve rules before picking.</p>` : ''}
@@ -131,9 +135,9 @@ export function renderDetail(el: HTMLElement, spot: Spot, ctx: DetailContext): v
     ${ctx.pin ? `<p class="small">${ctx.pin.cellKm === null ? 'No forest square within 1.5 km: tree mix and soil are unknown, so confidence is lower.' : `Tree mix, soil and slope come from the nearest forest square (${ctx.pin.cellKm.toFixed(1)} km away); elevation is the pin's own.`}</p>` : ''}
     ${ctx.habitat && !ctx.pin ? `<p class="small">Pin at ${ctx.habitat.elevation} m${ctx.habitat.site_type_name ? ` · forest type: ${esc(ctx.habitat.site_type_name)}` : ''}${ctx.habitat.conifer_pct !== null ? ` · ${ctx.habitat.conifer_pct} % conifers` : ''} · tree cover ${ctx.habitat.forest_pct} %.</p>` : ''}
     ${r ? `<p class="small">${esc(r.name)}: max ${r.maxKgPerPersonPerDay} kg per person per day${r.speciesLimits.map((l) => `, ${esc(name(l.species).toLowerCase())}s max ${l.maxKg} kg`).join('')}.</p>` : ''}
+    ${ctx.parking ? parkingHtml(ctx.parking) : ''}
     ${placeInfoSection()}
     <div class="actions">
-      ${ctx.onLogVisit ? '<button type="button" class="action-button" data-act="log">Log a visit</button>' : ''}
       <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps</a>
       <a href="${r?.cantonalMapUrl ?? 'https://map.geo.admin.ch'}" target="_blank" rel="noopener">Open cantonal map</a>
     </div>
@@ -265,4 +269,35 @@ export function updateDetailDay(el: HTMLElement, date: string, rules: RulesFile)
     box.dataset.today ?? date,
   );
   void updatePlaceInfoDay(el, date);
+}
+
+const PARKING_KIND: Record<string, string> = {
+  surface: 'car park',
+  street_side: 'roadside parking',
+  lane: 'roadside parking',
+  'multi-storey': 'multi-storey car park',
+  underground: 'underground car park',
+  rooftop: 'rooftop car park',
+};
+const metres = (m: number) =>
+  m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1)} km`;
+
+/** "Parking" section of a spot: up to 3 places, nearest first, with a directions link each. */
+export function parkingHtml(places: ParkingPlace[]): string {
+  if (!places.length)
+    return '<h3>Parking</h3><p class="small">No public parking mapped within 3 km (OpenStreetMap).</p>';
+  const items = places.map((p) => {
+    const kind = PARKING_KIND[p.kind ?? ''];
+    const what = p.name ?? (kind ? kind[0]!.toUpperCase() + kind.slice(1) : 'Parking');
+    const facts = [
+      p.fee === 'yes' ? 'paid' : p.fee === 'no' ? 'free' : null,
+      p.capacity ? `about ${p.capacity} places` : null,
+      p.access === 'customers' ? 'for customers' : p.access ? esc(p.access) : null,
+    ].filter(Boolean);
+    const dir = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}&travelmode=driving`;
+    return `<li><strong>${esc(what)}</strong>${facts.length ? ` · ${facts.join(' · ')}` : ''} · ${metres(p.distanceM)} from the spot · <a href="${dir}" target="_blank" rel="noopener">Directions</a></li>`;
+  });
+  return `<h3>Parking</h3>
+    <ul class="small plain parking">${items.join('')}</ul>
+    <p class="small">Straight-line distance; from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a> contributors. Check the signs on site (fees, time limits, guests only).</p>`;
 }

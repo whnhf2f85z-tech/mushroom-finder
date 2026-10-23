@@ -1052,6 +1052,14 @@ dialog::backdrop {
   font-size: 0.72rem;
 }
 
+/* "Log a visit" right under the place's name, so it's found without scrolling. */
+.actions-top {
+  margin: 0.4rem 0 0.6rem;
+}
+.actions-top .action-button {
+  min-height: 40px;
+}
+
 /* --- Phones (the desktop layout above 900 px is unchanged) ------------------------------------------- */
 .fav-edit-short {
   display: none;

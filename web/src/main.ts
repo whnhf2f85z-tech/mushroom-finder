@@ -17,6 +17,8 @@ import {
   type GridFile,
   type HabitatFile,
   type LatestFile,
+  type ParkingFile,
+  ParkingFileSchema,
   type Spot,
 } from '@mf/scoring';
 import reservesJson from '../../data/reserves.json';
@@ -353,6 +355,7 @@ function select(id: string): void {
     date: selectedDate(),
     favourites,
     habitat: habitat?.spots[id] ?? null,
+    ...(parking ? { parking: parking.spots[id] ?? [] } : {}),
     onLogVisit: () =>
       mine!.openVisit(
         { kind: 'spot', id, name: spot.name, lat: spot.lat, lon: spot.lon },
@@ -639,6 +642,7 @@ function warmOfflineCache(): void {
     'data/static/grid.json',
     'data/static/reserves.geojson',
     'data/static/habitat.json',
+    'data/static/parking.json',
   ];
   if (latest)
     for (const d of [...latest.days, ...latest.forecastDays]) urls.push(`data/grid/${d}.json`);
@@ -713,6 +717,16 @@ async function loadLatest(): Promise<void> {
   if (!saved.success) await fresh;
 }
 
+let parking: ParkingFile | null = null;
+async function loadParking(): Promise<void> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/static/parking.json`);
+    if (res.ok) parking = ParkingFileSchema.parse(await res.json());
+  } catch (e) {
+    console.warn('No parking data', e);
+  }
+}
+
 async function loadHabitat(): Promise<void> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/static/habitat.json`);
@@ -737,6 +751,7 @@ const whenIdle = (fn: () => void) =>
 
 refresh();
 void loadHabitat();
+void loadParking();
 void loadLatest()
   .then(loadGridLayer)
   .finally(() =>

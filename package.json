@@ -22,6 +22,7 @@
     "record:golden": "tsx pipeline/scripts/record-golden.ts",
     "terrain": "tsx pipeline/terrain/build-habitat.ts",
     "export:spots": "tsx pipeline/scripts/export-spots.ts",
+    "parking": "tsx pipeline/scripts/fetch-parking.ts",
     "grid": "tsx pipeline/terrain/build-grid.ts",
     "e2e": "playwright test"
   },

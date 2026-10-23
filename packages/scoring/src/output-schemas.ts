@@ -114,6 +114,30 @@ export const HabitatEntrySchema = z.object({
 });
 
 /** static/habitat.json: the habitat build (rarely re-run). */
+/** Parking places near each spot, from OpenStreetMap (pipeline/scripts/fetch-parking.ts). */
+export const ParkingPlaceSchema = z.object({
+  lat: z.number(),
+  lon: z.number(),
+  /** Straight-line distance from the spot, m. */
+  distanceM: z.number().int().min(0),
+  name: z.string().nullable(),
+  fee: z.enum(['yes', 'no']).nullable(),
+  capacity: z.number().int().positive().nullable(),
+  /** OSM access when not public, e.g. "customers". */
+  access: z.string().nullable(),
+  /** OSM parking type, e.g. "surface", "street_side", "underground". */
+  kind: z.string().nullable(),
+  osm: z.string(),
+});
+export type ParkingPlace = z.infer<typeof ParkingPlaceSchema>;
+export const ParkingFileSchema = z.object({
+  schemaVersion: z.literal(SCHEMA_VERSION),
+  fetched: isoDate,
+  source: z.string(),
+  spots: z.record(z.string(), z.array(ParkingPlaceSchema)),
+});
+export type ParkingFile = z.infer<typeof ParkingFileSchema>;
+
 export const HabitatFileSchema = z.object({
   schemaVersion: z.literal(SCHEMA_VERSION),
   generatedAt: z.string(),

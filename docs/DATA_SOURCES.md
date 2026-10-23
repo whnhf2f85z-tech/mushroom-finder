@@ -127,6 +127,14 @@ All four are federal open data, **"Opendata BY": free use, the source must be gi
 
 The firing warning is a help, not a guarantee: only published bulletins are shown; always follow the signs and barriers on site.
 
+## Parking near the spots (OpenStreetMap, 2026-10-23)
+
+There is no federal parking layer on map.geo.admin.ch. Parking comes from **OpenStreetMap** (`amenity=parking`), © OpenStreetMap contributors, [ODbL](https://www.openstreetmap.org/copyright); credited in the spot detail and on the About page. `npm run parking` (`pipeline/scripts/fetch-parking.ts`) queries the Overpass API once for all spots (public servers, tried in turn; they are often busy, so `PARKING_RAW=<file>` can process a saved answer) and writes `web/public/data/static/parking.json` (~6 KB, available offline).
+
+- Per spot: the 3 nearest places within 3 km (straight line), leaving out `access` = private, no, permit, residents, delivery, agricultural, forestry. Places closer than 60 m to one already kept, or with the same name, count as the same car park.
+- Kept tags: name, `fee` (paid/free), `capacity`, `access` (e.g. customers), `parking` (car park, roadside, multi-storey …). Not every place has them; the detail says to check the signs on site.
+- Run again now and then (e.g. each season): OpenStreetMap changes, and the file is not updated by the daily job.
+
 ## Tree species and host trees (2026-10-21, used since the host-tree change)
 
 ### Current tree species: no open source

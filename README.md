@@ -56,6 +56,7 @@ To add a pin to the official spot list for everyone, send the exported file to t
 
 - Weather model checked against 6 MeteoSwiss stations: Open-Meteo `best_match` stays (see [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md)).
 - Favourites: "My favourites" (stored on the device; default chanterelle, porcini, winter chanterelle, horn of plenty, hedgehog) drives the map pins and each spot's main score. The detail still shows every species.
+- Parking near the spots (`npm run parking`): nearest car parks from OpenStreetMap, shown in each spot's detail; run again now and then.
 - Habitat build (`npm run terrain`, or the manual GitHub workflow "Build habitat"): tree cover and conifer share (NFI), elevation/slope/aspect (swissALTI3D), Schwyz forest site types → soil pH, geology fallback, reserves. 11 pins moved into forest inside their band, away from no-picking areas (table in [docs/SCORING.md](docs/SCORING.md)).
 - "Why this score" panel: plain-English reasons for each part of the score, for any species.
 
