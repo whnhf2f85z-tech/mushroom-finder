@@ -109,6 +109,19 @@ Approved by the owner after the [host-tree comparison](VALIDATION.md#habitat-wit
 - **Evidence:** the habitat test can't tell the two versions apart (record squares +0.02 to +0.04 for 5 of 6 species, SwissFungi 5 km squares within ±0.03). Adopted because it is better founded, with low confidence that it predicts better.
 - **Golden test:** still passes; only winter chanterelle changes (+1 to +5 points; Ibergeregg peak 46 instead of 43, Weinland 26 instead of 21), because spruce and fir now count fully as hosts. The test habitat now includes the spot's site type, as the app does.
 
+## New species: stump puffball (2026-10-25)
+
+**Stump puffball** (Birnen-Stäubling, _Apioperdon pyriforme_, formerly _Lycoperdon pyriforme_), added at the owner's request after a find. A decomposer of dead wood, not tied to living host trees, so it has no host preference (like honey fungus) and soil hardly matters (pH weight 0.05).
+
+| Parameter        | Value                                                                               | Basis                                                                                                                                                      |
+| ---------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Season (1,000 m) | start 15 Jul, full 1 Sep – 31 Oct, end 30 Nov; elevation shift −2/−1 days per 100 m | SwissFungi, 2,197 Swiss records by month: Jul 53, Aug 265, **Sep 741, Oct 785**, Nov 207 (records in winter and spring are mostly old, dried fruit bodies) |
+| Elevation        | 300–1,600 m                                                                         | SwissFungi by altitude: 0–600 m 783, 601–1,000 m 930, 1,001–1,600 m 420, above 1,600 m 57                                                                  |
+| Habitat          | tree cover 30–100 %; stumps and rotting wood                                        | SwissFungi substrate: 93 % on wood (of those with details: 83 % stumps, roots); wood of spruce, beech and fir most often                                   |
+| Weather          | rain 7–14 days before, full at 40 mm; 7–17 °C; frost tolerance medium               | Expert estimate like the other autumn species; **not yet checked** against record dates (Part A weather test)                                              |
+
+Look-alikes listed (names only): death cap while still closed (deadly), common earthball (poisonous). Photo: Alan Rockefeller (Mushroom Observer), CC BY-SA 3.0, Wikimedia Commons. Not a default favourite; add it with ★. Confidence: season and elevation medium (Swiss records), weather response low until validated.
+
 ## Species considered and not added
 
 - **Shaggy ink cap** (Schopf-Tintling, _Coprinus comatus_), decided 2026-10-23: not added. It grows mostly outside forest (lawns, meadows, roadsides, disturbed nutrient-rich soil), so the forest squares and spots would point to the wrong places. Specimens from roadsides and built-up land can carry heavy metals, which a score there would encourage picking. Its look-alike, the common ink cap (_Coprinopsis atramentaria_), is poisonous together with alcohol. A weather-and-season-only version for user pins was considered and also declined.

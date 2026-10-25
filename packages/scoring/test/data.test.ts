@@ -18,7 +18,7 @@ const rules = RulesFileSchema.parse(rulesJson);
 describe('data files', () => {
   it('validate against their schemas', () => {
     expect(ReservesFileSchema.safeParse(reservesJson).success).toBe(true);
-    expect(species).toHaveLength(9);
+    expect(species).toHaveLength(10);
     expect(spots).toHaveLength(14);
   });
 
@@ -61,6 +61,8 @@ describe('species safety data', () => {
     expect(names('morel')).toMatch(/Gyromitra/);
     expect(names('chanterelle')).toMatch(/Hygrophoropsis/);
     expect(names('honey_fungus')).toMatch(/Galerina/);
+    expect(names('stump_puffball')).toMatch(/Amanita phalloides/);
+    expect(names('stump_puffball')).toMatch(/Scleroderma/);
     expect(sp('parasol').lookalikes.some((l) => l.danger === 'deadly')).toBe(true);
   });
 

@@ -717,6 +717,76 @@
         "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
         "source": "https://commons.wikimedia.org/wiki/File:Morchella_esculenta_300405.jpg"
       }
+    },
+    {
+      "id": "stump_puffball",
+      "name": "Stump puffball",
+      "german": "Birnen-Stäubling",
+      "latin": "Apioperdon pyriforme",
+      "season": {
+        "start": "07-15",
+        "peakStart": "09-01",
+        "peakEnd": "10-31",
+        "end": "11-30"
+      },
+      "elevationShift": {
+        "referenceElevation": 1000,
+        "startDaysPer100m": -2,
+        "endDaysPer100m": -1
+      },
+      "hosts": ["rotting stumps and wood", "spruce", "beech", "fir"],
+      "forest_pct": {
+        "min": 30,
+        "max": 100
+      },
+      "ph": {
+        "acidic": 1,
+        "neutral": 1,
+        "calcareous": 1,
+        "unknown": 1
+      },
+      "elevation": {
+        "min": 300,
+        "max": 1600
+      },
+      "temperature": {
+        "source": "air",
+        "min": 7,
+        "max": 17,
+        "tail": 5
+      },
+      "coolingBonus": 0,
+      "rainLag": {
+        "min": 7,
+        "max": 14
+      },
+      "fullRainMm": 40,
+      "frostTolerance": "medium",
+      "habitatWeights": {
+        "ph": 0.05
+      },
+      "notes": "In dense clusters on rotting stumps, roots and buried wood, mostly of spruce, beech and fir; Swiss records mostly in September and October.",
+      "lookalikes": [
+        {
+          "name": "Death cap (young, still closed)",
+          "latin": "Amanita phalloides",
+          "danger": "deadly"
+        },
+        {
+          "name": "Common earthball",
+          "latin": "Scleroderma citrinum",
+          "danger": "poisonous"
+        }
+      ],
+      "safety": "Puffballs are only edible while young. Young amanitas still closed in their \"egg\", including the deadly death cap, and the poisonous earthballs can look like them.",
+      "photo": {
+        "file": "species/stump_puffball.jpg",
+        "shows": "Apioperdon pyriforme",
+        "author": "Alan Rockefeller (Mushroom Observer)",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2012-03-18_Lycoperdon_pyriforme_Schaeff_205850.jpg"
+      }
     }
   ]
 }

@@ -45,7 +45,7 @@ To add a pin to the official spot list for everyone, send the exported file to t
 
 **Milestone 2 (weather + daily job): done**
 
-- Daily GitHub Action (`.github/workflows/daily-scores.yml`, 03:30 UTC). It fetches Open-Meteo weather for the 14 spots, scores the 9 species for the last 14 days, today and 3 forecast days, writes `web/public/data/latest.json` and `history/YYYY-MM-DD.json` (30 kept), commits, and redeploys the site.
+- Daily GitHub Action (`.github/workflows/daily-scores.yml`, 03:30 UTC). It fetches Open-Meteo weather for the 14 spots, scores the 10 species for the last 14 days, today and 3 forecast days, writes `web/public/data/latest.json` and `history/YYYY-MM-DD.json` (30 kept), commits, and redeploys the site.
 - Missing days in the 14-day window are filled automatically. `--backfill N` recomputes the last N days.
 - Retries with backoff. A spot whose weather fails keeps its previous scores and is marked stale. If everything fails, nothing is written. Files are checked against a schema before they're written.
 - Map: spots coloured by score with the number on each pin, species chips, and a day slider (13 days back to 3 days ahead, forecast labelled).
