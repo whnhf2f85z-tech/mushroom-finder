@@ -126,6 +126,8 @@ Look-alikes listed (names only): death cap while still closed (deadly), common e
 
 - **Shaggy ink cap** (Schopf-Tintling, _Coprinus comatus_), decided 2026-10-23: not added. It grows mostly outside forest (lawns, meadows, roadsides, disturbed nutrient-rich soil), so the forest squares and spots would point to the wrong places. Specimens from roadsides and built-up land can carry heavy metals, which a score there would encourage picking. Its look-alike, the common ink cap (_Coprinopsis atramentaria_), is poisonous together with alcohol. A weather-and-season-only version for user pins was considered and also declined.
 
+- **Truffles** (Burgundy truffle, _Tuber aestivum_), decided 2026-10-25: not added, neither as a species nor as an info card. They grow underground and ripen over months (the crop depends mainly on summer rain), so a daily weather score would be meaningless; they are found almost only with a trained dog; SwissFungi has only 136 Swiss records, mostly below 600 m, and WSL lists Zürich but not Schwyz as a natural truffle area.
+
 ## Golden test (real data)
 
 `pipeline/test/golden.test.ts` uses Open-Meteo weather recorded on 2026-10-20 (`npm run record:golden`) at the checked Ibergeregg – Alpthal pin (47.01929, 8.70945, 1,377 m). 21–26 Oct was still a forecast then. The weather: dry from late September, ~38 mm on 8 Oct and ~9 mm on 10 Oct.
